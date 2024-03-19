@@ -1,10 +1,23 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import "./Navigation.css";
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Button, Dropdown } from "flowbite-react";
+import { signOut } from "../../redux/user/userSlice";
 
 export const Navigation = () => {
     const navigate = useNavigate()
+
+    const { currentUser } = useSelector(state => state.user) 
+    
+    const dispatch = useDispatch()
+    
+    
+    const handleSignout = () => {
+        localStorage.removeItem("token")
+        dispatch(signOut())
+        navigate("/signin")
+    }
+
     return <div className="navbar-area ">
         <nav className="nav-container  justify-around">
             <Link to="/">
@@ -47,47 +60,38 @@ export const Navigation = () => {
                 </Link>
             </div>
             <div className="div-nav-right flex">
-                {/* <Menu>
-                    <MenuButton className="nav-dropdown">
-                        For Providers {<ChevronDownIcon />}
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem className="nav-dropdown-item">
-                            Practo Prime
-                        </MenuItem>
-                        <MenuItem className="nav-dropdown-item">
-                            Software for providers
-                        </MenuItem>
-                        <MenuItem className="nav-dropdown-item">
-                            List your practice for Free
-                        </MenuItem>
-                        <MenuItem className="nav-dropdown-item">
-                            Corporate wellness
-                        </MenuItem>
-                    </MenuList>
-                </Menu> */}
-                {/* <Menu>
-                    <MenuButton className="nav-dropdown ">
-                        Security & help {<ChevronDownIcon />}
-                    </MenuButton>
-                    <MenuList >
-                        <MenuItem className="nav-dropdown-item">
-                            Data security
-                        </MenuItem>
-                        <MenuItem className="nav-dropdown-item">
-                            Help
-                        </MenuItem>
-                    </MenuList>
+                {
+                    currentUser ? (
 
-                </Menu> */}
-                <div className="flex">
-                    <button onClick={() => navigate("/signin")} className="btn-login mr-4 hover:underline hover:border hover:border-blue-600">
-                        Login
-                    </button>
-                    <button onClick={() => navigate("/signup")} className="btn-login hover:underline hover:border hover:border-blue-600">
-                        Signup
-                    </button>
-                </div>
+                        <>
+                        <Dropdown arrowIcon={false} inline label={<Avatar alt="user" img={currentUser.data.profilePicture} rounded/>}>
+                            <Dropdown.Header>
+                                <span className='block text-sm'>@{currentUser.data.username}</span>
+                                <span className='block text-sm font-medium truncate'>{currentUser.data.email}</span>
+                            </Dropdown.Header>
+
+                            <Link to={'/dashboard?tab=profile'}>
+                                <Dropdown.Item>Profile</Dropdown.Item>
+                            </Link>
+
+                            <Dropdown.Divider />
+                        </Dropdown>
+                        
+                        <button className="ml-10 bg-red-500 rounded-xl px-3 text-white hover:underline" onClick={handleSignout}>Sign Out</button>
+
+                        </>
+                    ) : (
+                        
+                        <div className="flex">
+                            <button onClick={() => navigate("/signin")} className="btn-login mr-4 hover:underline hover:border hover:border-blue-600">
+                                Login
+                            </button>
+                            <button onClick={() => navigate("/signup")} className="btn-login hover:underline hover:border hover:border-blue-600">
+                                Signup
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </nav>
     </div>

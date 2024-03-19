@@ -109,3 +109,56 @@ export const signin = AsyncHandler( async (req, res) => {
         status: true
     })
 })
+
+export const googleAuth = AsyncHandler( async (req, res, next) => {
+    const {name, firstName, lastName, email, googlePhotoURL} = req.body
+
+    const user = await User.findOne({ email })
+    
+    if(user) {
+
+        const userId = user._id
+
+        const token = jwt.sign({
+            userId,
+        }, process.env.JWT_SECRET)
+    
+        const loggedInUser = await User.findById(userId).select(" -password ")
+
+        return res.json({
+            msg: "User Signed up successfully",
+            data: loggedInUser,
+            token: token,
+            status: true
+        })
+    }
+
+    else {
+        const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+        const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+
+        const newUser = await User.create({
+            username: name?.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+            profilePicture: googlePhotoURL
+        })
+
+        const userId = newUser._id
+
+        const token = jwt.sign({
+            userId,
+        }, process.env.JWT_SECRET)
+
+        const loggedInUser = await User.findById(userId).select(" -password ")
+
+        return res.json({
+            msg: "User Signed up successfully",
+            data: loggedInUser,
+            token: token,
+            status: true
+        })
+    }
+})

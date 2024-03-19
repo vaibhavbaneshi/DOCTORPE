@@ -7,6 +7,9 @@ import { BottomWarning } from "../../components/Form/BottomWarning.jsx"
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Logo } from '../../components/Form/Logo.jsx'
+import OAuth from '../../components/OAuth/OAuth.jsx'
+import { signInFailure, signInStart, signInSuccess } from '../../redux/user/userSlice.js'
+import { useDispatch } from 'react-redux'
 
 
 function Signup() {
@@ -17,6 +20,36 @@ function Signup() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    try {
+      dispatch(signInStart())
+      const response = await axios.post("http://localhost:3000/api/v1/auth/signup", {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        email: email,
+        password: password
+      })
+
+      const data = response.data
+
+      if(data.success === false) {
+        dispatch(signInFailure(data.message))
+      }
+
+      if(data.status) {
+        dispatch(signInSuccess(data))
+        navigate('/signin')
+      }
+
+    } catch (error) {
+      dispatch(signInFailure(error.message))
+    }
+  }
 
   return (
     <div className='flex justify-center  h-full'>
@@ -31,17 +64,10 @@ function Signup() {
           <InputBox onChange={e => { setUsername(e.target.value) }} placeholder={"johndoe"} label={"Username"}/>
           <InputBox onChange={e => { setEmail(e.target.value) }} placeholder={"example@gmail.com"} label={"Your Email"}/>
           <InputBox onChange={e => { setPassword(e.target.value) }} placeholder={"*******"} label={"Password"}/>
-          <Button onClick={async () => {
-            const response = await axios.post("http://localhost:3000/api/v1/auth/signup", {
-              firstName: firstName,
-              lastName: lastName,
-              username: username,
-              email: email,
-              password: password
-            })
-            localStorage.setItem("token", response.data.token)
-            navigate("/")
-          }} label={"Sign up"}/>
+          <Button onClick={handleSubmit} label={"Sign up"}/>
+            <div className='flex justify-center'>
+              <OAuth />
+            </div>
           <BottomWarning label={"Have an account?"} to={"/signin"} text={"Sign In"}/>
         </div>
       </div>
