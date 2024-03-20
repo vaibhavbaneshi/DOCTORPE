@@ -5,9 +5,9 @@ import Signin from "./pages/auth/Signin"
 import Signup from "./pages/auth/Signup"
 import { SearchDoctor } from "./pages/searchDoctor/SearchDoctor"
 import { VideoCall } from "./components/VideoCall/VideoCall"
-import Medicine from "./pages/Medicine/Medicine"
 import AiLab from "./pages/AiLab/AiLab"
 import ProductsScreen from './screens/ProductsScreen';
+
 function App() {
 
   return (

@@ -12,15 +12,19 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
+    "@emailjs/browser": "^4.3.3",
     "@emotion/react": "^11.11.4",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@reduxjs/toolkit": "^2.2.1",
     "@stream-io/video-react-sdk": "^0.5.1",
     "axios": "^1.6.7",
+    "emailjs": "^4.0.3",
+    "emailjs-com": "^3.2.0",
     "firebase": "^10.9.0",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.7.3",
+    "nodemailer": "^6.9.13",
     "package.json": "^0.0.0",
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.8",
@@ -32,7 +36,8 @@
     "react-slick": "^0.30.2",
     "react-spinners": "^0.13.8",
     "redux-persist": "^6.0.0",
-    "sweet-alert": "^2.0.5"
+    "sweet-alert": "^2.0.5",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

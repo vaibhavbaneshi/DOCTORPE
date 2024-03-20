@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 export const MyUILayout = () => {
 
-    const navigate = useNavigate()
-
     const call = useCalls()
 
     if(call.state !== CallingState.JOINED) {

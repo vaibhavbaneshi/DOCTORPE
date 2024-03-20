@@ -10,10 +10,10 @@ import { call,client } from './creatingCall.js';
 export const VideoCall = () => {
     return (
         <>
-            <StreamVideo client={client}>
-                <StreamCall call={call}>
-                    <MyUILayout />
-                </StreamCall>
-            </StreamVideo>
+        <StreamVideo client={client}>
+            <StreamCall call={call}>
+                <MyUILayout />
+            </StreamCall>
+        </StreamVideo>
         </>
     )}

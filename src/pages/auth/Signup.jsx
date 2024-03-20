@@ -36,6 +36,8 @@ function Signup() {
       })
 
       const data = response.data
+      console.log(data.token);
+      localStorage.setItem("token", data.token);
 
       if(data.success === false) {
         dispatch(signInFailure(data.message))
@@ -43,7 +45,7 @@ function Signup() {
 
       if(data.status) {
         dispatch(signInSuccess(data))
-        navigate('/signin')
+        navigate('/')
       }
 
     } catch (error) {

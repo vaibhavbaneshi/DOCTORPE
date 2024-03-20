@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import DoctorCard from "../../components/Card/DoctorCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { call } from '../../components/VideoCall/creatingCall.js';
 import Heading from '../../components/products/Heading.jsx';
+import { send } from "../../components/Email/EmailSend.js";
 
 export const SearchDoctor = () => {
     const navigate = useNavigate();
@@ -20,9 +20,11 @@ export const SearchDoctor = () => {
             });
     }, []);
 
-    const handleOnClick = () => {
-        call.join({ create: true });
-        navigate("/consult");
+    const handleOnClick = async (email, username) => {
+
+        send(email, username)
+
+        window.location.href = "https://online-meet-rosy.vercel.app/"
     };
 
     const handleSpecialtyChange = (specialty) => {
@@ -52,7 +54,7 @@ export const SearchDoctor = () => {
 
             <div className="grid grid-cols-5">
                 {filteredUsers.map(user => (
-                    <DoctorCard key={user._id} onClick={handleOnClick} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality}/>
+                    <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality}/>
                 ))}
             </div>
         </div>
