@@ -28,33 +28,33 @@ export const Navigation = () => {
             <div className="div-nav-middle">
 
                 <Link to="/">
-                <div className="div-nav-middle-item">
+                <div className="div-nav-middle-item hover:underline">
                     <div>Home</div>
                     <div>Doctorपे</div>
                 </div>
                 </Link>
 
-                <Link to="/searchDoctor">
-                <div className="div-nav-middle-item">
-                    <div>Find Doctors</div>
+                <Link to="/bookDoctor">
+                <div className="div-nav-middle-item hover:underline">
+                    <div className="flex flex-col items-center">Find Doctors</div>
                     <div>Book an appointment</div>
                 </div>
                 </Link>
                 <Link to="/searchDoctor">
-                <div className="div-nav-middle-item">
+                <div className="div-nav-middle-item hover:underline">
                     <div>Video Consult</div>
-                    <div>Consult top doctors</div>
+                    <div className="flex flex-col items-center">Consult top doctors</div>
                 </div>
                 </Link>
                 <Link to="/medicines">
-                    <div className="div-nav-middle-item">
-                        <div>Medicines</div>
-                        <div>Doctorपे Pharmacy</div>
+                    <div className="div-nav-middle-item hover:underline">
+                        <div>Medicine Store</div>
+                        <div className="flex flex-col items-center">Doctorपे Pharmacy</div>
                     </div>
                 </Link>
                 <Link to="/Ai_Lab">
-                    <div className="div-nav-middle-item">
-                        <div>AI Lab</div>
+                    <div className="div-nav-middle-item hover:underline">
+                        <div>AI Lab Test</div>
                         <div>Artificial Lab Test</div>
                     </div>
                 </Link>

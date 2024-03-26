@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import {DoctorCard} from "../../components/Card/DoctorCard";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Heading from '../../components/products/Heading.jsx';
 import { send } from "../../components/Email/EmailSend.js";
+import { Calendar } from "../../components/Calender/Calender.jsx";
 
-export const SearchDoctor = () => {
+export const BookDoctor = () => {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [selectedSpecialty, setSelectedSpecialty] = useState("ALL");
 
@@ -18,11 +21,10 @@ export const SearchDoctor = () => {
             });
     }, []);
 
-    const handleOnClick = async (email, fullname) => {
+    const handleOnClick = async (email, username) => {
 
-        send(email, fullname)
+        // send(email, username)
 
-        window.location.href = "https://online-meet-rosy.vercel.app/"
     };
 
     const handleSpecialtyChange = (specialty) => {
@@ -38,16 +40,20 @@ export const SearchDoctor = () => {
                     <Heading title="Doctors"/>
                 </div>
                 <div className="flex justify-around w-100  transition duration-200 ease-in hover:scale-105 item-center">
-                    <div className="bg-white rounded-2xl border  hover:shadow-lg">
+                    <div className="bg-white rounded-2xl border hover:shadow-lg">
                         {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
                             <button key={specialty} 
-                                    className={` py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
+                                    className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
                                     onClick={() => handleSpecialtyChange(specialty)}>
                                 {specialty}
                             </button>
                         ))}
                     </div>
                 </div>
+            </div>
+
+            <div className="flex flex-col items-center pt-12 -mb-6">
+                <Calendar />
             </div>
 
             <div className="grid grid-cols-5">

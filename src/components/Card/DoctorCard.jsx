@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export const DoctorCard = ({ onClick, name, email, description, speciality }) => {
+export const DoctorCard = ({ onClick, name, description, speciality, label }) => {
 
     return (
         <div className="flex items-center mt-20 mb-20 justify-center transition duration-700 ease-in-out transform hover:scale-105">
@@ -10,9 +10,8 @@ export const DoctorCard = ({ onClick, name, email, description, speciality }) =>
                     <p className="font-bold">{name}</p>
                     <p className="font">{speciality}</p>
                     <p className="">{description}</p>
-                    {/* <p className="">{email}</p> */}
                 </div>
-                <button onClick={onClick} className="bg-cyan-500 hover:bg-[#10f9f9] text-white font-bold py-2 px-4 rounded-xl">Consult Now</button>
+                <button onClick={onClick} className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:underline font-bold py-2 px-4 rounded-xl">{label}</button>
             </div>
         </div>
     );
