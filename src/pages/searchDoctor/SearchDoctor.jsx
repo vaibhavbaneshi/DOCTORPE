@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import {DoctorCard} from "../../components/Card/DoctorCard";
 import axios from "axios";
 import Heading from '../../components/products/Heading.jsx';
-import { send } from "../../components/Email/EmailSend.js";
+import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
+import { useSelector } from "react-redux";
+import randomString from "crypto-random-string";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
     const [selectedSpecialty, setSelectedSpecialty] = useState("ALL");
+    const { currentUser } = useSelector(state => state.user) 
+
+    const getRandomCode = () => {
+        const threeLengthCode = () => randomString({ length: 3, type: "distinguishable" });
+    return `${threeLengthCode()}-${threeLengthCode()}-${threeLengthCode()}`;
+    };
 
     useEffect(() => {
         axios.get("http://localhost:3000/api/v1/user/searchDoctor")
@@ -20,9 +28,14 @@ export const SearchDoctor = () => {
 
     const handleOnClick = async (email, fullname) => {
 
-        send(email, fullname)
+        const callId = getRandomCode()
+        const callIdString = callId.toString();
+
+        sendDoctor(email, fullname, callIdString)
+        sendPatient(currentUser.data.email, fullname, callIdString)
 
         window.location.href = "https://online-meet-rosy.vercel.app/"
+        console.log(callId);
     };
 
     const handleSpecialtyChange = (specialty) => {
