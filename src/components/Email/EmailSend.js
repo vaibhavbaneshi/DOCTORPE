@@ -1,7 +1,7 @@
 import emailjs from '@emailjs/browser';
 
 export async function sendDoctor (email, username, callIdString) {
-    const message = `Greetings Dr. ${username}! A patient wants to consult to you virtually. The link to the meeting is: https://online-meet-rosy.vercel.app/ and the Call Id is: `;
+    const message = `Greetings! Dr. ${username}. A patient wants to consult to you virtually. The link to the meeting is: https://online-meet-rosy.vercel.app/ and the Call Id is: `;
 
     const para = {
       to_name: username,
@@ -27,7 +27,7 @@ export async function sendDoctor (email, username, callIdString) {
 }
 
 export function sendPatient(email, username, callIdString) {
-    const message = `Greetings ${username}! your online meeting Call Id is: `;
+    const message = `Greetings! ${username} your online meeting Call Id is: `;
 
     const messageOptions = {
       to_name: username,

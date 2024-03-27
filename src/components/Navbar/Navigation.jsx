@@ -1,7 +1,7 @@
 import "./Navigation.css";
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Button, Dropdown } from "flowbite-react";
+import { Avatar, Dropdown } from "flowbite-react";
 import { signOut } from "../../redux/user/userSlice";
 
 export const Navigation = () => {
@@ -10,8 +10,7 @@ export const Navigation = () => {
     const { currentUser } = useSelector(state => state.user) 
     
     const dispatch = useDispatch()
-    
-    
+        
     const handleSignout = () => {
         localStorage.removeItem("token")
         dispatch(signOut())
@@ -65,16 +64,18 @@ export const Navigation = () => {
 
                         <>
                         <Dropdown arrowIcon={false} inline label={<Avatar alt="user" img={currentUser.data.profilePicture} rounded/>}>
+                            <Dropdown.Divider />
+
                             <Dropdown.Header>
-                                <span className='block text-sm'>@{currentUser.data.username}</span>
+                                <span className='block text-sm'>{currentUser.data.firstName + ' ' + currentUser.data.lastName}</span>
+                            </Dropdown.Header>
+
+                            <Dropdown.Divider />
+                            
+                            <Dropdown.Header>
                                 <span className='block text-sm font-medium truncate'>{currentUser.data.email}</span>
                             </Dropdown.Header>
 
-                            <Link to={'/dashboard?tab=profile'}>
-                                <Dropdown.Item>Profile</Dropdown.Item>
-                            </Link>
-
-                            <Dropdown.Divider />
                         </Dropdown>
                         
                         <button className="ml-10 bg-red-500 rounded-xl px-3 text-white hover:underline" onClick={handleSignout}>Sign Out</button>
