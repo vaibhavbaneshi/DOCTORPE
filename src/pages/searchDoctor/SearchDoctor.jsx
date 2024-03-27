@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import {DoctorCard} from "../../components/Card/DoctorCard";
+import { DoctorCard } from "../../components/Card/DoctorCard";
 import axios from "axios";
 import Heading from '../../components/products/Heading.jsx';
-import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
 import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
+import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -13,29 +13,33 @@ export const SearchDoctor = () => {
 
     const getRandomCode = () => {
         const threeLengthCode = () => randomString({ length: 3, type: "distinguishable" });
-    return `${threeLengthCode()}-${threeLengthCode()}-${threeLengthCode()}`;
+        return `${threeLengthCode()}-${threeLengthCode()}-${threeLengthCode()}`;
     };
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/searchDoctor")
-            .then(response => {
-                setUsers(response.data); 
-            })
-            .catch(error => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/api/v1/user/searchDoctor");
+                setUsers(response.data);
+            } catch (error) {
                 console.error('Error fetching users:', error);
-            });
+            }
+        };
+        fetchData();
     }, []);
 
     const handleOnClick = async (email, fullname) => {
-
-        const callId = getRandomCode()
+        const callId = getRandomCode();
         const callIdString = callId.toString();
 
-        sendDoctor(email, fullname, callIdString)
-        sendPatient(currentUser.data.email, fullname, callIdString)
+        const loggedInPatientEmail = currentUser.data.email;
 
-        window.location.href = "https://online-meet-rosy.vercel.app/"
-        console.log(callId);
+        console.log(loggedInPatientEmail);
+
+        await sendDoctor(email, fullname, callIdString);
+        await sendPatient(loggedInPatientEmail, fullname, callIdString);
+
+        window.location.href = "https://online-meet-rosy.vercel.app/";
     };
 
     const handleSpecialtyChange = (specialty) => {
@@ -65,7 +69,7 @@ export const SearchDoctor = () => {
 
             <div className="grid grid-cols-5">
                 {filteredUsers.map(user => (
-                    user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Book an Appointment"}/> : <></>
+                    user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                 ))}
             </div>
         </div>

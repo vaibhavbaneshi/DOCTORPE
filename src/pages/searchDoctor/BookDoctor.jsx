@@ -3,7 +3,7 @@ import {DoctorCard} from "../../components/Card/DoctorCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Heading from '../../components/products/Heading.jsx';
-import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
+// import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
 import { Calendar } from "../../components/Calender/Calender.jsx";
 
 export const BookDoctor = () => {
