@@ -4,14 +4,14 @@ import axios from "axios";
 import Heading from '../../components/products/Heading.jsx';
 import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
-import { sendDoctor, sendPatient } from "../../components/Email/EmailSend.js";
-import { AlertSuccess } from "../../components/Alert/Alert.jsx";
+import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
     const [selectedSpecialty, setSelectedSpecialty] = useState("ALL");
     const { currentUser } = useSelector(state => state.user);
     const [showAlert, setShowAlert] = useState(false);
+    const [ count, setCount ] = useState(5);
 
     const getRandomCode = () => {
         const threeLengthCode = () => randomString({ length: 3, type: "distinguishable" });
@@ -30,6 +30,24 @@ export const SearchDoctor = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        let timeoutId;
+    
+        const countdown = () => {
+            setCount(prevCount => prevCount - 1);
+            if (count === 1) {
+                clearTimeout(timeoutId);
+                window.location.href = 'https://online-meet-rosy.vercel.app/';
+            }
+        };
+    
+        if (showAlert) {
+            timeoutId = setInterval(countdown, 1000);
+        }
+    
+        return () => clearInterval(timeoutId);
+    }, [showAlert, count]);
+
     const handleOnClick = async (email, fullname) => {
         const callId = getRandomCode();
         const callIdString = callId.toString();
@@ -37,16 +55,15 @@ export const SearchDoctor = () => {
         const loggedInPatientEmail = currentUser.data.email;
         const loggedInPatientfullname = currentUser.data.firstName + ' ' + currentUser.data.lastName;
 
-        console.log(loggedInPatientfullname);
-
         setShowAlert(true);
 
-        sendDoctor(email, fullname, callIdString)
-        sendPatient(loggedInPatientEmail, loggedInPatientfullname, callIdString)
+        sendDoctorConsult(email, fullname, callIdString)
+        sendPatientConsult(loggedInPatientEmail, loggedInPatientfullname, callIdString)
 
-        setTimeout(() => {
-            window.location.href = 'https://online-meet-rosy.vercel.app/';
-        }, 5000);
+        // await axios.get('https://resend-email-ten.vercel.app/', {
+        //     doctorEmail: email,
+        //     patientEmail: currentUser.data.email
+        // });
         
     };
 
@@ -65,10 +82,15 @@ export const SearchDoctor = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <p className="font-bold pr-3">Success alert!</p>
-                        <p>The Call Id have been sent to your email: {currentUser.data.email}</p>
+                        <p>The Call Id have been sent to your email : {currentUser.data.email}</p>
+                    </div>
+
+                    <div className="flex justify-center">
+                        <p className="">Redirecting in : {count}</p>
                     </div>
                 </div>
             )}
+
             <div>
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors"/>
