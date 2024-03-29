@@ -2,6 +2,7 @@ import { InputBox } from "../../components/Form/InputBox.jsx";
 import { useState } from 'react';
 import axios from "axios"
 import Popup from "../../components/Form/Popup.jsx";
+import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 export default function AiLab() {
   const [Glucose, setGlucose] = useState("");
   const [BloodPressure, setBloodPressure] = useState("");
@@ -135,6 +136,10 @@ export default function AiLab() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+          <ChatBotButton />
       </div>
 
       {result.result  && (

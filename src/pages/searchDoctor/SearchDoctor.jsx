@@ -5,6 +5,7 @@ import Heading from '../../components/products/Heading.jsx';
 import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
+import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -112,6 +113,9 @@ export const SearchDoctor = () => {
                 {filteredUsers.map(user => (
                     user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                 ))}
+            </div>
+            <div>
+                <ChatBotButton />
             </div>
         </div>
     );

@@ -8,6 +8,7 @@ import { VideoCall } from "./components/VideoCall/VideoCall"
 import AiLab from "./pages/AiLab/AiLab"
 import ProductsScreen from './screens/ProductsScreen';
 import { BookDoctor } from "./pages/searchDoctor/BookDoctor"
+import AIChatBot from "./components/ChatBot/ChatBot";
 
 function App() {
 

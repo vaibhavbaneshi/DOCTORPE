@@ -13,6 +13,7 @@ export const Navigation = () => {
         
     const handleSignout = () => {
         localStorage.removeItem("token")
+        localStorage.removeItem("conversation")
         dispatch(signOut())
         navigate("/signin")
     }

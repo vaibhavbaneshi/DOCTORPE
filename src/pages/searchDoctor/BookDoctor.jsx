@@ -7,6 +7,7 @@ import { SuccessMessage } from "../../components/Alert/SuccessMessage.jsx";
 import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
+import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -148,6 +149,10 @@ export const BookDoctor = () => {
                 {availableUsers.map(user => (
                     <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
                 ))}
+            </div>
+
+            <div>
+                <ChatBotButton />
             </div>
         </div>
     );
