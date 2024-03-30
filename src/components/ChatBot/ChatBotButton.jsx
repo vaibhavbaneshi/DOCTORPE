@@ -16,7 +16,7 @@ const ChatBotButton = () => {
           <Chatbot onClose={toggleChatWindow} />
           <button className="close-button " onClick={toggleChatWindow}>
             <div className='w-24 h-24 ml-64 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'>
-                    <img className='rounded-full' src="../images/aichatbot.jpg" alt="" />
+                <img className='rounded-full' src="../images/aichatbot.jpg" alt="" />
             </div>
           </button>
         </div>

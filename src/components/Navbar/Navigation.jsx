@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Dropdown } from "flowbite-react";
 import { signOut } from "../../redux/user/userSlice";
+import { Cart } from "../Cart/Cart";
 
 export const Navigation = () => {
     const navigate = useNavigate()
@@ -94,7 +95,10 @@ export const Navigation = () => {
                         </div>
                     )
                 }
+
+                
             </div>
+           <Cart />
         </nav>
     </div>
 }

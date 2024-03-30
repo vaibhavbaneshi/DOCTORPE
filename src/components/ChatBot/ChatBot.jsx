@@ -30,7 +30,7 @@ const Chatbot = ({ onClose }) => {
       if (data.message === "") {
         setConversation((prevConversation) => [
           ...prevConversation,
-          { role: "assistant", content: "Sorry but I can't answer that" },
+          { role: "assistant", content: "Sorry but I can't answer that question." },
         ]);
       } else {
         setConversation((prevConversation) => [
@@ -39,6 +39,13 @@ const Chatbot = ({ onClose }) => {
         ]);
       }
     },
+    onError:()=>{
+      setIsAITyping(false);
+      setConversation((prevConversation) => [
+        ...prevConversation,
+        { role: "assistant", content: "Sorry but I can't answer that question." },
+      ]);
+    }
   });
 
   const handleSendMessage = () => {
@@ -67,8 +74,6 @@ const Chatbot = ({ onClose }) => {
 
   return (
     <>
-      <div className="header">
-      </div>
       <div className="chat-container">
         <div className="conversation">
           {conversation.map((entry, index) => (

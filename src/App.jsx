@@ -8,7 +8,7 @@ import { VideoCall } from "./components/VideoCall/VideoCall"
 import AiLab from "./pages/AiLab/AiLab"
 import ProductsScreen from './screens/ProductsScreen';
 import { BookDoctor } from "./pages/searchDoctor/BookDoctor"
-import AIChatBot from "./components/ChatBot/ChatBot";
+import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart"
 
 function App() {
 
@@ -24,7 +24,8 @@ function App() {
           <Route path="/bookDoctor" element={<BookDoctor />} />
           <Route path="/consult" element={<VideoCall />} />
           <Route path="/medicines"element={<ProductsScreen />}/>
-          <Route path="/AI_Lab"element={<AiLab/>}/>
+          <Route path="/AI_Lab"element={<AiLab />}/>
+          <Route path="/shoppingCart"element={<ShoppingCart />}/>
         </Routes>
       </BrowserRouter>
     </>
