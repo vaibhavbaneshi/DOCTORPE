@@ -122,14 +122,14 @@ export const BookDoctor = () => {
 
     return (
         <div className="bg-gray-100 h-full w-full py-2 mx-auto px-6">
-            {showError && <ErrorMessage message="Please select date and time" />}
+            {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
-                    <Heading title="Doctors"/>
+                    <Heading title="Doctors" preText={'Our'}/>
                 </div>
                 <div className="flex justify-around w-100  transition duration-200 ease-in hover:scale-105 item-center">
-                    <div className="bg-white rounded-2xl border hover:shadow-lg">
+                    <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                         {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
                             <button key={specialty} 
                                     className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 

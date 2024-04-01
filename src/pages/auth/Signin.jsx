@@ -38,7 +38,7 @@ function Signin() {
 
       if(data.status) {
         dispatch(signInSuccess(data))
-        navigate('/')
+        window.location.href = '/'
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

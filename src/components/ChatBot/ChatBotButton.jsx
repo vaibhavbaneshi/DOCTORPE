@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Chatbot from './ChatBot';
-// import './ChatBotButton.css'
+import './Chatbot.css'
 
 const ChatBotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,19 +12,19 @@ const ChatBotButton = () => {
   return (
     <div className="chatbot-container fixed bottom-10 right-16">
       {isOpen ? (
-        <div className="chat-window">
+        <div className="chat-window flex flex-col items-end ">
           <Chatbot onClose={toggleChatWindow} />
-          <button className="close-button " onClick={toggleChatWindow}>
-            <div className='w-24 h-24 ml-64 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'>
-                <img className='rounded-full' src="../images/aichatbot.jpg" alt="" />
-            </div>
+          <button className="chat-button " onClick={toggleChatWindow}>
+            {/* <div className='w-24 h-24 ml-64 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'> */}
+                <img className='transition duration-700 ease-in-out transform hover:scale-125 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full' src="../images/aichatBoat.jpg" alt="" />
+            {/* </div> */}
           </button>
         </div>
       ) : (
         <button className="chat-button" onClick={toggleChatWindow}>
-           <div className='w-24 h-24 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'>
-                <img className='rounded-full' src="../images/aichatbot.jpg" alt="" />
-           </div>
+           {/* <div className='w-24 h-24 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'> */}
+                <img className='transition duration-700 ease-in-out transform hover:scale-125 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full' src="../images/aichatBoat.jpg" alt="" />
+           {/* </div> */}
         </button>
       )}
     </div>

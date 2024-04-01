@@ -11,7 +11,7 @@ export const DoctorCard = ({ onClick, name, description, speciality, label }) =>
                     <p className="font">{speciality}</p>
                     <p className="">{description}</p>
                 </div>
-                <button onClick={onClick} className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:underline font-bold py-2 px-4 rounded-xl">{label}</button>
+                <button onClick={onClick} className="transition duration-700 ease-in-out transform hover:scale-110 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline text-white">{label}</button>
             </div>
         </div>
     );

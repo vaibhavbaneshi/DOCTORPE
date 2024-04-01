@@ -74,12 +74,12 @@ const Chatbot = ({ onClose }) => {
 
   return (
     <>
-      <div className="chat-container">
-        <div className="conversation">
+      <div className="chat-container shadow-2xl">
+        <div className="conversation bg-black bg-opacity-50 shadow-2xl">
           {conversation.map((entry, index) => (
             <div key={index} className={`message ${entry.role}`}>
-              <strong>{entry.role === "user" ? "You : " : <div className="img-container"><img className="chat-icon" src="images/dpe3w.png" alt="DoctorPe icon" /><p className="chatbot-p">Doctorपे</p></div>}</strong>
-              <div>{entry.content}</div>
+              <strong>{entry.role === "user" ? <div className="text-black">You</div> : <div className="img-container"><img className="chat-icon" src="images/dpe3w.png" alt="DoctorPe icon" /><p className="chatbot-p">Doctorपे</p></div>}</strong>
+              <div >{entry.content}</div>
             </div>
           ))}
           {isAITyping && (

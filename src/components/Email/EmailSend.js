@@ -101,3 +101,28 @@ export function sendPatientBook(email, fullname, doctorName, date, time) {
         console.log(err);
       });
 }
+
+export const sendDelivery = (fullname, email, totalItems, totalAmount) => {
+  const message = `Greetings! ${fullname} your order of total items : ${totalItems} and total amount of : ₹ ${totalAmount} has been placed.`;
+
+    const messageOptions = {
+      to_name: fullname,
+      from_name: "DoctorPe Team",
+      email: email,
+      message: message,
+    };
+  
+    const serviceID = "service_egvis7l"
+    const tempID="template_7h2lkff"
+  
+    emailjs
+      .send(serviceID, tempID, messageOptions,{
+        publicKey: '7B2itpD6d0z4vkdgv'
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+}

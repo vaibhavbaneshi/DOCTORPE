@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentUser: null,
+    selectedProducts: [], // Initialize as an empty array
+    productQuantity: 0,
     error: null,
     loading: false
 };
@@ -16,7 +18,7 @@ const userSlice = createSlice({
         },
         signInSuccess: (state, action) => {
             state.currentUser = action.payload;
-            console.log(action.payload.data.firstname);
+            state.selectedProducts = [];
             state.loading = false;
             state.error = null;
         },
@@ -26,8 +28,39 @@ const userSlice = createSlice({
         },
         signOut: (state) => {
             state.currentUser = null;
+            state.selectedProducts = [];
+            state.productQuantity = 0,
             state.loading = false;
             state.error = null;
+        },
+        selectProduct: (state, action) => {
+            const { id, quantity } = action.payload;
+            const existingProductIndex = state.selectedProducts.findIndex(product => product.id === id);
+            if (existingProductIndex !== -1) {
+                // Product already exists, update quantity
+                state.selectedProducts[existingProductIndex].quantity += quantity;
+                productQuantity = quantity
+                console.log(productQuantity);
+            } else {
+                // Product doesn't exist, add it to selectedProducts
+                state.selectedProducts.push(action.payload);
+            }
+        },
+        deselectProduct: (state, action) => {
+            const { id, quantity } = action.payload;
+            const existingProductIndex = state.selectedProducts.findIndex(product => product.id === id);
+            if (existingProductIndex !== -1) {
+                // Product exists, decrease quantity or remove if quantity becomes zero
+                state.selectedProducts[existingProductIndex].quantity -= quantity;
+                if (state.selectedProducts[existingProductIndex].quantity <= 0) {
+                    state.selectedProducts.splice(existingProductIndex, 1);
+                }
+            }
+        },
+        successOrder: (state) => {
+            console.log('hi there');
+            state.selectedProducts = [];
+            state.productQuantity = 0
         }
     }
 });
@@ -36,7 +69,10 @@ export const {
     signInStart,
     signInSuccess,
     signInFailure,
-    signOut
+    signOut,
+    selectProduct,
+    deselectProduct,
+    successOrder
 } = userSlice.actions;
 
 export default userSlice.reducer;

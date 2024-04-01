@@ -8,7 +8,6 @@ const useFetch = (file) => {
         .then(res => res.json())
             .then(data => setData(data))
     },[file])
-    console.log(data)
     return [data]
 }
 

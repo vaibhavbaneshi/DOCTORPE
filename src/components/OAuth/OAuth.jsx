@@ -45,7 +45,7 @@ function OAuth() {
 
             if(res.ok) {
                 dispatch(signInSuccess(data))
-                navigate('/')
+                window.location.href = '/'
             }
 
         } catch (error) {
