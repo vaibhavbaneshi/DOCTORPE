@@ -13,3 +13,7 @@ connectDB()
     .catch((error) => {
         console.log("There was an error while connecting to the database!!!", error);
     })
+
+app.get('/', (req, res) => {
+    res.json("DoctorPe Backend")
+})
