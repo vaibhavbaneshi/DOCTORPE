@@ -3,6 +3,7 @@ import { authRouter } from "./auth.router.js"
 import { userRouter } from "./user.router.js"
 import { chatbotRouter } from "./chatbot.router.js"
 import { productRouter } from "./product.route.js"
+import { app } from "../app.js"
 
 export const router = express.Router()
 
