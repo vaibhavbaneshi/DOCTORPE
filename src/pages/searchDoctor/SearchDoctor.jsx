@@ -22,7 +22,7 @@ export const SearchDoctor = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/user/searchDoctor");
+                const response = await axios.get("https://doctorpe-backend.vercel.app/user/searchDoctor");
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching users:', error);
