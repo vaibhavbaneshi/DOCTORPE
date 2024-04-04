@@ -4,9 +4,9 @@
     { "src": "*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/v1/auth/(.*)", "dest": "./routes/auth.router.js" },
-    { "src": "/api/v1/user/(.*)", "dest": "./routes/user.router.js" },
-    { "src": "/api/v1/chatbot/(.*)", "dest": "./routes/chatbot.router.js" },
+    { "src": "/auth/(.*)", "dest": "./routes/auth.router.js" },
+    { "src": "/user/(.*)", "dest": "./routes/user.router.js" },
+    { "src": "/chatbot/(.*)", "dest": "./routes/chatbot.router.js" },
     { "src": "/product/(.*)", "dest": "./routes/product.route.js" },
     { "src": "/(.*)", "dest": "./app.js" }
   ]
