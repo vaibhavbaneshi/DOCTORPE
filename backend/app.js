@@ -27,3 +27,7 @@ export const razorpay = new Razorpay({
 }); 
 
 app.use("/api/v1", router)
+
+app.get('/', (req, res) => {
+    res.json("DoctorPe Backend")
+})
