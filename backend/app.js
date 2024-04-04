@@ -26,4 +26,4 @@ export const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 }); 
 
-app.use("/", router)
+app.use("/api/v1", router)

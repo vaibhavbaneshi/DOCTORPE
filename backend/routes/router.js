@@ -11,6 +11,6 @@ router.use("/user", userRouter)
 router.use('/chatbot', chatbotRouter)
 router.use('/product', productRouter)
 
-router.use("/", (req, res) => {
+router.get("/", (req, res) => {
     res.json('hi there')
 })
