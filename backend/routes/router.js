@@ -10,3 +10,7 @@ router.use("/auth", authRouter)
 router.use("/user", userRouter)
 router.use('/chatbot', chatbotRouter)
 router.use('/product', productRouter)
+
+app.get('/', (req, res) => {
+    res.json("DoctorPe Backend")
+})
