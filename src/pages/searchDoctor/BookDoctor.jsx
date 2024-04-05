@@ -8,6 +8,7 @@ import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
+import Flash from "react-awesome-reveal";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -20,7 +21,7 @@ export const BookDoctor = () => {
     const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
-        axios.get("https://doctorpe-backend.vercel.app/user/searchDoctor")
+        axios.get("http://localhost:3000/api/v1/user/searchDoctor")
             .then(response => {
                 setUsers(response.data); 
             })
@@ -30,7 +31,7 @@ export const BookDoctor = () => {
     }, []);
 
     useEffect(() => {
-        axios.get("https://doctorpe-backend.vercel.app/user/fetchAppointment")
+        axios.get("http://localhost:3000/api/v1/user/fetchAppointment")
             .then(response => {
                 setToDeleteAppointments(response.data); 
             })
@@ -52,7 +53,7 @@ export const BookDoctor = () => {
                 try {
                     await axios({
                         method: 'delete',
-                        url: `https://doctorpe-backend.vercel.app/user/deleteAppointment`,
+                        url: `http://localhost:3000/api/v1/user/deleteAppointment`,
                         data: { appointmentId: appointment._id }
                     });                    
                     console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
@@ -86,7 +87,7 @@ export const BookDoctor = () => {
             return
         }
         try {
-            await axios.post("https://doctorpe-backend.vercel.app/user/bookAppointment", {
+            await axios.post("http://localhost:3000/api/v1/user/bookAppointment", {
                 doctorId, 
                 date: selectedDateTime.date, 
                 time: selectedDateTime.time 
@@ -124,32 +125,37 @@ export const BookDoctor = () => {
         <div className="bg-gray-100 h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
+            
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                <div className="flex justify-around w-100  transition duration-200 ease-in hover:scale-105 item-center">
-                    <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
-                        {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
-                            <button key={specialty} 
-                                    className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
-                                    onClick={() => handleSpecialtyChange(specialty)}>
-                                {specialty}
-                            </button>
-                        ))}
+                <Flash>
+                    <div className="flex justify-around w-100  transition duration-200 ease-in hover:scale-105 item-center">
+                        <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
+                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
+                                <button key={specialty} 
+                                        className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
+                                        onClick={() => handleSpecialtyChange(specialty)}>
+                                    {specialty}
+                                </button>
+                            ))}
+                        </div>
                     </div>
+                </Flash>
+            </div>
+
+            <Flash>
+                <div className="flex flex-col items-center pt-12 -mb-6">
+                    <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
                 </div>
-            </div>
 
-            <div className="flex flex-col items-center pt-12 -mb-6">
-                <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
-            </div>
-
-            <div className="grid grid-cols-5">
-                {availableUsers.map(user => (
-                    <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
-                ))}
-            </div>
+                <div className="grid grid-cols-5">
+                    {availableUsers.map(user => (
+                        <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
+                    ))}
+                </div>
+            </Flash>
 
             <div>
                 <ChatBotButton />

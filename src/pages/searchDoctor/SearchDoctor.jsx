@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
+import Flash from "react-awesome-reveal";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -22,7 +23,7 @@ export const SearchDoctor = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("https://doctorpe-backend.vercel.app/user/searchDoctor");
+                const response = await axios.get("http://localhost:3000/api/v1/user/searchDoctor");
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -96,24 +97,28 @@ export const SearchDoctor = () => {
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                <div className="flex justify-around w-100 transition duration-200 ease-in hover:scale-105 item-center">
-                    <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
-                        {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
-                            <button key={specialty} 
-                                    className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
-                                    onClick={() => handleSpecialtyChange(specialty)}>
-                                {specialty}
-                            </button>
-                        ))}
+                <Flash>
+                    <div className="flex justify-around w-100 transition duration-200 ease-in hover:scale-105 item-center">
+                        <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
+                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
+                                <button key={specialty} 
+                                        className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
+                                        onClick={() => handleSpecialtyChange(specialty)}>
+                                    {specialty}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </Flash>
             </div>
 
-            <div className="grid grid-cols-5">
-                {filteredUsers.map(user => (
-                    user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
-                ))}
-            </div>
+            <Flash>
+                <div className="grid grid-cols-5">
+                    {filteredUsers.map(user => (
+                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
+                    ))}
+                </div>
+            </Flash>
             <div>
                 <ChatBotButton />
             </div>

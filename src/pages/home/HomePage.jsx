@@ -6,10 +6,57 @@ import { ConsultCard } from '../../components/Home/ConsultCard'
 import { FacilityCard } from '../../components/Home/FacilityCard'
 import { useNavigate } from "react-router-dom"
 import ChatBotButton from '../../components/ChatBot/ChatBotButton'
+import { useEffect, useState } from 'react'
 
 export const HomePage = () => {
 
     const navigate = useNavigate()
+    const [tokenPresent, setTokenPresent] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [showCart, setShowCart] = useState(false);
+
+    const handleFacilityCardNavigate1 = () => {
+
+        if (!tokenPresent) {
+            window.location.href = '/signin'
+        } else {
+            navigate("/searchDoctor");
+        }
+    }
+    const handleFacilityCardNavigate2 = () => {
+
+        if (!tokenPresent) {
+            window.location.href = '/signin'
+        } else {
+            navigate("/bookDoctor");
+        }
+    }
+    const handleFacilityCardNavigate3 = () => {
+
+        if (!tokenPresent) {
+            window.location.href = '/signin'
+        } else {
+            navigate("/medicines");
+        }
+    }
+    const handleFacilityCardNavigate4 = () => {
+
+        if (!tokenPresent) {
+            window.location.href = '/signin'
+        } else {
+            navigate('/Ai_Lab');
+        }
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        console.log(token);
+
+        if(token) {
+            setTokenPresent(true);
+        } 
+    }, []);
 
     return <div className="homepage-container pt-10">
             
@@ -27,10 +74,10 @@ export const HomePage = () => {
             </div>
         </section>
         <section className="home-facilities">            
-            <FacilityCard image={'https://img.freepik.com/free-vector/videocalling-with-therapist_23-2148512091.jpg?t=st=1710310880~exp=1710314480~hmac=3235fb4fbc085f03ad735d5fd8e00930b2967ce3ec5ed49036a687dbb117a299&w=996'} background="#fff" title="Instant Video Consultation" sub="Connect within 60 secs" onClick={() => navigate("/searchDoctor")}/>
-            <FacilityCard image={'https://img.freepik.com/free-vector/doctors-concept-illustration_114360-1515.jpg?t=st=1710310332~exp=1710313932~hmac=574f7ed3a46a5c650583dd7dcce078ca8e3b7d8a9d1922d4c9eb55f903e3570b&w=996'} background="#fff" title="Find Doctors Near You" sub="Confirmed appoinments" onClick={() => navigate("/bookDoctor")} />
-            <FacilityCard image={'https://img.freepik.com/free-vector/courier-delivering-medications-patient-using-online-tracking-pills-tablets-fast-contactless-home-delivery-using-web-app-first-aid-healthcare-concept-cartoon-flat-illustration_74855-20517.jpg?w=900&t=st=1710309939~exp=1710310539~hmac=f6204cabb5ce3b57877a098cb79c93971e9009b0a7454b7cb1fd32c25320fb7c'} background="#fff" title="Medicines" sub="Essentials at your doorstep" onClick={() => navigate("/medicines")}/>
-            <FacilityCard image={'https://img.freepik.com/free-vector/chemist-concept-illustration_114360-13532.jpg?t=st=1710310724~exp=1710314324~hmac=68502080931ce540ad05a5254714de1a1d2bb49f2d145fb79016aebb72a18af5&w=740'} background="#fff" title="AI Lab" sub="Check you health status" onClick={()=> navigate('/Ai_Lab')}/>
+            <FacilityCard image={'https://img.freepik.com/free-vector/videocalling-with-therapist_23-2148512091.jpg?t=st=1710310880~exp=1710314480~hmac=3235fb4fbc085f03ad735d5fd8e00930b2967ce3ec5ed49036a687dbb117a299&w=996'} background="#fff" title="Instant Video Consultation" sub="Connect within 60 secs" onClick={handleFacilityCardNavigate1}/>
+            <FacilityCard image={'https://img.freepik.com/free-vector/doctors-concept-illustration_114360-1515.jpg?t=st=1710310332~exp=1710313932~hmac=574f7ed3a46a5c650583dd7dcce078ca8e3b7d8a9d1922d4c9eb55f903e3570b&w=996'} background="#fff" title="Find Doctors Near You" sub="Confirmed appoinments" onClick={handleFacilityCardNavigate2} />
+            <FacilityCard image={'https://img.freepik.com/free-vector/courier-delivering-medications-patient-using-online-tracking-pills-tablets-fast-contactless-home-delivery-using-web-app-first-aid-healthcare-concept-cartoon-flat-illustration_74855-20517.jpg?w=900&t=st=1710309939~exp=1710310539~hmac=f6204cabb5ce3b57877a098cb79c93971e9009b0a7454b7cb1fd32c25320fb7c'} background="#fff" title="Medicines" sub="Essentials at your doorstep" onClick={handleFacilityCardNavigate3} />
+            <FacilityCard image={'https://img.freepik.com/free-vector/chemist-concept-illustration_114360-13532.jpg?t=st=1710310724~exp=1710314324~hmac=68502080931ce540ad05a5254714de1a1d2bb49f2d145fb79016aebb72a18af5&w=740'} background="#fff" title="AI Lab" sub="Check you health status" onClick={handleFacilityCardNavigate4}/>
         </section>
         <section className="home-consult">
             <h2>Consult top doctors online for any health concern</h2>

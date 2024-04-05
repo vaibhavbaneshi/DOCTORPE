@@ -7,6 +7,7 @@ import Bounce from 'react-awesome-reveal';
 import { SuccessMessage } from '../../components/Alert/SuccessMessage';
 import { sendDelivery } from '../../components/Email/EmailSend';
 import { successOrder } from '../../redux/user/userSlice';
+import Flash from "react-awesome-reveal";
 
 export const ShoppingCart = () => {
     const { selectedProducts } = useSelector(state => state.user);
@@ -70,6 +71,7 @@ export const ShoppingCart = () => {
                     <Heading title={'Orders'} preText={'My'} />
                 </div>
 
+                <Flash>
                 <div className="flex justify-between bg-slate-100">
                     <div className="bg-slate-100 w-3/4 mr-28">
                         <div>
@@ -77,8 +79,8 @@ export const ShoppingCart = () => {
                             <div>
                                 {cartItems.length === 0 ? (
                                     <div className='flex flex-col items-center'>
-                                        <Bounce left>
                                             There are no items in the cart currently...
+                                        <Bounce left>
                                         </Bounce>
                                     </div>
                                 ) : (
@@ -138,6 +140,7 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
                 </div>
+                </Flash>
             </div>
         </div>
     );

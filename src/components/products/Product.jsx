@@ -33,12 +33,12 @@ const Product = ({ id, title, image, description, price, reviews, rating, handle
             <div className="flex">
                 <button
                   disabled={disabled}
-                  className={`mr-20 transition duration-700 ease-in-out transform hover:scale-110 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline text-white px-2 ${disabled ? 'opacity-30' : ''}`}
+                  className={`mr-20 transition duration-700 ease-in-out transform hover:scale-110 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline text-white py-3 px-1 ${disabled ? 'opacity-30' : ''}`}
                   onClick={handleAddToCart}
                 >
                     Add to Cart
                 </button>
-                <button className="transition duration-700 ease-in-out transform hover:scale-110 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline text-white p-5"  onClick={() => navigate(`/medicines/${title}`)}>View More</button>
+                <button className="transition duration-700 ease-in-out transform hover:scale-110 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline text-white px-4"  onClick={() => navigate(`/medicines/${title}`)}>View...</button>
             </div>
         </div>
     );
