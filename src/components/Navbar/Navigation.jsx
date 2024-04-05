@@ -26,22 +26,19 @@ export const Navigation = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
-        console.log(token);
-
-        if(token) {
+    
+        if (token) {
             setTokenPresent(true);
-        } 
-        if (!tokenPresent) {
-            setShowError(true)
-            setShowCart(false)
-            navigate("/signin");
+            setShowCart(true);
+            setShowError(false);
         } else {
-            setShowError(false)
-            setShowCart(true)
-            navigate(to);
+            setTokenPresent(false);
+            setShowCart(false);
+            setShowError(true);
+            navigate("/signin");
         }
     }, []);
+    
 
     // Higher Order Component (HOC) to check token and redirect
     const SecureLink = ({ to, children }) => {

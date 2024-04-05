@@ -46,9 +46,7 @@ export const BookDoctor = () => {
         var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         var date = currentDate.getDate().toString().padStart(2, '0');
         var formattedDate = year + '-' + month + '-' + date;
-        for (const appointment of toDeleteappointments) {
-            console.log(appointment._id);
-            
+        for (const appointment of toDeleteappointments) {            
             if (appointment.date < formattedDate) {
                 try {
                     await axios({
@@ -62,7 +60,7 @@ export const BookDoctor = () => {
                 }
             }
         }
-    }, 24 * 60 * 60 * 1000);
+    }, 10000);
 
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
@@ -145,10 +143,10 @@ export const BookDoctor = () => {
                 </Flash>
             </div>
 
+            <div className="flex flex-col items-center pt-12 -mb-6">
+                <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
+            </div>
             <Flash>
-                <div className="flex flex-col items-center pt-12 -mb-6">
-                    <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
-                </div>
 
                 <div className="grid grid-cols-5">
                     {availableUsers.map(user => (

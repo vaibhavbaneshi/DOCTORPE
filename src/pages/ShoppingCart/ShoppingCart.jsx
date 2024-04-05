@@ -80,8 +80,6 @@ export const ShoppingCart = () => {
                                 {cartItems.length === 0 ? (
                                     <div className='flex flex-col items-center'>
                                             There are no items in the cart currently...
-                                        <Bounce left>
-                                        </Bounce>
                                     </div>
                                 ) : (
                                     cartItems.map((item, index) => (
