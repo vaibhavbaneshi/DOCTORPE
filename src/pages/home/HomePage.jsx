@@ -12,8 +12,6 @@ export const HomePage = () => {
 
     const navigate = useNavigate()
     const [tokenPresent, setTokenPresent] = useState(false);
-    const [showError, setShowError] = useState(false);
-    const [showCart, setShowCart] = useState(false);
 
     const handleFacilityCardNavigate1 = () => {
 
@@ -67,10 +65,9 @@ export const HomePage = () => {
                 </div>
                 <p>Choose the experts in end to end health care.</p>
                 <p>You are in safe hands</p>
-                <Button className="btn-knowmore text-white border rounded-2xl hover:underline">Know more</Button>
             </div>
-            <div className="home-banner-right">
-                <img src={'../../images/banner.webp'} alt="banner" />
+            <div className="home-banner-right -mt-1">
+                <img className='' src={'../../images/banner.webp'} alt="banner" />
             </div>
         </section>
         <section className="home-facilities">            
@@ -89,7 +86,6 @@ export const HomePage = () => {
                 <ConsultCard title="Cold, cough or fever" image={'images/fever.svg'} link={"/searchDoctor"} />
                 <ConsultCard title="Child not feeling well" image={'images/childnotwell.svg'} link={"/searchDoctor"}/>
                 <ConsultCard title="Depression or anxiety" image={'images/depression.svg'} link={"/searchDoctor"}/>
-
             </div>
         </section>
         <section className="home-appoinments">
@@ -101,7 +97,7 @@ export const HomePage = () => {
             <div className="home-top-articles-info">
                 <h2>Read top articles from health experts</h2>
                 <p>Health articles that keep you informed about good health practices and achieve your goals.</p>
-                <button className="button button-primary">See all articles</button>
+                <button onClick={() => window.location.href = "https://jamanetwork.com/journals/jama"} className="button button-primary">See all articles</button>
             </div>
             <ArticleCard image="https://www.practostatic.com/fit/5fd27b74d9477cb633445cf3f105078bbc479910" category="coronavirus" title="12 Coronavirus Myths and Facts That You Should Be Aware Of" sub="Dr. Diana Borgio" />
             <ArticleCard image="https://www.practostatic.com/fit/bade52edc7fb158bf627216bf96c2b881a97f30c" category="Vitamins and supplements" title="Eating Right to Build Immunity Against Cold and Viral Infections" sub="Dr. Diana Borgio" />

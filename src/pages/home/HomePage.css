@@ -47,9 +47,9 @@
     cursor: pointer;
     background: linear-gradient(105.21deg, #50ffff 2.85%, #141b56 99.41%);
     border-radius: 32px;
-    height: 38vh;
+    height: 43vh;
     display: flex;
-    width: 60vw;
+    width: 73vw;
 }
 
 .home-banner-left {
@@ -89,9 +89,9 @@
 
 .home-banner-right>img {
     position: absolute;
-    top: -4.1vh;
+    top: -4.3vh;
     mix-blend-mode: color-burn;
-    height: 46vh
+    height: 52vh
 }
 
 .btn-knowmore {
