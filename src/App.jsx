@@ -10,6 +10,8 @@ import { BookDoctor } from "./pages/searchDoctor/BookDoctor"
 import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart"
 import ProductsScreen from "./pages/Medicines/ProductsScreen"
 import { ProductDetail } from "./pages/Medicines/ProductDetail"
+import Diabetes from "./pages/AiLab/Diabetes"
+import HeartHealth from "./pages/AiLab/HeartHealth"
 
 function App() {
   
@@ -28,7 +30,7 @@ function App() {
           <Route path="/medicines/:title" element={<ProductDetail />} />
           <Route path="/AI_Lab"element={<AiLab />}/>
           <Route path="/AI_Lab/Diabetes"element={<Diabetes />}/>
-          <Route path="/AI_Lab/Heart_Health"element={<HeartHealth/>}/>
+          <Route path="/AI_Lab/Heart_Health"element={<HeartHealth />}/>
           <Route path="/shoppingCart"element={<ShoppingCart />}/>
         </Routes>
       </BrowserRouter>
