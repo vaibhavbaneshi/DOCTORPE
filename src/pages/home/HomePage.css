@@ -1,9 +1,13 @@
 .homepage-container {
-    width: 1180px;
-    max-width: 1280;
+    width: 90vw;
+    max-width: 100vw;
     margin: auto;
-    /* padding: 0px 50px; */
-    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* padding: 10rem; */
+    /* margin-top: 10px; */
     color: #414146;
     overflow-x: hidden;
 }
@@ -19,14 +23,14 @@
     justify-content: space-between;
 }
 
-.home-search-container {
+/* .home-search-container {
     width: 712px;
     padding: 20px 0;
     display: flex;
     align-items: center;
-}
+} */
 
-.home-search-location-select {
+/* .home-search-location-select {
     color: #414146;
 }
 
@@ -37,15 +41,15 @@
 
 .home-try-plus-img-container>img {
     cursor: pointer;
-}
+} */
 
 .home-banner {
     cursor: pointer;
     background: linear-gradient(105.21deg, #50ffff 2.85%, #141b56 99.41%);
     border-radius: 32px;
-    height: 285px;
+    height: 38vh;
     display: flex;
-    width: 1180px;
+    width: 60vw;
 }
 
 .home-banner-left {
@@ -54,10 +58,10 @@
     padding: 40px 0px 40px 60px;
 }
 
-.home-banner-practo-care {
+/* .home-banner-practo-care {
     height: 50px;
     width: 235px;
-}
+} */
 
 .home-banner-left>p:nth-of-type(1) {
     padding-top: 22px;
@@ -85,9 +89,9 @@
 
 .home-banner-right>img {
     position: absolute;
-    top: -36px;
+    top: -4.1vh;
     mix-blend-mode: color-burn;
-    height: calc(100% + 36px)
+    height: 46vh
 }
 
 .btn-knowmore {
@@ -99,14 +103,16 @@
 }
 
 .home-facilities {
-    margin: 60px auto;
+    margin: 6vw 0;
+    width:70vw;
     display: flex;
     justify-content: space-around;
 }
 
 
 .home-consult {
-    text-align: left;
+    text-align: center;
+    width: 70vw;
     position: relative;
 }
 
@@ -123,12 +129,15 @@
 .home-consult-card-container {
     display: flex;
     justify-content: center;
+    justify-content: space-between;
+    /* height: 20vh; */
     margin-top: 20px;
 }
 
 .home-appoinments {
     text-align: left;
     margin-top: 50px;
+    width: 80vw;
     overflow-x: hidden;
 }
 
@@ -265,10 +274,6 @@
     border-radius: 4px;
     margin-right: 10px;
 }
-
-
-
-
 
 .button-primary {
     padding: 15px 30px;

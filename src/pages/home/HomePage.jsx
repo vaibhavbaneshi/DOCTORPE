@@ -58,7 +58,7 @@ export const HomePage = () => {
         } 
     }, []);
 
-    return <div className="homepage-container pt-10">
+    return <div className="homepage-container pt-20">
             
         <section className="home-banner">
             <div className="home-banner-left">
