@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-import Flash from "react-awesome-reveal";
+// import Flash from "react-awesome-reveal";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -76,9 +76,9 @@ export const SearchDoctor = () => {
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
     return (
-        <div className="bg-gray-100 h-full w-full py-2 mx-auto px-6 relative">
+        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6 relative">
             {showAlert && (
-                <div className="ml-96 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-4 sticky top-0 z-10 inline-block">
+                <div className="ml-96  border border-green-400 text-green-700 px-4 py-3 rounded mt-4 sticky top-0 z-10 inline-block">
                     <div className="flex items-center">
                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 mr-2">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -97,28 +97,28 @@ export const SearchDoctor = () => {
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                <Flash>
-                    <div className="flex justify-around w-100 transition duration-200 ease-in hover:scale-105 item-center">
+                {/* <Flash> */}
+                    <div className="flex justify-around w-100  item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                             {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
                                 <button key={specialty} 
-                                        className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
+                                        className={`py-4 px-8 text-xs hover:underline  hover:text-cyan-400 hover:rounded-2xl  ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} 
                                         onClick={() => handleSpecialtyChange(specialty)}>
                                     {specialty}
                                 </button>
                             ))}
                         </div>
                     </div>
-                </Flash>
+                {/* </Flash> */}
             </div>
 
-            <Flash>
+            {/* <Flash> */}
                 <div className="grid grid-cols-5">
                     {filteredUsers.map(user => (
                         user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
                 </div>
-            </Flash>
+            {/* </Flash> */}
             <div>
                 <ChatBotButton />
             </div>

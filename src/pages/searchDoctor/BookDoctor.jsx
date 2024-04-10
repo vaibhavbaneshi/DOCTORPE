@@ -8,7 +8,7 @@ import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-import Flash from "react-awesome-reveal";
+// import Flash from "react-awesome-reveal";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -120,7 +120,7 @@ export const BookDoctor = () => {
     }, 5000)
 
     return (
-        <div className="bg-gray-100 h-full w-full py-2 mx-auto px-6">
+        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
             
@@ -128,32 +128,32 @@ export const BookDoctor = () => {
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                <Flash>
-                    <div className="flex justify-around w-100  transition duration-200 ease-in hover:scale-105 item-center">
+                {/* <Flash> */}
+                    <div className="flex justify-around w-100   item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                             {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMETOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
                                 <button key={specialty} 
-                                        className={`py-4 px-8 text-xs hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:text-white hover:rounded-2xl hover:mx-1 ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl' : ''}`} 
+                                        className={`py-4 px-8 text-xs hover:underline  hover:text-cyan-400 hover:rounded-2xl  ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} 
                                         onClick={() => handleSpecialtyChange(specialty)}>
                                     {specialty}
                                 </button>
                             ))}
                         </div>
                     </div>
-                </Flash>
+                {/* </Flash> */}
             </div>
 
             <div className="flex flex-col items-center pt-12 -mb-6">
                 <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
             </div>
-            <Flash>
+            {/* <Flash> */}
 
                 <div className="grid grid-cols-5">
                     {availableUsers.map(user => (
                         <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
                     ))}
                 </div>
-            </Flash>
+            {/* </Flash> */}
 
             <div>
                 <ChatBotButton />
