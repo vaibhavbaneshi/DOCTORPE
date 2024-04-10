@@ -8,8 +8,8 @@ import { VideoCall } from "./components/VideoCall/VideoCall"
 import AiLab from "./pages/AiLab/AiLab"
 import { BookDoctor } from "./pages/searchDoctor/BookDoctor"
 import { ShoppingCart } from "./pages/ShoppingCart/ShoppingCart"
-import ProductsScreen from "./pages/screens/ProductsScreen"
-import { ProductDetail } from "./pages/screens/ProductDetail"
+import ProductsScreen from "./pages/Medicines/ProductsScreen"
+import { ProductDetail } from "./pages/Medicines/ProductDetail"
 
 function App() {
   
