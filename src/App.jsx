@@ -27,6 +27,8 @@ function App() {
           <Route path="/medicines"element={<ProductsScreen />}/>
           <Route path="/medicines/:title" element={<ProductDetail />} />
           <Route path="/AI_Lab"element={<AiLab />}/>
+          <Route path="/AI_Lab/Diabetes"element={<Diabetes />}/>
+          <Route path="/AI_Lab/Heart_Health"element={<HeartHealth/>}/>
           <Route path="/shoppingCart"element={<ShoppingCart />}/>
         </Routes>
       </BrowserRouter>

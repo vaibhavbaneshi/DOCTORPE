@@ -1,152 +1,99 @@
-import { InputBox } from "../../components/Form/InputBox.jsx";
-import { useState } from 'react';
-import axios from "axios"
-import Popup from "../../components/Form/Popup.jsx";
-import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-export default function AiLab() {
-  const [Glucose, setGlucose] = useState("");
-  const [BloodPressure, setBloodPressure] = useState("");
-  const [SkinThickness, setSkinThickness] = useState("");
-  const [Insulin, setInsulin] = useState("");
-  const [BMI, setBMI] = useState("");
-  const [DiabetesPedigreeFunction, setDiabetesPedigreeFunction] = useState("");
-  const [Age, setAge] = useState("");
-  const [result, setResult] = useState({result:null,success:false});
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import Heading from '../../components/products/Heading.jsx';
+import "./AiLab.css"
+import { FiMousePointer } from "react-icons/fi";
 
-  const handleSubmit = async() => {
-    const data = {
-      Glucose,
-      BloodPressure,
-      SkinThickness,
-      Insulin,
-      BMI,
-      DiabetesPedigreeFunction,
-      Age
-    };
+const Example = () => {
+  return (
+    <div className="flex flex-col items-center justify-items-center w-full h-screen bg-gradient-to-br from-slate-100 to-cyan-100   px-4 py-12 ">
+      <div className="text-2xl font-medium font-serif ">
+      <Heading title="Ai Health Checkup" preText={'Our'}/>
+      </div>
+      <div className="flex p-10 pt-10 w-full h-full justify-around">
+      <TiltCard text="Diabetes Prediction" link="/Diabetes" image="https://img.freepik.com/free-vector/private-dentistry-abstract-concept-vector-illustration-private-dental-service-dentistry-clinic-healthcare-insurance-teeth-health-emergency-dentist-make-appointment-abstract-metaphor_335657-4055.jpg?t=st=1712677243~exp=1712680843~hmac=700e23840b31048be0b044ba87032cb7e570481c3024f28a2f3181d1f609ec5a&w=740"/>
+      <TiltCard text="Heart Health Prediction"link="/Heart_Health" image="https://img.freepik.com/free-vector/medical-insurance-life-assurance-cardiac-arrest-heart-stop-heartache-idea-design-element-health-protection-contract-arrhythmia-diagnosis-vector-isolated-concept-metaphor-illustration_335657-1515.jpg?t=st=1712677007~exp=1712680607~hmac=279aecc2793eb000c337ed01b1b5afc12392a39ae4f0054bd93829d455cc5043&w=740"/>
+      <TiltCard text="Mental Health Prediction" image="https://img.freepik.com/free-vector/psychologist-service-abstract-concept-vector-illustration-private-psychologist-session-mental-health-service-family-psychology-children-therapy-relationship-psychotherapy-abstract-metaphor_335657-4095.jpg?t=st=1712677113~exp=1712680713~hmac=ee046ca40d83241bf35d7d13eb732d4e29fa63c9e75e2e73b98971d7d83613cb&w=740"/>
+      </div>
+     </div>
+  );
+};
 
-    await axios.post('https://model-api-dbuz.onrender.com/diabetes_prediction', data)
-      .then(response => {
-        setResult({result:response.data[0],success:true});
+const ROTATION_RANGE = 32.5;
+const HALF_ROTATION_RANGE = 32.5 / 2;
 
-      })
-      .catch(error => {
-        console.error('Error submitting form:', error);
-        setResult({result:"Error : while submitting form"})
-      });
+// Card
+const TiltCard = ({text,link,image}) => {
+  const ref = useRef(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const xSpring = useSpring(x);
+  const ySpring = useSpring(y);
+
+  const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return [0, 0];
+
+    const rect = ref.current.getBoundingClientRect();
+
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = (e.clientX - rect.left) * ROTATION_RANGE;
+    const mouseY = (e.clientY - rect.top) * ROTATION_RANGE;
+
+    const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
+    const rY = mouseX / width - HALF_ROTATION_RANGE;
+
+    x.set(rX);
+    y.set(rY);
   };
 
-  const handlePopup=()=>{
-    setResult({result:null,success:false})
-  }
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <>
-      <div className="min-h-screen p-3 bg-gray-100 flex items-center justify-center">
-        <div className="container max-w-screen-lg  mx-auto">
-          <div>
-            <h2 className="font-semibold text-xl text-gray-600">Diabetes Prediction Form</h2>
-            <br />
-
-            <div className="bg-white rounded shadow-lg p-3 px-4 md:p-8 mb-6">
-              <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-1">
-                <div className="text-gray-600">
-                  <p className="font-medium text-lg">Details</p><br />
-                </div>
-
-                <div className="lg:col-span-2">
-                  <div className="grid gap-4 gap-y-2 text-sm grid-cols-2 md:grid-cols-2">
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setGlucose(e.target.value)}
-                        label="Glucose"
-                        type="text"
-                        name="Glucose"
-                        id="GlBcose"
-                        clasBNSme="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setBloodPressure(e.target.value)}
-                        label="Blood Pressure"
-                        type="text"
-                        name="blood_pressure"
-                        id="blood_pressure"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setSkinThickness(e.target.value)}
-                        label="Skin Thickness"
-                        type="text"
-                        name="skin_thickness"
-                        id="skin_thickness"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setInsulin(e.target.value)}
-                        label="Insulin"
-                        type="text"
-                        name="insulin"
-                        id="insulin"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setBMI(e.target.value)}
-                        label="BMI"
-                        type="text"
-                        name="bmi"
-                        id="bmi"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setDiabetesPedigreeFunction(e.target.value)}
-                        label="Diabetes Pedigree Function"
-                        type="text"
-                        name="diabetes_pedigree_function"
-                        id="diabetes_pedigree_function"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                    <div className="md:col-span-1">
-                      <InputBox
-                        onChange={e => setAge(e.target.value)}
-                        label="Age"
-                        type="text"
-                        name="age"
-                        id="age"
-                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="md:col-span-2 text-right">
-                <div className="inline-flex items-end">
-                  <button onClick={handleSubmit} className="bg-cyan-500 hover:bg-[#10f9f9] text-white font-bold py-2 px-4 rounded">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <Link to={`/AI_Lab${link}`} className="flex items-center justify-center">
+      <div className="transition flex items-center justify-center duration-400 ease-in-out transform hover:scale-105">
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transformStyle: "preserve-3d",
+        transform,
+        // padding:"10px"
+        // width:"17vw",
+        // height:"50vh",
+        // onMouseOver:"this.style.width:'500px'"
+        
+      }}
+      className="motion-div flex flex-col items-center justify rounded-2xl p-4 "
+    >
+      <div className="AiCard flex justify-center items-center  rounded-2xl  shadow-lg  ">
+        {/* <p className="text-center text-2xl font-bold"  >
+          {text}
+        </p> */}
+        <img className="AiCard-img rounded-2xl mt-1" src={image} alt="image" />
       </div>
-
-      <div>
-          <ChatBotButton />
-      </div>
-
-      {result.result  && (
-        <Popup result={result.result} success={result.success}onClick={handlePopup}/>
-
-      )}
-
-    </>
+      <p className="AiCard text-center text-xl font-bold pt-6 hover-scale-105"  >
+          {text}
+        </p>
+    </motion.div>
+    </div>
+    </Link>
   );
-}
+};
+
+export default Example;

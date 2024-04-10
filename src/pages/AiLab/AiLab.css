@@ -1,0 +1,24 @@
+
+.AiCard{
+
+    transform: translateZ(75px);
+    transform-style :preserve-3d;
+    width:fit-content;
+    height: max-content;
+/* backgroundImage:URL(), */
+
+}
+.AiCard-img{
+ width: 15vw;
+ height: 40vh;
+ object-fit:fill;
+ 
+}
+
+.motion-div:hover{
+
+background: linear-gradient(45deg, #bdffff 31%,#92fbff 45%, #6efaff 70%);
+/* width: 17vw;
+height: 50vh; */
+}
+
