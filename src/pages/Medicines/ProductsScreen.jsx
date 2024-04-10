@@ -33,16 +33,14 @@ const ProductsScreen = () => {
     };
 
     return (
-        <div className=" bg-gray-100  h-full w-full pt-4 mx-auto px-6 ">
+        <div className=" bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full pt-3 mx-auto px-6 ">
             <div className="text-2xl font-medium font-serif p-10 pl-20">
                 <Heading title="Products" preText={'Our'}/>
             </div>
-            <div className='min-h-screen px-3 bg-gray-100 flex items-center justify-center'>
+            <div className='min-h-screen px-3  flex items-center justify-center'>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
-                        {product.map(item => (
-                            <Flash left key={item.id}>
-                                <Product {...item} handleProductSelection={handleProductSelection} />
-                            </Flash>
+                        {product.map(item => (                          
+                            <Product {...item} handleProductSelection={handleProductSelection} />
                         ))}
                     </div>
                 </div>
