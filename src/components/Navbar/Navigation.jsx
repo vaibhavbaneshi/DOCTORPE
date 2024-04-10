@@ -71,46 +71,47 @@ export const Navigation = () => {
 
     return (
         <>
-            <div className="navbar-area">
-            <nav className="nav-container justify-around">
+            <div className="navbar-area  ">
+            <nav className="nav-container justify-around w-full ">
                 <Link to="/">
                     <div className="div-nav-left">
                         <img src={'../../../images/dpe3w.png'} alt="DoctorPe" className='nav-logo' />
                     </div>
                 </Link>
-                <div className="div-nav-middle">
+                <div className="div-nav-middle ">
                     <Link onClick={handleHomeLink} to="/">
-                        <div className="div-nav-middle-item hover:underline">
+                        <div className="div-nav-middle-item hover:underline hover:scale-110">
                             <div>Home</div>
                             <div>Doctorपे</div>
                         </div>
                     </Link>
                     <SecureLink to="/bookDoctor">
-                        <div className="div-nav-middle-item hover:underline">
+                        <div className="div-nav-middle-item hover:underline hover:scale-110">
                             <div className="flex flex-col items-center">Find Doctors</div>
                             <div>Book an appointment</div>
                         </div>
                     </SecureLink>
                     <SecureLink to="/searchDoctor">
-                        <div className="div-nav-middle-item hover:underline">
+                        <div className="div-nav-middle-item hover:underline hover:scale-110">
                             <div>Video Consult</div>
                             <div className="flex flex-col items-center">Consult top doctors</div>
                         </div>
                     </SecureLink>
                     <SecureLink to="/medicines">
-                        <div className="div-nav-middle-item hover:underline">
+                        <div className="div-nav-middle-item hover:underline hover:scale-110">
                             <div>Medicine Store</div>
                             <div className="flex flex-col items-center">Doctorपे Pharmacy</div>
                         </div>
                     </SecureLink>
                     <SecureLink to="/Ai_Lab">
-                        <div className="div-nav-middle-item hover:underline">
+                        <div className="div-nav-middle-item hover:underline hover:scale-110">
                             <div>AI Lab Test</div>
                             <div>Artificial Lab Test</div>
                         </div>
                     </SecureLink>
                 </div>
-                <div className="div-nav-right flex">
+                {showCart && <Cart />}
+                <div className="div-nav-right flex justify-end">
                     {currentUser ? (
                         <>
                             <Dropdown arrowIcon={false} inline label={<Avatar alt="user" img={currentUser.data.profilePicture} rounded/>}>
@@ -136,7 +137,7 @@ export const Navigation = () => {
                         </div>
                     )}
                 </div>
-                {showCart && <Cart />}
+                
             </nav>
         </div>
         {showError && <ErrorMessage message="Please Login First..." />}
