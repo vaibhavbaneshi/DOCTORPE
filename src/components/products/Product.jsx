@@ -4,12 +4,12 @@ import Rating from 'react-rating';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../Form/Button';
 
-const Product = ({ id, title, image, description, price, reviews, rating, handleProductSelection }) => {
+const Product = ({ id, title, image, description, price, reviews, rating, quantity, handleProductSelection }) => {
     const navigate = useNavigate();
     // const [disabled, setDisabled] = useState(false);
 
     const handleAddToCart = () => {
-        handleProductSelection({ id, title, image, description, price, reviews, rating });
+        handleProductSelection({ id, title, image, description, price, reviews, rating, quantity });
         // setDisabled(true);
     };
 

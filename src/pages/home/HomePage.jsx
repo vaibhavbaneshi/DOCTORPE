@@ -7,6 +7,7 @@ import { FacilityCard } from '../../components/Home/FacilityCard'
 import { useNavigate } from "react-router-dom"
 import ChatBotButton from '../../components/ChatBot/ChatBotButton'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export const HomePage = () => {
 
@@ -47,9 +48,8 @@ export const HomePage = () => {
     }
 
     useEffect(() => {
+        axios.put('http://localhost:3000/api/v1/product/updateAllProductQuantity')
         const token = localStorage.getItem('token');
-
-        console.log(token);
 
         if(token) {
             setTokenPresent(true);

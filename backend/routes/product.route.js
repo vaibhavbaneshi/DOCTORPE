@@ -1,12 +1,10 @@
 import express from "express"
-import { createPaymentLink, getProduct, purchaseProduct } from "../controllers/product.controller.js"
+import { createCheckoutSession, getProduct, updateAllProductQuantity, updateProductQuantity } from "../controllers/product.controller.js"
 
 export const productRouter = express.Router()
 
 productRouter.get('/getProduct', getProduct)
-productRouter.post('/purchaseProduct', purchaseProduct)
-productRouter.post('/purchaseProduct/createPaymentLink', createPaymentLink)
+productRouter.put('/updateProductQuantity', updateProductQuantity)
+productRouter.put('/updateAllProductQuantity', updateAllProductQuantity)
+productRouter.post('/purchaseProduct/createCheckoutSession', createCheckoutSession)
 
-productRouter.get('/', (req, res) => {
-    res.json("hi there again")
-})

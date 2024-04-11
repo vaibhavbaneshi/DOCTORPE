@@ -119,9 +119,6 @@ export const sendDelivery = (fullname, email, totalItems, totalAmount) => {
       .send(serviceID, tempID, messageOptions,{
         publicKey: '7B2itpD6d0z4vkdgv'
       })
-      .then((res) => {
-        console.log(res);
-      })
       .catch((err) => {
         console.log(err);
       });

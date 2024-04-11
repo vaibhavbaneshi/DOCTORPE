@@ -3,19 +3,16 @@ import Heading from "../../components/products/Heading";
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductInCart } from '../../components/Cart/ProductInCart';
 import { OrderButton } from '../../components/OrderButton/OrderButton';
-import Bounce from 'react-awesome-reveal';
-import { SuccessMessage } from '../../components/Alert/SuccessMessage';
-import { sendDelivery } from '../../components/Email/EmailSend';
-import { successOrder } from '../../redux/user/userSlice';
-import Flash from "react-awesome-reveal";
+import { loadStripe } from '@stripe/stripe-js'
+import axios from "axios";
+import { cartTotalAmount, cartTotalItems } from '../../redux/user/userSlice';
 
 export const ShoppingCart = () => {
     const { selectedProducts } = useSelector(state => state.user);
     const [cartItems, setCartItems] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
-    const [showAlert, setShowAlert] = useState(false);
-    const { currentUser } = useSelector(state => state.user);
+    const [animate, setAnimate] = useState(false);
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -51,27 +48,42 @@ export const ShoppingCart = () => {
         setCartItems(updatedItems);
     };
 
-    const handleClick = () => {
+    const handleClick = async () => {
+
+        dispatch(cartTotalItems(totalItems))
+        dispatch(cartTotalAmount(totalAmount))
+
+        if (!animate) {
+            setAnimate(true);
+            setTimeout(() => {
+                setAnimate(false);
+            }, 10000);
+        }
+
+        const stripe = await loadStripe("pk_test_51P4GrcSGmMcizrM94ZF4gAIGxKyWSKpidAGQgksJ06zdo3Vt9ZR1jqRcnC7CBbzXDPolgJUUpeeWYktSn62JloV500ZzuN3Mcn")
+
+        const response = await axios.post("http://localhost:3000/api/v1/product/purchaseProduct/createCheckoutSession", {
+            products: selectedProducts,
+        })
+
+        const session = response.data.id
+
         setTimeout(() => {
-            setShowAlert(true)
-        }, 8000)
-        const loggedInPatientEmail = currentUser.data.email;
-        const loggedInPatientfullname = currentUser.data.firstName + ' ' + currentUser.data.lastName;
-        setTimeout(() => {
-            dispatch(successOrder())
-        }, 8000)
-        sendDelivery(loggedInPatientfullname, loggedInPatientEmail, totalItems, totalAmount)
+            if(response.data.status) {
+                stripe.redirectToCheckout({
+                    sessionId: session
+                })
+            } 
+        }, 7000)
     }
     
     return (
         <div className="bg-slate-100 h-screen pt-12 mx-auto px-6">
-            {showAlert && <SuccessMessage message={`Order placed successfully and order details have been sent to your email : ${currentUser.data.email}`} />}
             <div>
                 <div>
                     <Heading title={'Orders'} preText={'My'} />
                 </div>
 
-                <Flash>
                 <div className="flex justify-between bg-slate-100">
                     <div className="bg-slate-100 w-3/4 mr-28">
                         <div>
@@ -127,7 +139,7 @@ export const ShoppingCart = () => {
 
                             <div onClick={handleClick} className='flex flex-col items-center pt-14'>
                                 {totalItems > 0 || totalAmount > 0 ? ( // Check if either totalItems or totalAmount is greater than 0
-                                    <OrderButton payAmount={totalAmount} totalItems={totalItems}/>
+                                    <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (
                                     <button disabled className="order" style={{ cursor: 'not-allowed' }}>
                                         <span className="default hover:underline">Complete Order</span>
@@ -138,7 +150,6 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
                 </div>
-                </Flash>
             </div>
         </div>
     );

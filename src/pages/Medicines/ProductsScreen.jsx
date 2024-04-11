@@ -9,7 +9,6 @@ import { selectProduct } from '../../redux/user/userSlice';
 
 const ProductsScreen = () => {
     const [product, setProducts] = useState([])
-    const [productCount, setProductCount] = useState(0)
     const dispatch = useDispatch()
 
 
@@ -24,11 +23,10 @@ const ProductsScreen = () => {
         };
 
         fetchProducts();
-    }, [])
 
+    }, [])
+    
     const handleProductSelection = (product) => {
-        console.log("Adding product to cart:", product);
-        setProductCount(product.length)
         dispatch(selectProduct(product))
     };
 
@@ -40,7 +38,7 @@ const ProductsScreen = () => {
             <div className='min-h-screen px-3  flex items-center justify-center'>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
                         {product.map(item => (                          
-                            <Product {...item} handleProductSelection={handleProductSelection} />
+                            <Product key={Math.random()} {...item} handleProductSelection={handleProductSelection} />
                         ))}
                     </div>
                 </div>

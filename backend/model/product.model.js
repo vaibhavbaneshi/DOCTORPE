@@ -37,6 +37,10 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+
+    quantity: {
+        type: Number,
+    }
 }, { timestamps: true })
 
 export const Product = mongoose.model("Product", productSchema)

@@ -9,6 +9,7 @@ import {
 import Heading from '../../components/products/Heading.jsx';
 import "./AiLab.css"
 import { FiMousePointer } from "react-icons/fi";
+import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 
 const Example = () => {
   return (
@@ -20,6 +21,9 @@ const Example = () => {
       <TiltCard text="Diabetes Prediction" link="/Diabetes" image="https://img.freepik.com/free-vector/private-dentistry-abstract-concept-vector-illustration-private-dental-service-dentistry-clinic-healthcare-insurance-teeth-health-emergency-dentist-make-appointment-abstract-metaphor_335657-4055.jpg?t=st=1712677243~exp=1712680843~hmac=700e23840b31048be0b044ba87032cb7e570481c3024f28a2f3181d1f609ec5a&w=740"/>
       <TiltCard text="Heart Health Prediction"link="/Heart_Health" image="https://img.freepik.com/free-vector/medical-insurance-life-assurance-cardiac-arrest-heart-stop-heartache-idea-design-element-health-protection-contract-arrhythmia-diagnosis-vector-isolated-concept-metaphor-illustration_335657-1515.jpg?t=st=1712677007~exp=1712680607~hmac=279aecc2793eb000c337ed01b1b5afc12392a39ae4f0054bd93829d455cc5043&w=740"/>
       <TiltCard text="Mental Health Prediction" image="https://img.freepik.com/free-vector/psychologist-service-abstract-concept-vector-illustration-private-psychologist-session-mental-health-service-family-psychology-children-therapy-relationship-psychotherapy-abstract-metaphor_335657-4095.jpg?t=st=1712677113~exp=1712680713~hmac=ee046ca40d83241bf35d7d13eb732d4e29fa63c9e75e2e73b98971d7d83613cb&w=740"/>
+      </div>
+      <div>
+          <ChatBotButton />
       </div>
      </div>
   );

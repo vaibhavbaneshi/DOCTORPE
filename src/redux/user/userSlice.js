@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentUser: null,
-    selectedProducts: [], // Initialize as an empty array
+    selectedProducts: [], 
     productQuantity: 0,
+    totalItems: 0,
+    totalAmount: 0,
     error: null,
     loading: false
 };
@@ -35,32 +37,30 @@ const userSlice = createSlice({
         },
         selectProduct: (state, action) => {
             const { id, quantity } = action.payload;
-            const existingProductIndex = state.selectedProducts.findIndex(product => product.id === id);
+        
+            const existingProductIndex = state.selectedProducts.findIndex(item => item.id === id);
+        
             if (existingProductIndex !== -1) {
-                // Product already exists, update quantity
-                state.selectedProducts[existingProductIndex].quantity += quantity;
-                productQuantity = quantity
-                console.log(productQuantity);
+                state.selectedProducts[existingProductIndex].quantity = quantity;
             } else {
-                // Product doesn't exist, add it to selectedProducts
                 state.selectedProducts.push(action.payload);
             }
         },
-        deselectProduct: (state, action) => {
-            const { id, quantity } = action.payload;
-            const existingProductIndex = state.selectedProducts.findIndex(product => product.id === id);
-            if (existingProductIndex !== -1) {
-                // Product exists, decrease quantity or remove if quantity becomes zero
-                state.selectedProducts[existingProductIndex].quantity -= quantity;
-                if (state.selectedProducts[existingProductIndex].quantity <= 0) {
-                    state.selectedProducts.splice(existingProductIndex, 1);
-                }
-            }
-        },
+        
+        
         successOrder: (state) => {
-            console.log('hi there');
             state.selectedProducts = [];
-            state.productQuantity = 0
+            state.productQuantity = 0,
+            state.totalItems = 0,
+            state.totalAmount = 0
+        },
+
+        cartTotalItems: (state, action) => {
+            state.totalItems = action.payload
+        },
+
+        cartTotalAmount: (state, action) => {
+            state.totalAmount = action.payload
         }
     }
 });
@@ -71,8 +71,9 @@ export const {
     signInFailure,
     signOut,
     selectProduct,
-    deselectProduct,
-    successOrder
+    successOrder,
+    cartTotalItems,
+    cartTotalAmount
 } = userSlice.actions;
 
 export default userSlice.reducer;

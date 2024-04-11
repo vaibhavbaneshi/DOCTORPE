@@ -12,6 +12,7 @@ import ProductsScreen from "./pages/Medicines/ProductsScreen"
 import { ProductDetail } from "./pages/Medicines/ProductDetail"
 import Diabetes from "./pages/AiLab/Diabetes"
 import HeartHealth from "./pages/AiLab/HeartHealth"
+import { SuccessPurchase } from "./pages/productPurchase/SuccessPurchase"
 
 function App() {
   
@@ -32,6 +33,7 @@ function App() {
           <Route path="/AI_Lab/Diabetes"element={<Diabetes />}/>
           <Route path="/AI_Lab/Heart_Health"element={<HeartHealth />}/>
           <Route path="/shoppingCart"element={<ShoppingCart />}/>
+          <Route path="/purshaseProductSuccess"element={<SuccessPurchase />}/>
         </Routes>
       </BrowserRouter>
     </>
