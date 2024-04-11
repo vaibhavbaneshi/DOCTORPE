@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-// import Flash from "react-awesome-reveal";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);

@@ -8,7 +8,6 @@ import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-// import Flash from "react-awesome-reveal";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
