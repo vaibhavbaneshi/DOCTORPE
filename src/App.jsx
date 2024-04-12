@@ -13,6 +13,7 @@ import { ProductDetail } from "./pages/Medicines/ProductDetail"
 import Diabetes from "./pages/AiLab/Diabetes"
 import HeartHealth from "./pages/AiLab/HeartHealth"
 import { SuccessPurchase } from "./pages/productPurchase/SuccessPurchase"
+import StressPrediction from "./pages/AiLab/StressPrediction"
 
 function App() {
   
@@ -32,6 +33,7 @@ function App() {
           <Route path="/AI_Lab"element={<AiLab />}/>
           <Route path="/AI_Lab/Diabetes"element={<Diabetes />}/>
           <Route path="/AI_Lab/Heart_Health"element={<HeartHealth />}/>
+          <Route path="/AI_Lab/Stress_Prediction"element={<StressPrediction />}/>
           <Route path="/shoppingCart"element={<ShoppingCart />}/>
           <Route path="/purshaseProductSuccess"element={<SuccessPurchase />}/>
         </Routes>

@@ -5,6 +5,7 @@ import Popup from "../../components/Form/Popup.jsx";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 import { BsArrowLeft } from 'react-icons/bs';
 import { Link } from "react-router-dom";
+import { SuccessMessage } from "../../components/Alert/SuccessMessage.jsx";
 
 export default function HeartHealth() {
 
@@ -22,9 +23,10 @@ export default function HeartHealth() {
   const [slope, setSlope] = useState('');
   const [ca, setCa] = useState('');
   const [thal, setThal] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleSubmit = async() => {
-
+    setShowAlert(true)
      const data = {
       age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal
      }
@@ -44,9 +46,14 @@ export default function HeartHealth() {
     setResult({result:null, success:false})
   }
 
+  setTimeout(() => {
+    setShowAlert(false)
+  }, 5000)
+
   return (
     <>
       <div className="min-h-screen p-3 bg-gradient-to-br from-slate-100 to-cyan-100 flex flex-col items-center justify-center">
+      {showAlert && <SuccessMessage message={`Our Machine Learning Model is analysing your result`} />}
       <div className="flex items-start justify-start w-full">
         <Link to="/AI_Lab" className="pt-10 text-black-500 bg-gray-100 text-lg hover:underline flex items-center space-x-3"><BsArrowLeft /> <span>Back</span></Link>
       </div>

@@ -5,6 +5,7 @@ import Popup from "../../components/Form/Popup.jsx";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 import { BsArrowLeft } from 'react-icons/bs';
 import { Link } from "react-router-dom";
+import { SuccessMessage } from "../../components/Alert/SuccessMessage.jsx";
 
 export default function Diabetes() {
 
@@ -17,6 +18,7 @@ export default function Diabetes() {
   const [DiabetesPedigreeFunction, setDiabetesPedigreeFunction] = useState("");
   const [Age, setAge] = useState("");
   const [result, setResult] = useState({result:null,success:false});
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleSubmit = async() => {
     const data = {
@@ -29,7 +31,7 @@ export default function Diabetes() {
       DiabetesPedigreeFunction,
       Age
     };
-
+    setShowAlert(true)
     await axios.post('https://model-api-dbuz.onrender.com/diabetes_prediction', data)
       .then(response => {
         setResult({result:response.data[0],success:true});
@@ -45,10 +47,14 @@ export default function Diabetes() {
     setResult({result:null,success:false})
   }
 
+  setTimeout(() => {
+    setShowAlert(false)
+  }, 5000)
+
   return (
     <>
-    
       <div className="h-screen p-3 bg-gradient-to-br from-slate-100 to-cyan-100 ">
+      {showAlert && <SuccessMessage message={`Our Machine Learning Model is analysing your result`} />}
         <div className="flex items-start justify-start w-full">
         <Link to="/AI_Lab" className="pt-10 text-black-500 bg-gray-100 text-lg hover:underline flex items-center space-x-3"><BsArrowLeft /> <span>Back</span></Link>
       </div>
@@ -73,7 +79,7 @@ export default function Diabetes() {
                         type="text"
                         name="Pregnancies"
                         id="Pregnancies"
-                        clasBNSme="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                     </div>
                     <div className="md:col-span-1">
@@ -83,7 +89,7 @@ export default function Diabetes() {
                         type="text"
                         name="Glucose"
                         id="Glucose"
-                        clasBNSme="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                        className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       />
                     </div>
                     <div className="md:col-span-1">
