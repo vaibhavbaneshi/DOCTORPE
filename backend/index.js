@@ -4,6 +4,11 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
+app.get("/", (req, res) => {
+    app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+
 connectDB()
     .then(() => {
         app.listen(process.env.PORT, () => {

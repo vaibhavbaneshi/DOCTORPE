@@ -20,7 +20,7 @@ export const BookDoctor = () => {
     const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/searchDoctor")
+        axios.get(`http://localhost:3000/api/v1/user/searchDoctor`)
             .then(response => {
                 setUsers(response.data); 
             })
@@ -30,7 +30,7 @@ export const BookDoctor = () => {
     }, []);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/fetchAppointment")
+        axios.get(`http://localhost:3000/api/v1/user/fetchAppointment`)
             .then(response => {
                 setToDeleteAppointments(response.data); 
             })
@@ -84,7 +84,7 @@ export const BookDoctor = () => {
             return
         }
         try {
-            await axios.post("http://localhost:3000/api/v1/user/bookAppointment", {
+            await axios.post(`http://localhost:3000/api/v1/user/bookAppointment`, {
                 doctorId, 
                 date: selectedDateTime.date, 
                 time: selectedDateTime.time 

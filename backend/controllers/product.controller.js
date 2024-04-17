@@ -1,6 +1,7 @@
 import { Product } from "../model/product.model.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 import stripe from "stripe";
+import path from "path";
 
 const stripeInstance = stripe("sk_test_51P4GrcSGmMcizrM9YUPxIc6tdhAeL29ooNcdmPAxO6tPXuBvhFhprO30oxIDTz2uLDtzdFHs6zWFVWqWfe5UgzVF00zhUvkaBk");
 
@@ -52,7 +53,7 @@ export const createCheckoutSession = (async (req, res) => {
         line_items: lineItems,
         mode: "payment",
         success_url: `http://localhost:5173/purshaseProductSuccess`,
-        cancel_url: "http://localhost:5173/shoppingCart",
+        cancel_url: `http://localhost:5173/shoppingCart`,
     });
 
     return res.json({

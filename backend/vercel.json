@@ -1,13 +1,14 @@
 {
-  "version": 2,
   "builds": [
-    { "src": "*.js", "use": "@vercel/node" }
+    {
+      "src": "./index.js",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/auth/(.*)", "dest": "./routes/auth.router.js" },
-    { "src": "/user/(.*)", "dest": "./routes/user.router.js" },
-    { "src": "/chatbot/(.*)", "dest": "./routes/chatbot.router.js" },
-    { "src": "/product/(.*)", "dest": "./routes/product.router.js" },
-    { "src": "/(.*)", "dest": "./app.js" }
+    {
+      "src": "/.*",
+      "dest": "index.js"
+    }
   ]
 }

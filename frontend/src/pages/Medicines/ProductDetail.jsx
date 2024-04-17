@@ -6,17 +6,15 @@ import Rating from 'react-rating';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
-import Flash from 'react-awesome-reveal';
 
 export const ProductDetail = () => {
-    // const [disabled, setDisabled] = useState(false);
     const [product, setProducts] = useState([])
     const { title } = useParams();
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/product/getProduct');
+                const response = await axios.get(`http://localhost:3000/api/v1/product/getProduct`);
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -26,7 +24,6 @@ export const ProductDetail = () => {
         fetchProducts();
     }, [])
 
-    // const [product, setProducts] = useState([])
     const [productCount, setProductCount] = useState(0)
     const dispatch = useDispatch()
 

@@ -32,7 +32,7 @@ export const Calendar = ({ onDateTimeSelect, onAppointments }) => {
     }
 
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/user/fetchAppointment");
+      const response = await axios.get(`http://localhost:3000/api/v1/user/fetchAppointment`);
       onDateTimeSelect(selectedDate, selectedTime);
       onAppointments(response.data);
       setLabel(true);
