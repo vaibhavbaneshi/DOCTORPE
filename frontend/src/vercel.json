@@ -1,9 +1,18 @@
 {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    { "source": "/", "destination": "/" },
+    { "source": "/signin", "destination": "/signin" },
+    { "source": "/signup", "destination": "/signup" },
+    { "source": "/searchDoctor", "destination": "/searchDoctor" },
+    { "source": "/bookDoctor", "destination": "/bookDoctor" },
+    { "source": "/consult", "destination": "/consult" },
+    { "source": "/medicines", "destination": "/medicines" },
+    { "source": "/medicines/:title", "destination": "/medicines/:title" },
+    { "source": "/AI_Lab", "destination": "/AI_Lab" },
+    { "source": "/AI_Lab/Diabetes", "destination": "/AI_Lab/Diabetes" },
+    { "source": "/AI_Lab/Heart_Health", "destination": "/AI_Lab/Heart_Health" },
+    { "source": "/AI_Lab/Stress_Prediction", "destination": "/AI_Lab/Stress_Prediction" },
+    { "source": "/shoppingCart", "destination": "/shoppingCart" },
+    { "source": "/purshaseProductSuccess", "destination": "/purshaseProductSuccess" }
+  ]
+}
