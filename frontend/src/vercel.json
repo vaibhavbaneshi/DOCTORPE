@@ -1,19 +1,60 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "src/index.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "src/**/*.+(js|jsx|json|css)",
-        "use": "@vercel/static"
-      }
-    ],
     "routes": [
       {
-        "src": "/.*",
-        "dest": "./App.jsx"
+        "src": "/",
+        "dest": "/"
+      },
+      {
+        "src": "/signin",
+        "dest": "/signin"
+      },
+      {
+        "src": "/signup",
+        "dest": "/signup"
+      },
+      {
+        "src": "/searchDoctor",
+        "dest": "/searchDoctor"
+      },
+      {
+        "src": "/bookDoctor",
+        "dest": "/bookDoctor"
+      },
+      {
+        "src": "/consult",
+        "dest": "/consult"
+      },
+      {
+        "src": "/medicines",
+        "dest": "/medicines"
+      },
+      {
+        "src": "/medicines/:title",
+        "dest": "/medicines/:title"
+      },
+      {
+        "src": "/AI_Lab",
+        "dest": "/AI_Lab"
+      },
+      {
+        "src": "/AI_Lab/Diabetes",
+        "dest": "/AI_Lab/Diabetes"
+      },
+      {
+        "src": "/AI_Lab/Heart_Health",
+        "dest": "/AI_Lab/Heart_Health"
+      },
+      {
+        "src": "/AI_Lab/Stress_Prediction",
+        "dest": "/AI_Lab/Stress_Prediction"
+      },
+      {
+        "src": "/shoppingCart",
+        "dest": "/shoppingCart"
+      },
+      {
+        "src": "/purshaseProductSuccess",
+        "dest": "/purshaseProductSuccess"
       }
     ]
   }
