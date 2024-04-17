@@ -1,18 +1,18 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/" },
-    { "source": "/signin", "destination": "/signin" },
-    { "source": "/signup", "destination": "/signup" },
-    { "source": "/searchDoctor", "destination": "/searchDoctor" },
-    { "source": "/bookDoctor", "destination": "/bookDoctor" },
+    { "source": "/signin", "destination": "./pages/auth/Signin.jsx" },
+    { "source": "/signup", "destination": "./pages/auth/Signup.jsx" },
+    { "source": "/searchDoctor", "destination": "./pages/searchDoctor/SearchDoctor.jsx" },
+    { "source": "/bookDoctor", "destination": "./pages/searchDoctor/BookDoctor.jsx" },
     { "source": "/consult", "destination": "/consult" },
-    { "source": "/medicines", "destination": "/medicines" },
-    { "source": "/medicines/:title", "destination": "/medicines/:title" },
-    { "source": "/AI_Lab", "destination": "/AI_Lab" },
-    { "source": "/AI_Lab/Diabetes", "destination": "/AI_Lab/Diabetes" },
-    { "source": "/AI_Lab/Heart_Health", "destination": "/AI_Lab/Heart_Health" },
-    { "source": "/AI_Lab/Stress_Prediction", "destination": "/AI_Lab/Stress_Prediction" },
-    { "source": "/shoppingCart", "destination": "/shoppingCart" },
-    { "source": "/purshaseProductSuccess", "destination": "/purshaseProductSuccess" }
+    { "source": "/medicines", "destination": "./pages/Medicines/ProductsScreen.jsx" },
+    { "source": "/medicines/:title", "destination": "./pages/Medicines/ProductDetail.jsx" },
+    { "source": "/AI_Lab", "destination": "./pages/AiLab/AiLab.jsx" },
+    { "source": "/AI_Lab/Diabetes", "destination": "./pages/AiLab/Diabetes.jsx" },
+    { "source": "/AI_Lab/Heart_Health", "destination": "./pages/AiLab/HeartHealth.jsx" },
+    { "source": "/AI_Lab/Stress_Prediction", "destination": "./pages/AiLab/StressPrediction.jsx" },
+    { "source": "/shoppingCart", "destination": "./pages/ShoppingCart/ShoppingCart.jsx" },
+    { "source": "/purshaseProductSuccess", "destination": "./pages/productPurchase/SuccessPurchase.jsx" }
   ]
 }
