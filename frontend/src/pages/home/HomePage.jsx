@@ -48,7 +48,7 @@ export const HomePage = () => {
     }
 
     useEffect(() => {
-        axios.put(`http://localhost:3000/api/v1/product/updateAllProductQuantity`)
+        axios.put(`https://doctorpe-backend.vercel.app/api/v1/product/updateAllProductQuantity`)
         const token = localStorage.getItem('token');
 
         if(token) {

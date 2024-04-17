@@ -62,7 +62,7 @@ export const ShoppingCart = () => {
 
         const stripe = await loadStripe("pk_test_51P4GrcSGmMcizrM94ZF4gAIGxKyWSKpidAGQgksJ06zdo3Vt9ZR1jqRcnC7CBbzXDPolgJUUpeeWYktSn62JloV500ZzuN3Mcn")
 
-        const response = await axios.post(`http://localhost:3000/api/v1/product/purchaseProduct/createCheckoutSession`, {
+        const response = await axios.post(`https://doctorpe-backend.vercel.app/api/v1/product/purchaseProduct/createCheckoutSession`, {
             products: selectedProducts,
         })
 
