@@ -1,60 +1,8 @@
 {
-    "routes": [
+    "rewrites": [
       {
-        "src": "/",
-        "dest": "/"
-      },
-      {
-        "src": "/signin",
-        "dest": "/"
-      },
-      {
-        "src": "/signup",
-        "dest": "/"
-      },
-      {
-        "src": "/searchDoctor",
-        "dest": "/"
-      },
-      {
-        "src": "/bookDoctor",
-        "dest": "/"
-      },
-      {
-        "src": "/consult",
-        "dest": "/"
-      },
-      {
-        "src": "/medicines",
-        "dest": "/"
-      },
-      {
-        "src": "/medicines/:title",
-        "dest": "/"
-      },
-      {
-        "src": "/AI_Lab",
-        "dest": "/"
-      },
-      {
-        "src": "/AI_Lab/Diabetes",
-        "dest": "/"
-      },
-      {
-        "src": "/AI_Lab/Heart_Health",
-        "dest": "/"
-      },
-      {
-        "src": "/AI_Lab/Stress_Prediction",
-        "dest": "/"
-      },
-      {
-        "src": "/shoppingCart",
-        "dest": "/"
-      },
-      {
-        "src": "/purshaseProductSuccess",
-        "dest": "/"
+        "source": "/(.*)",
+        "destination": "/"
       }
     ]
   }
