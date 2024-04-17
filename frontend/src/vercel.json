@@ -6,55 +6,55 @@
       },
       {
         "src": "/signin",
-        "dest": "/signin"
+        "dest": "/"
       },
       {
         "src": "/signup",
-        "dest": "/signup"
+        "dest": "/"
       },
       {
         "src": "/searchDoctor",
-        "dest": "/searchDoctor"
+        "dest": "/"
       },
       {
         "src": "/bookDoctor",
-        "dest": "/bookDoctor"
+        "dest": "/"
       },
       {
         "src": "/consult",
-        "dest": "/consult"
+        "dest": "/"
       },
       {
         "src": "/medicines",
-        "dest": "/medicines"
+        "dest": "/"
       },
       {
         "src": "/medicines/:title",
-        "dest": "/medicines/:title"
+        "dest": "/"
       },
       {
         "src": "/AI_Lab",
-        "dest": "/AI_Lab"
+        "dest": "/"
       },
       {
         "src": "/AI_Lab/Diabetes",
-        "dest": "/AI_Lab/Diabetes"
+        "dest": "/"
       },
       {
         "src": "/AI_Lab/Heart_Health",
-        "dest": "/AI_Lab/Heart_Health"
+        "dest": "/"
       },
       {
         "src": "/AI_Lab/Stress_Prediction",
-        "dest": "/AI_Lab/Stress_Prediction"
+        "dest": "/"
       },
       {
         "src": "/shoppingCart",
-        "dest": "/shoppingCart"
+        "dest": "/"
       },
       {
         "src": "/purshaseProductSuccess",
-        "dest": "/purshaseProductSuccess"
+        "dest": "/"
       }
     ]
   }
