@@ -7,7 +7,7 @@ import Razorpay from 'razorpay'
 export const app = express()
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://doctorpe-frontend.vercel.app",
     credentials: true
 }))
 
