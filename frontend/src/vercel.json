@@ -13,7 +13,7 @@
     "routes": [
       {
         "src": "/.*",
-        "dest": "../../backend/index.js"
+        "dest": "./App.jsx"
       }
     ]
   }
