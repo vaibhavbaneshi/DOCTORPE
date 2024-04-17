@@ -52,8 +52,8 @@ export const createCheckoutSession = (async (req, res) => {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `https://doctorpe-frontend.vercel.app/purshaseProductSuccess`,
-        cancel_url: `https://doctorpe-frontend.vercel.app/shoppingCart`,
+        success_url: `https://doctorpe-frontend.vercel.app`,
+        cancel_url: `https://doctorpe-frontend.vercel.app`,
     });
 
     return res.json({
