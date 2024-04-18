@@ -77,7 +77,7 @@ function Signin() {
             label={"Your Email"}
             error={emailError ? true : false}
           />
-          {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+          {emailError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
 
           <InputBox
             type="password"
