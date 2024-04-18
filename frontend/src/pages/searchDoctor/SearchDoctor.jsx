@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
+import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -13,6 +14,7 @@ export const SearchDoctor = () => {
     const { currentUser } = useSelector(state => state.user);
     const [showAlert, setShowAlert] = useState(false);
     const [ count, setCount ] = useState(5);
+    const [showLoader, setShowLoader] = useState(true)
 
     const getRandomCode = () => {
         const threeLengthCode = () => randomString({ length: 3, type: "distinguishable" });
@@ -69,6 +71,10 @@ export const SearchDoctor = () => {
 
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
+    setTimeout(() => {
+        setShowLoader(false)
+    }, 5000)
+
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6 relative">
             {showAlert && (
@@ -107,11 +113,12 @@ export const SearchDoctor = () => {
             </div>
 
             {/* <Flash> */}
-                <div className="grid grid-cols-5">
+            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-5">
                     {filteredUsers.map(user => (
                         user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
-                </div>
+                </div>}
+                
             {/* </Flash> */}
             <div>
                 <ChatBotButton />
