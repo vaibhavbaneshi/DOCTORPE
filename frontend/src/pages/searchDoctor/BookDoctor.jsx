@@ -56,11 +56,11 @@ export const BookDoctor = () => {
                             data: { appointmentId: appointment._id }
                         });     
                         
-                        if(response.data.status === 404) {
+                        if(response.status === 404) {
                             setCheckAppointment(false)
                         }
                         console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
-                        console.log(response.data.status);
+                        console.log(response.status);
                     } catch (error) {
                         console.error('Error deleting appointment:', error);
                     }
