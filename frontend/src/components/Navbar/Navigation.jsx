@@ -21,7 +21,7 @@ export const Navigation = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("conversation");
         dispatch(signOut());
-        navigate("/signin");
+        window.location.href = '/signin'; 
     };
 
     useEffect(() => {
