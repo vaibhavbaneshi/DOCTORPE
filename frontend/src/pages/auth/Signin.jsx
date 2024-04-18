@@ -58,8 +58,8 @@ function Signin() {
         window.location.href = '/';
       }
     } catch (error) {
-      dispatch(signInFailure(error.message));
       setShowError(true)
+      dispatch(signInFailure(error.message));
     }
   };
 
@@ -69,8 +69,8 @@ function Signin() {
 
   return (
     <div className='flex justify-center  h-full'>
-      {showError && <ErrorMessage message="Incorrect Email and Password" />}
       <div className='flex  justify-center'>
+      {showError && <ErrorMessage message="Incorrect Email and Password" />}
         <div className='bg-white rounded-lg  w-3/4 h-max p-8 px-8'>
           <Logo />
           <Heading label={"Sign In"} />
