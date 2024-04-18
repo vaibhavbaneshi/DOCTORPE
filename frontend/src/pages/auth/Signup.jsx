@@ -99,7 +99,7 @@ function Signup() {
             error={firstnameError ? true : false}
           />
 
-          {firstnameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+          {firstnameError && <p className="text-red-500 text-sm pb-2">{firstnameError}</p>}
 
           <InputBox
             onChange={e => setLastName(e.target.value)}
@@ -108,7 +108,7 @@ function Signup() {
             error={lastnameError ? true : false}
           />
 
-        {lastnameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+        {lastnameError && <p className="text-red-500 text-sm pb-2">{lastnameError}</p>}
 
 
           <InputBox
@@ -118,7 +118,7 @@ function Signup() {
             error={usernameError ? true : false}
           />
 
-          {usernameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+          {usernameError && <p className="text-red-500 text-sm pb-2">{usernameError}</p>}
 
           <InputBox
             onChange={e => setEmail(e.target.value)}
