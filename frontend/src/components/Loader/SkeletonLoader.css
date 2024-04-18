@@ -30,11 +30,14 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+
+    padding: 10px;
   }
   
   .movie--isloading .loading-content .loading-text-container {
     -ms-flex-preferred-size: 100%;
         flex-basis: 100%;
+    padding: 10px;    
   }
   
   .movie--isloading .loading-content .loading-main-text {
