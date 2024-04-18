@@ -22,7 +22,7 @@ export const Navigation = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("conversation");
         dispatch(signOut());
-        window.location.href = '/signin'; 
+        navigate("/signin");
     };
 
     useEffect(() => {
