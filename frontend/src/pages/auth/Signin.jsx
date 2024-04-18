@@ -15,6 +15,7 @@ function Signin() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showError, setShowError] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -57,11 +58,17 @@ function Signin() {
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
+      setShowError(true)
     }
   };
 
+  setTimeout(() => {
+    setShowError(false)
+}, 5000)
+
   return (
     <div className='flex justify-center  h-full'>
+      {showError && <ErrorMessage message="Incorrect Email and Password" />}
       <div className='flex  justify-center'>
         <div className='bg-white rounded-lg  w-3/4 h-max p-8 px-8'>
           <Logo />
