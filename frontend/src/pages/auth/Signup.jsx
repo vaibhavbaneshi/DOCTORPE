@@ -18,13 +18,38 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [firstnameError, setFirstnameError] = useState("");
+  const [lastnameError, setLastnameError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [showError, setShowError] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Reset errors
+    let isValid = true;
+    if (!firstName) {
+      setFirstnameError("Firstname is required");
+      isValid = false;
+    }
+    if (!lastName) {
+      setLastnameError("Lastname is required");
+      isValid = false;
+    }
+    if (!username) {
+      setUsernameError("Username is required");
+      isValid = false;
+    }
+    if (!email) {
+      setEmailError("Email is required");
+      isValid = false;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      isValid = false;
+    }
+    if (!isValid) return;
 
     try {
       dispatch(signInStart());
@@ -50,7 +75,6 @@ function Signup() {
         window.location.href = '/';
       }
     } catch (error) {
-      setErrors({ general: error.message });
       setShowError(true)
       dispatch(signInFailure(error.message));
     }
@@ -72,34 +96,46 @@ function Signup() {
             onChange={e => setFirstName(e.target.value)}
             placeholder={"John"}
             label={"First Name"}
-            error={errors.firstName}
+            error={firstnameError ? true : false}
           />
+
+          {firstnameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+
           <InputBox
             onChange={e => setLastName(e.target.value)}
             placeholder={"Doe"}
             label={"Last Name"}
-            error={errors.lastName}
+            error={lastnameError ? true : false}
           />
+
+        {lastnameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+
+
           <InputBox
             onChange={e => setUsername(e.target.value)}
             placeholder={"johndoe"}
             label={"Username"}
-            error={errors.username}
+            error={usernameError ? true : false}
           />
+
+          {usernameError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+
           <InputBox
             onChange={e => setEmail(e.target.value)}
             placeholder={"example@gmail.com"}
             label={"Your Email"}
-            error={errors.email}
-          />
+            error={emailError ? true : false}
+            />
+            {emailError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
+
           <InputBox
             onChange={e => setPassword(e.target.value)}
             placeholder={"*******"}
             label={"Password"}
             type="password"
-            error={errors.password}
+            error={passwordError ? true : false}
           />
-          {errors.general && <p className="text-red-500 text-sm">{errors.general}</p>}
+          {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
           <Button onClick={handleSubmit} label={"Sign up"} />
           <div className='flex justify-center'>
             <OAuth />
