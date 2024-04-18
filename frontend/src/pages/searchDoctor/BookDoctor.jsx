@@ -8,6 +8,7 @@ import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
+import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -19,6 +20,7 @@ export const BookDoctor = () => {
     const [showError, setShowError] = useState(false);
     const [checkAppointment, setCheckAppointment] = useState(true)
     const { currentUser } = useSelector(state => state.user);
+    const [showLoader, setShowLoader] = useState(true)
 
     useEffect(() => {
         axios.get(`https://doctorpe-backend.vercel.app/api/v1/user/searchDoctor`)
@@ -124,6 +126,10 @@ export const BookDoctor = () => {
         setShowError(false)
     }, 5000)
 
+    setTimeout(() => {
+        setShowLoader(false)
+    }, 5000)
+
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
@@ -153,11 +159,11 @@ export const BookDoctor = () => {
             </div>
             {/* <Flash> */}
 
-                <div className="grid grid-cols-5">
-                    {availableUsers.map(user => (
-                        <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
+            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-5">
+                    {filteredUsers.map(user => (
+                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
-                </div>
+                </div>}
             {/* </Flash> */}
 
             <div>
