@@ -6,7 +6,6 @@ import { signOut } from "../../redux/user/userSlice";
 import { Cart } from "../Cart/Cart";
 import { useEffect, useState } from "react";
 import { ErrorMessage } from "../Alert/ErrorMessage";
-import { current } from "@reduxjs/toolkit";
 
 export const Navigation = () => {
     const navigate = useNavigate(); 

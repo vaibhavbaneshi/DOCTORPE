@@ -45,7 +45,7 @@ function Signup() {
 
       if(data.status) {
         dispatch(signInSuccess(data))
-        window.location.href = '/'
+        navigate('/')
       }
 
     } catch (error) {
