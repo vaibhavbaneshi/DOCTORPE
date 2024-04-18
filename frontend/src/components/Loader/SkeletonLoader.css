@@ -15,6 +15,7 @@
     background-size: 250px;
     -webkit-animation: shine-loading-image 2s infinite ease-out;
             animation: shine-loading-image 2s infinite ease-out;
+    padding: 10px;
   }
   
   .movie--isloading .loading-content {
