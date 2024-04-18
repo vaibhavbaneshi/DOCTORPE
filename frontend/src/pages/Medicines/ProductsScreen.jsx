@@ -6,12 +6,13 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
 import { SuccessMessage } from '../../components/Alert/SuccessMessage';
+import { SkeletonLoader } from '../../components/Loader/SkeletonLoader';
 
 const ProductsScreen = () => {
     const [product, setProducts] = useState([])
     const [showAlert, setShowAlert] = useState(false)
     const dispatch = useDispatch()
-
+    const [showLoader, setShowLoader] = useState(true)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -36,6 +37,10 @@ const ProductsScreen = () => {
         setShowAlert(false)
     }, 5000)
 
+    setTimeout(() => {
+        setShowLoader(false)
+    }, 2000)
+
     return (
         <div className=" bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full pt-3 mx-auto px-6 ">
             {showAlert && <SuccessMessage message={`Item added to the cart`} />}
@@ -49,6 +54,11 @@ const ProductsScreen = () => {
                         ))}
                     </div>
                 </div>
+            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-5">
+                {filteredUsers.map(user => (
+                    user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
+                ))}
+            </div>}
             <div>
                 <ChatBotButton />
             </div>
