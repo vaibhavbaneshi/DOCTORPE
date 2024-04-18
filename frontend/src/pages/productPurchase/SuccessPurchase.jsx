@@ -46,7 +46,7 @@ export const SuccessPurchase = ({ itemTotal, itemAmount }) => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <p className="font-bold pr-3">Success alert!</p>
-                        <p>Order placed successfully and order details have been sent to your email : ${currentUser.data.email}</p>
+                        <p>Order placed successfully and order details have been sent to your email : {currentUser.data.email}</p>
                     </div>
 
                     <div className="flex justify-center">

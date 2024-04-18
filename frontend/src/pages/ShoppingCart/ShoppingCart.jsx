@@ -6,6 +6,7 @@ import { OrderButton } from '../../components/OrderButton/OrderButton';
 import { loadStripe } from '@stripe/stripe-js'
 import axios from "axios";
 import { cartTotalAmount, cartTotalItems } from '../../redux/user/userSlice';
+import ChatBotButton from '../../components/ChatBot/ChatBotButton';
 
 export const ShoppingCart = () => {
     const { selectedProducts } = useSelector(state => state.user);
@@ -150,6 +151,9 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <ChatBotButton />
             </div>
         </div>
     );
