@@ -1,12 +1,10 @@
-body {
-    padding: 50px;
-  }
   
   .movie--isloading {
     height: 252px;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 15px;
+    padding: 10px;
   }
   
   .movie--isloading .loading-image {
