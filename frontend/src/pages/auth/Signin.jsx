@@ -70,8 +70,8 @@ function Signin() {
   return (
     <div className='flex justify-center  h-full'>
       <div className='flex  justify-center'>
-      {showError && <ErrorMessage message="Incorrect Email and Password" />}
         <div className='bg-white rounded-lg  w-3/4 h-max p-8 px-8'>
+      {showError && <ErrorMessage message="Incorrect Email and Password" />}
           <Logo />
           <Heading label={"Sign In"} />
           <SubHeading text={"Enter your information to sign-in"} />
