@@ -5,7 +5,6 @@ import { bookAppointment, deleteAppointment, fetchAppointment } from "../control
 export const userRouter = express.Router()
 
 userRouter.get("/searchDoctor", searchDoctor)
-userRouter.put("/consultDoctor", consultDoctor)
 userRouter.get("/fetchAppointment", fetchAppointment)
 userRouter.post("/bookAppointment", bookAppointment)
 userRouter.delete("/deleteAppointment", deleteAppointment)

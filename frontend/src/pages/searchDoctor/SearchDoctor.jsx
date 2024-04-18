@@ -53,11 +53,6 @@ export const SearchDoctor = () => {
 
     const handleOnClick = async (email, fullname) => {
 
-        await axios.put('https://doctorpe-backend.vercel.app/api/v1/user/consultDoctor', {
-            email,
-            status: false
-        })
-
         const callId = getRandomCode();
         const callIdString = callId.toString();
 

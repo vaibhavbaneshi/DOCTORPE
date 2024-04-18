@@ -6,17 +6,3 @@ export const searchDoctor = AsyncHandler( async (req, res) => {
 
     res.json(doctors)
 })
-
-export const consultDoctor = AsyncHandler( async (req, res) => {
-    const { email, status } = req.body
-
-    const doctor = await Doctor.findOneAndUpdate(
-        {email},
-        {isAvailable : status},
-        { new: true } 
-    )
-
-    res.json({
-        doctor
-    })
-})
