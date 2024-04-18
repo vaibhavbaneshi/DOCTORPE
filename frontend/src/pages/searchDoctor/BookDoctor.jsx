@@ -17,6 +17,7 @@ export const BookDoctor = () => {
     const [toDeleteappointments, setToDeleteAppointments] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [checkAppointment, setCheckAppointment] = useState(true)
     const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
@@ -39,27 +40,34 @@ export const BookDoctor = () => {
             });
     }, []);
 
-    setInterval(async () => {
-        const currentDate = new Date();
-        var year = currentDate.getFullYear();
-        var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        var date = currentDate.getDate().toString().padStart(2, '0');
-        var formattedDate = year + '-' + month + '-' + date;
-        for (const appointment of toDeleteappointments) {            
-            if (appointment.date < formattedDate) {
-                try {
-                    await axios({
-                        method: 'delete',
-                        url: `https://doctorpe-backend.vercel.app/api/v1/user/deleteAppointment`,
-                        data: { appointmentId: appointment._id }
-                    });                    
-                    console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
-                } catch (error) {
-                    console.error('Error deleting appointment:', error);
+    if(checkAppointment) {
+        setInterval(async () => {
+            const currentDate = new Date();
+            var year = currentDate.getFullYear();
+            var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            var date = currentDate.getDate().toString().padStart(2, '0');
+            var formattedDate = year + '-' + month + '-' + date;
+            for (const appointment of toDeleteappointments) {            
+                if (appointment.date < formattedDate) {
+                    try {
+                        const response = await axios({
+                            method: 'delete',
+                            url: `https://doctorpe-backend.vercel.app/api/v1/user/deleteAppointment`,
+                            data: { appointmentId: appointment._id }
+                        });     
+                        
+                        if(response.data.status === 404) {
+                            setCheckAppointment(false)
+                        }
+                        console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
+                        console.log(response.data.status);
+                    } catch (error) {
+                        console.error('Error deleting appointment:', error);
+                    }
                 }
             }
-        }
-    }, 10000);
+        }, 10000);    
+    }
 
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 

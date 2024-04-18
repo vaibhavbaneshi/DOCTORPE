@@ -60,11 +60,6 @@ export const SearchDoctor = () => {
 
         sendDoctorConsult(email, fullname, callIdString)
         sendPatientConsult(loggedInPatientEmail, loggedInPatientfullname, callIdString)
-
-        // await axios.get('https://resend-email-ten.vercel.app/', {
-        //     doctorEmail: email,
-        //     patientEmail: currentUser.data.email
-        // });
         
     };
 
