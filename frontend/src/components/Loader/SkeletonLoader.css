@@ -4,7 +4,7 @@
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 15px;
-    padding: 10px;
+    margin: 10px;
   }
   
   .movie--isloading .loading-image {
@@ -15,7 +15,7 @@
     background-size: 250px;
     -webkit-animation: shine-loading-image 2s infinite ease-out;
             animation: shine-loading-image 2s infinite ease-out;
-    padding: 10px;
+    margin: 10px;
   }
   
   .movie--isloading .loading-content {
@@ -31,13 +31,13 @@
         -ms-flex-pack: center;
             justify-content: center;
 
-    padding: 10px;
+    margin: 10px;
   }
   
   .movie--isloading .loading-content .loading-text-container {
     -ms-flex-preferred-size: 100%;
         flex-basis: 100%;
-    padding: 10px;    
+    margin: 10px;    
   }
   
   .movie--isloading .loading-content .loading-main-text {
