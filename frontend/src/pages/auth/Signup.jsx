@@ -28,6 +28,13 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setFirstnameError("")
+    setLastnameError("")
+    setUsernameError("")
+    setEmailError("");
+    setPasswordError("");
+
     let isValid = true;
     if (!firstName) {
       setFirstnameError("Firstname is required");
@@ -93,7 +100,10 @@ function Signup() {
           <Heading label={"Sign Up"} />
           <SubHeading text={"Enter your information to create an account"} />
           <InputBox
-            onChange={e => setFirstName(e.target.value)}
+            onChange={e => {
+              setFirstName(e.target.value)
+              setFirstnameError(""); // Clear error on input change
+            }}
             placeholder={"John"}
             label={"First Name"}
             error={firstnameError ? true : false}
@@ -102,7 +112,10 @@ function Signup() {
           {firstnameError && <p className="text-red-500 text-sm pb-2">{firstnameError}</p>}
 
           <InputBox
-            onChange={e => setLastName(e.target.value)}
+            onChange={e => {
+              setLastName(e.target.value)
+              setLastnameError("")
+            }}
             placeholder={"Doe"}
             label={"Last Name"}
             error={lastnameError ? true : false}
@@ -112,7 +125,10 @@ function Signup() {
 
 
           <InputBox
-            onChange={e => setUsername(e.target.value)}
+            onChange={e => {
+              setUsername(e.target.value)
+              setUsernameError("")
+            }}
             placeholder={"johndoe"}
             label={"Username"}
             error={usernameError ? true : false}
@@ -121,7 +137,10 @@ function Signup() {
           {usernameError && <p className="text-red-500 text-sm pb-2">{usernameError}</p>}
 
           <InputBox
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => {
+              setEmail(e.target.value)
+              setEmailError("")
+            }}
             placeholder={"example@gmail.com"}
             label={"Your Email"}
             error={emailError ? true : false}
@@ -129,7 +148,10 @@ function Signup() {
             {emailError && <p className="text-red-500 text-sm pb-2">{emailError}</p>}
 
           <InputBox
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => {
+              setPassword(e.target.value)
+              setPasswordError("")
+            }}
             placeholder={"*******"}
             label={"Password"}
             type="password"
