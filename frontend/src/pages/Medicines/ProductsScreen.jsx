@@ -48,17 +48,12 @@ const ProductsScreen = () => {
                 <Heading title="Products" preText={'Our'}/>
             </div>
             <div className='min-h-screen px-3  flex items-center justify-center'>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
+                    {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
                         {product.map(item => (                          
                             <Product key={Math.random()} {...item} handleProductSelection={handleProductSelection} />
                         ))}
-                    </div>
+                    </div>}
                 </div>
-            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-5">
-                {filteredUsers.map(user => (
-                    user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
-                ))}
-            </div>}
             <div>
                 <ChatBotButton />
             </div>
