@@ -53,7 +53,7 @@ const ProductsScreen = () => {
                             <Product key={Math.random()} {...item} handleProductSelection={handleProductSelection} />
                         ))}
                     </div>}
-                </div>
+            </div>
             <div>
                 <ChatBotButton />
             </div>

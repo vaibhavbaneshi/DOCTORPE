@@ -159,11 +159,14 @@ export const BookDoctor = () => {
             </div>
             {/* <Flash> */}
 
+            <div className="flex items-center justify-center">
             {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-5">
                     {filteredUsers.map(user => (
                         user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
                 </div>}
+            </div>
+
             {/* </Flash> */}
 
             <div>
