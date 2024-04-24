@@ -77,8 +77,8 @@ export const BookDoctor = () => {
                
             return (
                 appointment.doctorId === user._id &&
-                appointment.date === selectedDateTime.date &&
-                appointment.time === selectedDateTime.time
+                appointment.date === selectedDateTime?.date &&
+                appointment.time === selectedDateTime?.time
             );
         });
         
@@ -87,9 +87,9 @@ export const BookDoctor = () => {
     
 
     const handleOnClick = async (doctorId, doctorEmail, doctorFullname, selectedDateTime) => {
-        if(!selectedDateTime) {
-            setShowError(true)
-            return
+        if (!selectedDateTime?.date || !selectedDateTime?.time) {
+            setShowError(true);
+            return;
         }
         try {
             await axios.post(`https://doctorpe-backend.vercel.app/api/v1/user/bookAppointment`, {
@@ -115,6 +115,7 @@ export const BookDoctor = () => {
 
     const handleDateTimeSelection = (date, time) => {
         setSelectedDateTime({ date, time });
+        setShowError(false); // Reset error state when date and time are selected
     };
 
     const handleAppointments = (bookedAppointments) => {
@@ -123,7 +124,6 @@ export const BookDoctor = () => {
 
     setTimeout(() => {
         setShowAlert(false)
-        setShowError(false)
     }, 5000)
 
     setTimeout(() => {
@@ -162,7 +162,7 @@ export const BookDoctor = () => {
             <div className="flex items-center justify-center">
             {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                     {filteredUsers.map(user => (
-                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
+                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
                 </div>}
             </div>

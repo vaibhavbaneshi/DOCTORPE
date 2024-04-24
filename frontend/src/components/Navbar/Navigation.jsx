@@ -71,7 +71,7 @@ export const Navigation = () => {
 
     return (
         <>
-            <div className="navbar-area  ">
+            <div className="navbar-area ">
             <nav className="nav-container justify-around w-full ">
                 <Link to="/">
                     <div className="div-nav-left">
