@@ -161,7 +161,7 @@ export const BookDoctor = () => {
 
             <div className="flex items-center justify-center">
             {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                    {filteredUsers.map(user => (
+                    {availableUsers.map(user => (
                         user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
                     ))}
                 </div>}
