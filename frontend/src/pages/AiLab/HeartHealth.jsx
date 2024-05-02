@@ -59,7 +59,7 @@ export default function HeartHealth() {
       </div>
         <div className="container max-w-screen-lg  mx-auto">
           <div>
-            <h2 className="font-semibold text-xl text-gray-600">Diabetes Prediction Form</h2>
+            <h2 className="font-semibold text-xl text-gray-600">Heart Health Prediction Form</h2>
             <br />
 
             <div className="bg-white rounded shadow-lg p-3 px-4 md:p-8 mb-6">
