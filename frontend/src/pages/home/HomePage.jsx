@@ -66,7 +66,7 @@ export const HomePage = () => {
                 <p>You are in safe hands</p>
             </div>
             <div className="home-banner-right -mt-1">
-                <img className='' src={'../../images/banner.webp'} alt="banner" />
+                <img className='' src={'../../images/banner.png'} alt="banner" />
             </div>
         </section>
         <section className="home-facilities">            
