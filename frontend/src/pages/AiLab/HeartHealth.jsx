@@ -238,7 +238,7 @@ export default function HeartHealth() {
               </div>
               <div className="md:col-span-2 text-right">
                 <div className="inline-flex items-end">
-                  <button className="bg-cyan-500 hover:bg-[#10f9f9] text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>Submit</button>
+                  <button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>Submit</button>
                 </div>
               </div>
             </div>

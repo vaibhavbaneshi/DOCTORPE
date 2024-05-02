@@ -60,7 +60,7 @@ export default function StressPrediction() {
                   <div className="md:col-span-1">
                       <InputBox
                         onChange={(e) => setText(e.target.value)}
-                        label="enter how feel in more than 50 words"
+                        label="Enter how you feel in more than 50 words"
                         type="text"
                         name="text"
                         id="text"

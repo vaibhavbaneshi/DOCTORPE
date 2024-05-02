@@ -55,7 +55,7 @@
 .home-banner-left {
     width: 50%;
     text-align: left;
-    padding: 40px 0px 40px 60px;
+    padding: 70px 0px 48px 80px;
 }
 
 /* .home-banner-practo-care {
@@ -64,7 +64,7 @@
 } */
 
 .home-banner-left>p:nth-of-type(1) {
-    padding-top: 22px;
+    padding-top: 29px;
     margin-bottom: 0;
     padding-bottom: 0;
     font-size: 16px;
@@ -76,7 +76,7 @@
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 20px;
-    font-size: 40px;
+    font-size: 50px;
     color: #fff;
 }
 
