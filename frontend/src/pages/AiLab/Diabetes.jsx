@@ -157,7 +157,7 @@ export default function Diabetes() {
               </div>
               <div className="md:col-span-2 text-right">
                 <div className="inline-flex items-end">
-                  <button onClick={handleSubmit} className="bg-cyan-500 hover:bg-[#10f9f9] text-white font-bold py-2 px-4 rounded">Submit</button>
+                  <button onClick={handleSubmit} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white font-bold py-2 px-4 rounded">Submit</button>
                 </div>
               </div>
             </div>
