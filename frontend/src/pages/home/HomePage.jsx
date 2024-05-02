@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react'
 import './HomePage.css'
 import { AppoinmentSlider } from '../../components/Home/AppoinmentSlider'
 import { ArticleCard } from '../../components/Home/ArticleCard'
