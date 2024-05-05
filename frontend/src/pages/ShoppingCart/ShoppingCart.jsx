@@ -139,7 +139,7 @@ export const ShoppingCart = () => {
                             </div>
 
                             <div onClick={handleClick} className='flex flex-col items-center pt-14'>
-                                {totalItems > 0 || totalAmount > 0 ? ( // Check if either totalItems or totalAmount is greater than 0
+                                {totalItems > 0 || totalAmount > 0 ? ( 
                                     <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (
                                     <button disabled className="order" style={{ cursor: 'not-allowed' }}>
