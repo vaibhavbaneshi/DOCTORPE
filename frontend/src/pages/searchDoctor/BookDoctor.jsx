@@ -10,6 +10,38 @@ import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSen
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
 import { DoctorLocation } from "../../components/DoctorLocation/DoctorLocation.jsx";
+import './DoctorLocation.css'
+
+const initLocations = [
+    {
+        place: "Raipur",
+        city: "Raipur"
+    },
+    {
+        place: "Delhi",
+        city: "Delhi"
+    },
+    {
+        place: "Indore",
+        city: "Indore"
+    },
+    {
+        place: "Sapna Sangeeta",
+        city: "Indore"
+    },
+    {
+        place: "Ab Road",
+        city: "Indore"
+    },
+    {
+        place: "Lig Colony",
+        city: "Indore"
+    },
+    {
+        place: "Sudama Nagar",
+        city: "Indore"
+    },
+]
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -22,6 +54,9 @@ export const BookDoctor = () => {
     const [checkAppointment, setCheckAppointment] = useState(true)
     const { currentUser } = useSelector(state => state.user);
     const [showLoader, setShowLoader] = useState(true)
+    const [locationResultHidden, setLocationResultHidden] = useState(true);
+    const [searchLocation, setSearchLocation] = useState('');
+    const [locations, setLocations] = useState(initLocations);
 
     useEffect(() => {
         axios.get(`https://doctorpe-backend.vercel.app/api/v1/user/searchDoctor`)
@@ -139,6 +174,7 @@ export const BookDoctor = () => {
         }, 5000)
     }
 
+
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
@@ -165,6 +201,25 @@ export const BookDoctor = () => {
 
             <div className="flex flex-col items-center pt-12 -mb-6">
                 <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
+                <div className="home-search-container">
+                    <div className="location-search-box">
+                        <img src={'../../../images/home_location_icon.svg'} alt="" width="22" />
+                        <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
+                        <div className="search-location-input-results" hidden={locationResultHidden}>
+                            {
+                                locations.map(location => <div className="search-location-result-item" key={location.place} onClick={handleLocationSelect} onMouseDown={() => setSearchLocation(location.place)}>
+                                    <span>
+                                        <img src={'../../../images/search.svg'} alt="" width="12" />
+                                    </span>
+                                    <span>
+                                        <div>{location.place}</div>
+                                        <div>{location.city}</div>
+                                    </span>
+                                </div>)
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
             {/* <Flash> */}
 
