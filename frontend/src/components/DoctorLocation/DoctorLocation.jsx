@@ -49,7 +49,7 @@ export const DoctorLocation = ({ handleLocationSelect }) => {
             <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
             <div className="search-location-input-results" hidden={locationResultHidden}>
                 {
-                    locations.map(location => <div className="search-location-result-item" key={location.place} onClick={() => handleLocationSelect} onMouseDown={() => setSearchLocation(location.place)}>
+                    locations.map(location => <div className="search-location-result-item" key={location.place} onClick={handleLocationSelect} onMouseDown={() => setSearchLocation(location.place)}>
                         <span>
                             <img src={'../../../images/search.svg'} alt="" width="12" />
                         </span>
