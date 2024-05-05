@@ -116,26 +116,33 @@ export const BookDoctor = () => {
 
     const handleDateTimeSelection = (date, time) => {
         setSelectedDateTime({ date, time });
-        setShowError(false); // Reset error state when date and time are selected
+        setShowError(false); 
     };
 
     const handleAppointments = (bookedAppointments) => {
         setAppointments(bookedAppointments)
     };
-
+ 
     setTimeout(() => {
         setShowAlert(false)
     }, 5000)
-
+    
     setTimeout(() => {
         setShowLoader(false)
     }, 5000)
+    
+    const handleLocationSelect = () => {
+        setShowLoader(true)
+        setTimeout(() => {
+            setShowLoader(false)
+        }, 5000)
+    }
 
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
-            <DoctorLocation />
+            <DoctorLocation handleLocationClick={handleLocationSelect}/>
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>

@@ -37,21 +37,14 @@ const initSpeciality = [
     'Dentist', 'Gynecologist/obstetrician', 'General Physician', 'Dermatologist', 'Ear-nose-throat (ent) Specialist', 'Homeopath', 'Ayurveda'
 ]
 
-export const DoctorLocation = () => {
+export const DoctorLocation = ({ handleLocationClick }) => {
 
     const [locationResultHidden, setLocationResultHidden] = useState(true);
-    const [doctorResultHidden, setDoctorResultHidden] = useState(true);
     const [searchLocation, setSearchLocation] = useState('');
-    const [searchDoctor, setSearchDoctor] = useState('');
-    const [specialities, setSpecialities] = useState(initSpeciality);
     const [locations, setLocations] = useState(initLocations);
 
-    const navigate = useNavigate();
 
-    const handleDoctorSelect = (speciality) => {
-        setSearchDoctor(speciality);
-        navigate(`/search/doctors?speciality=${speciality}&location=${searchLocation}`);
-    }
+    
 
     return <div className="home-search-container">
         <div className="location-search-box">
@@ -59,7 +52,7 @@ export const DoctorLocation = () => {
             <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
             <div className="search-location-input-results" hidden={locationResultHidden}>
                 {
-                    locations.map(location => <div className="search-location-result-item" key={location.place} onMouseDown={() => setSearchLocation(location.place)}>
+                    locations.map(location => <div className="search-location-result-item" key={location.place} onClick={handleLocationClick} onMouseDown={() => setSearchLocation(location.place)}>
                         <span><img src={'../../../images/search.svg'} alt="" width="12" /></span>
                         <span><div>{location.place}</div><div>{location.city}</div></span>
                     </div>)
