@@ -37,7 +37,7 @@ const initSpeciality = [
     'Dentist', 'Gynecologist/obstetrician', 'General Physician', 'Dermatologist', 'Ear-nose-throat (ent) Specialist', 'Homeopath', 'Ayurveda'
 ]
 
-export const DoctorLocation = ({ handleLocationClick }) => {
+export const DoctorLocation = ({ handleLocationSelect }) => {
 
     const [locationResultHidden, setLocationResultHidden] = useState(true);
     const [searchLocation, setSearchLocation] = useState('');
@@ -49,7 +49,7 @@ export const DoctorLocation = ({ handleLocationClick }) => {
             <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
             <div className="search-location-input-results" hidden={locationResultHidden}>
                 {
-                    locations.map(location => <div className="search-location-result-item" key={location.place} onClick={() => handleLocationClick} onMouseDown={() => setSearchLocation(location.place)}>
+                    locations.map(location => <div className="search-location-result-item" key={location.place} onClick={() => handleLocationSelect} onMouseDown={() => setSearchLocation(location.place)}>
                         <span>
                             <img src={'../../../images/search.svg'} alt="" width="12" />
                         </span>
