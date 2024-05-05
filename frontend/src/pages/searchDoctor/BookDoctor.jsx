@@ -166,8 +166,8 @@ export const BookDoctor = () => {
     }, 5000)
     
     // Function to handle location selection
-const handleLocationSelect = (selectedLocation) => {
-    console.log("Selected location:", selectedLocation);
+const handleLocationSelect = () => {
+    console.log("hi there");
     setShowLoader(true);
     setTimeout(() => {
         setShowLoader(false);
@@ -205,13 +205,14 @@ return (
                     <div className="search-location-input-results" hidden={locationResultHidden}>
                         {
                             locations.map(location => (
-                                <div className="search-location-result-item" key={location.place} onClick={() => handleLocationSelect(location)} onMouseDown={() => setSearchLocation(location.place)}>
+                                <div className="search-location-result-item" key={location.place} onMouseDown={() => setSearchLocation(location.place)}>
                                     <span>
                                         <img src={'../../../images/search.svg'} alt="" width="12" />
                                     </span>
                                     <span>
                                         <div>{location.place}</div>
                                         <div>{location.city}</div>
+                                        <button onClick={handleLocationSelect}>Select</button>
                                     </span>
                                 </div>
                             ))
