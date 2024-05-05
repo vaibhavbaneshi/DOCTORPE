@@ -42,7 +42,7 @@ export const DoctorLocation = ({ handleLocationClick }) => {
     const [locationResultHidden, setLocationResultHidden] = useState(true);
     const [searchLocation, setSearchLocation] = useState('');
     const [locations, setLocations] = useState(initLocations);
-bn
+
     return <div className="home-search-container">
         <div className="location-search-box">
             <img src={'../../../images/home_location_icon.svg'} alt="" width="22" />
