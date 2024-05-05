@@ -132,6 +132,7 @@ export const BookDoctor = () => {
     }, 5000)
     
     const handleLocationSelect = () => {
+        console.log("hi there");
         setShowLoader(true)
         setTimeout(() => {
             setShowLoader(false)
