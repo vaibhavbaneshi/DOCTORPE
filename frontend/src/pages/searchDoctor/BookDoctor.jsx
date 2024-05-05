@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
 import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
+import { DoctorLocation } from "../../components/DoctorLocation/DoctorLocation.jsx";
 
 export const BookDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -134,7 +135,7 @@ export const BookDoctor = () => {
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
-            
+            <DoctorLocation />
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
