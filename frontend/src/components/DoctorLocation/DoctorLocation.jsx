@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './DoctorLcation.css'
 import { useNavigate } from 'react-router-dom'
 
 const initLocations = [
