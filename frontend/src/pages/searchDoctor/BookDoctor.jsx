@@ -165,76 +165,77 @@ export const BookDoctor = () => {
         setShowLoader(false)
     }, 5000)
     
-    const handleLocationSelect = (selectedLocation) => {
-        console.log("Selected location:", selectedLocation);
-        setShowLoader(true);
-        setTimeout(() => {
-            setShowLoader(false);
-        }, 5000);
-    };
-    
-    return (
-        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
-            {/* Your JSX content */}
-            <div className="">
-                <div className="text-2xl font-medium font-serif p-10 pl-20">
-                    <Heading title="Doctors" preText={'Our'}/>
-                </div>
-                <div className="flex justify-around w-100   item-center">
-                    <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
-                        {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "LAB ASSISTANT"].map(specialty => (
-                            <button key={specialty} 
-                                    className={`py-4 px-8 text-xs hover:underline  hover:text-cyan-400 hover:rounded-2xl  ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} 
-                                    onClick={() => handleSpecialtyChange(specialty)}>
-                                {specialty}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+    // Function to handle location selection
+const handleLocationSelect = (selectedLocation) => {
+    console.log("Selected location:", selectedLocation);
+    setShowLoader(true);
+    setTimeout(() => {
+        setShowLoader(false);
+    }, 5000);
+};
+
+return (
+    <div className="bg-gradient-to-br from-slate-100 to-cyan-100 h-full w-full py-2 mx-auto px-6">
+        {/* Your JSX content */}
+        <div className="">
+            <div className="text-2xl font-medium font-serif p-10 pl-20">
+                <Heading title="Doctors" preText={'Our'}/>
             </div>
-    
-            <div className="flex flex-col items-center pt-12 -mb-6">
-                <div>
-                    <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
+            <div className="flex justify-around w-100 item-center">
+                <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-3xl p-3 bg-white hover:underline">
+                    {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "LAB ASSISTANT"].map(specialty => (
+                        <button key={specialty} className={`py-4 px-8 text-xs hover:underline hover:text-cyan-400 hover:rounded-2xl ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} onClick={() => handleSpecialtyChange(specialty)}>
+                            {specialty}
+                        </button>
+                    ))}
                 </div>
-                <div className="home-search-container">
-                    <div className="location-search-box">
-                        <img src={'../../../images/home_location_icon.svg'} alt="" width="22" />
-                        <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
-                        <div className="search-location-input-results" hidden={locationResultHidden}>
-                            {
-                                locations.map(location => (
-                                    <div className="search-location-result-item" key={location.place} onClick={() => handleLocationSelect(location)} onMouseDown={() => setSearchLocation(location.place)}>
-                                        <span>
-                                            <img src={'../../../images/search.svg'} alt="" width="12" />
-                                        </span>
-                                        <span>
-                                            <div>{location.place}</div>
-                                            <div>{location.city}</div>
-                                        </span>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div className="flex items-center justify-center">
-                {showLoader ? <SkeletonLoader/> : 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                        {availableUsers.map(user => (
-                            user.isAvailable ? 
-                                <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> 
-                                : <></>
-                        ))}
-                    </div>
-                }
-            </div>
-    
-            <div>
-                <ChatBotButton />
             </div>
         </div>
-    );
+
+        <div className="flex flex-col items-center pt-12 -mb-6">
+            <div>
+                <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
+            </div>
+        </div>
+
+        <div className="home-search-container">
+                <div className="location-search-box">
+                    <img src={'../../../images/home_location_icon.svg'} alt="" width="22" />
+                    <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
+                    <div className="search-location-input-results" hidden={locationResultHidden}>
+                        {
+                            locations.map(location => (
+                                <div className="search-location-result-item" key={location.place} onClick={() => handleLocationSelect(location)} onMouseDown={() => setSearchLocation(location.place)}>
+                                    <span>
+                                        <img src={'../../../images/search.svg'} alt="" width="12" />
+                                    </span>
+                                    <span>
+                                        <div>{location.place}</div>
+                                        <div>{location.city}</div>
+                                    </span>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+
+        <div className="flex items-center justify-center">
+            {showLoader ? <SkeletonLoader/> : 
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                    {availableUsers.map(user => (
+                        user.isAvailable ? 
+                            <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> 
+                            : <></>
+                    ))}
+                </div>
+            }
+        </div>
+
+        <div>
+            <ChatBotButton />
+        </div>
+    </div>
+);
+
 }    
