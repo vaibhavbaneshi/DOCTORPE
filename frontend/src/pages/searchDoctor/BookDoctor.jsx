@@ -200,8 +200,8 @@ return (
 
         <div className="home-search-container">
                 <div className="location-search-box">
-                    <img src={'../../../images/home_location_icon.svg'} alt="" width="22" />
-                    <input type="text" className="search-location-input-box" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
+                    <img className="rounded-md" src={'../../../images/home_location_icon.svg'} alt="" width="32" />
+                    <input type="text" className="search-location-input-box rounded-md" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
                     <div className="search-location-input-results" hidden={locationResultHidden}>
                         {
                             locations.map(location => (
