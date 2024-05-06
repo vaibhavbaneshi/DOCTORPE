@@ -8,7 +8,7 @@ import { ErrorMessage } from "../../components/Alert/ErrorMessage.jsx";
 import { useSelector } from "react-redux";
 import { sendDoctorBook, sendPatientBook } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
+import DoctorLoadingCard from "../../components/Card/DoctorLoadingCard.jsx";
 import './DoctorLocation.css'
 
 const initLocations = [
@@ -50,15 +50,16 @@ export const BookDoctor = () => {
     const [toDeleteappointments, setToDeleteAppointments] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const [showError, setShowError] = useState(false);
-    const [checkAppointment, setCheckAppointment] = useState(true)
     const { currentUser } = useSelector(state => state.user);
+    const [IsLoading,setIsLoading] =useState(true);
+
     const [showLoader, setShowLoader] = useState(true)
-    const [locationResultHidden, setLocationResultHidden] = useState(true);
     const [searchLocation, setSearchLocation] = useState('');
+    const [locationResultHidden, setLocationResultHidden] = useState(true);
     const [locations, setLocations] = useState(initLocations);
 
     useEffect(() => {
-        axios.get(`https://doctorpe-backend.vercel.app/api/v1/user/searchDoctor`)
+        axios.get("https://doctorpe-backend.vercel.app/api/v1/user/searchDoctor")
             .then(response => {
                 setUsers(response.data); 
             })
@@ -68,7 +69,7 @@ export const BookDoctor = () => {
     }, []);
 
     useEffect(() => {
-        axios.get(`https://doctorpe-backend.vercel.app/api/v1/user/fetchAppointment`)
+        axios.get("https://doctorpe-backend.vercel.app/api/v1/user/fetchAppointment")
             .then(response => {
                 setToDeleteAppointments(response.data); 
             })
@@ -76,6 +77,10 @@ export const BookDoctor = () => {
                 console.error('Error fetching users:', error);
             });
     }, []);
+
+    setTimeout(() => {
+        setIsLoading(false)
+    }, 1000)
 
     let intervalId;
 
@@ -88,12 +93,11 @@ export const BookDoctor = () => {
         for (const appointment of toDeleteappointments) {            
             if (appointment.date < formattedDate) {
                 try {
-                    const response = await axios({
+                    await axios({
                         method: 'delete',
                         url: `https://doctorpe-backend.vercel.app/api/v1/user/deleteAppointment`,
                         data: { appointmentId: appointment._id }
-                    });     
-                    
+                    });                    
                     console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
                 } catch (error) {
                     clearInterval(intervalId)
@@ -102,32 +106,32 @@ export const BookDoctor = () => {
                 }
             }
         }
-    }, 10000);    
+    }, 10000);
 
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
     const availableUsers = filteredUsers.filter(user => {
-           
+
         const isBooked = appointments.some(appointment => {
-               
+
             return (
                 appointment.doctorId === user._id &&
-                appointment.date === selectedDateTime?.date &&
-                appointment.time === selectedDateTime?.time
+                appointment.date === selectedDateTime.date &&
+                appointment.time === selectedDateTime.time
             );
         });
-        
+
         return !isBooked;
     });
-    
+
 
     const handleOnClick = async (doctorId, doctorEmail, doctorFullname, selectedDateTime) => {
-        if (!selectedDateTime?.date || !selectedDateTime?.time) {
-            setShowError(true);
-            return;
+        if(!selectedDateTime) {
+            setShowError(true)
+            return
         }
         try {
-            await axios.post(`https://doctorpe-backend.vercel.app/api/v1/user/bookAppointment`, {
+            await axios.post("https://doctorpe-backend.vercel.app/api/v1/user/bookAppointment", {
                 doctorId, 
                 date: selectedDateTime.date, 
                 time: selectedDateTime.time 
@@ -150,39 +154,35 @@ export const BookDoctor = () => {
 
     const handleDateTimeSelection = (date, time) => {
         setSelectedDateTime({ date, time });
-        setShowError(false); 
     };
 
     const handleAppointments = (bookedAppointments) => {
         setAppointments(bookedAppointments)
     };
- 
-    setTimeout(() => {
-        setShowAlert(false)
-    }, 5000)
-    
-    setTimeout(() => {
-        setShowLoader(false)
-    }, 5000)
-    
-    const handleLocationSelect = () => {
-        console.log("hi there");
+
+    useEffect(() => {
         setShowLoader(true)
         setTimeout(() => {
-            setShowLoader(false)
-        }, 5000)
-    }
+            setIsLoading(false)
+        }, 1000)
+        setIsLoading(true)
 
+    },[searchLocation])
+
+    setTimeout(() => {
+        setShowAlert(false)
+        setShowError(false)
+    }, 5000)
 
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
+
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                {/* <Flash> */}
                     <div className="flex justify-around w-100   item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                             {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "LAB ASSISTANT"].map(specialty => (
@@ -194,18 +194,16 @@ export const BookDoctor = () => {
                             ))}
                         </div>
                     </div>
-                {/* </Flash> */}
+            </div>
+           <div className="flex  justify-center  pt-20">
+            <div className="flex flex-col items-center  -mb-6">
+                <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
             </div>
 
-            <div className="flex flex-col items-center pt-12 -mb-6">
-                <div className="flex">
-                <div className="mr-10">
-                    <Calendar onDateTimeSelect={handleDateTimeSelection} onAppointments={handleAppointments}/>
-                </div>
-                <div className="home-search-container">
-                    <div className="location-search-box">
-                        <img className="rounded-md bg-slate-200 pr-1 border-black" src={'../../../images/home_location_icon.svg'} alt="" width="32" />
-                        <input type="text" className="search-location-input-box rounded-md" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
+            <div className="home-search-container ml-8 shadow-lg">
+                    <div className="location-search-box ">
+                        <img className=" bg-gradient-to-r from-cyan-500 to-blue-500 pr-1 border-black p-1" src={'./images/location-icon.png'} alt="" width="40" />
+                        <input type="text" className="search-location-input-box rounded-r-lg" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
                         <div className="search-location-input-results" hidden={locationResultHidden}>
                             {
                                 locations.map(location => (
@@ -217,13 +215,6 @@ export const BookDoctor = () => {
                                             <div>{location.place}</div>
                                             <div>{location.city}</div>
                                             <button 
-                                                onClick={() => {
-                                                console.log("hi there");
-                                                setShowLoader(true);
-                                                setTimeout(() => {
-                                                    setShowLoader(false);
-                                                }, 5000);}}
-
                                                 className="hover:cursor-pointer rounded-lg px-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white"
                                             >Select</button>
                                         </span>
@@ -233,20 +224,13 @@ export const BookDoctor = () => {
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
-            {/* <Flash> */}
 
-            <div className="flex items-center justify-center">
-            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            </div>
+               {IsLoading?<div className="grid grid-cols-5"><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/></div>: <div className="grid grid-cols-5">
                     {availableUsers.map(user => (
-                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
+                        <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
                     ))}
                 </div>}
-            </div>
-
-            {/* </Flash> */}
-
             <div>
                 <ChatBotButton />
             </div>

@@ -88,7 +88,7 @@ export const ShoppingCart = () => {
                 <div className="flex justify-between bg-slate-100">
                     <div className="bg-slate-100 w-3/4 mr-28">
                         <div>
-                            <div className="text-2xl pl-4 font-semibold mb-4">Cart Items</div>
+                            <div className="text-3xl pl-4 font-semibold mb-4">Cart Items</div>
                             <div>
                                 {cartItems.length === 0 ? (
                                     <div className='flex flex-col items-center'>
@@ -112,13 +112,13 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white w-1/4 h-auto mt-12 rounded-3xl">
+                    <div className="bg-white w-1/4 h-3/4 mt-12 rounded-3xl">
                         <div className='p-4 flex flex-col items-center text-2xl'>
-                            <strong>Your Items</strong>
+                            <strong>Checkout Details</strong>
                         </div>
 
-                        <div>
-                            <div className='flex justify-between p-5 text-sm'>
+                        <div className=''>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <div>
                                     Total Items :
                                 </div>
@@ -128,7 +128,7 @@ export const ShoppingCart = () => {
                                 </div>
                             </div>
 
-                            <div className='flex justify-between p-5 text-sm'>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <div>
                                     Total Amount :
                                 </div>
@@ -138,24 +138,24 @@ export const ShoppingCart = () => {
                                 </div>
                             </div>
 
-                            <div className='flex justify-between p-5 text-sm'>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <span>Your Address :</span>
                                 <input className='rounded-lg' type="text" placeholder='Your Address'/>
                             </div>
-                            <div className='flex justify-between p-5 text-sm'>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <span>City :</span>
                                 <input className='rounded-lg' type="text" placeholder='City'/>
                             </div>
-                            <div className='flex justify-between p-5 text-sm'>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <span>State :</span>
                                 <input className='rounded-lg' type="text" placeholder='State'/>
                             </div>
-                            <div className='flex justify-between p-5 text-sm'>
+                            <div className='flex justify-between p-5 text-xl'>
                                 <span>Pincode : </span>
                                 <input className='rounded-lg' type="text" placeholder='Pincode'/>
                             </div>
 
-                            <div onClick={handleClick} className='flex flex-col items-center pt-14 pb-2'>
+                            <div onClick={handleClick} className='flex flex-col items-center pt-14 pb-5'>
                                 {totalItems > 0 || totalAmount > 0 ? ( 
                                     <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (

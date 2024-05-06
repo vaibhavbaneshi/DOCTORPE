@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import randomString from "crypto-random-string";
 import { sendDoctorConsult, sendPatientConsult } from "../../components/Email/EmailSend.js";
 import ChatBotButton from "../../components/ChatBot/ChatBotButton.jsx";
-import { SkeletonLoader } from "../../components/Loader/SkeletonLoader.jsx";
+import DoctorLoadingCard from "../../components/Card/DoctorLoadingCard.jsx";
 
 export const SearchDoctor = () => {
     const [users, setUsers] = useState([]);
@@ -14,7 +14,7 @@ export const SearchDoctor = () => {
     const { currentUser } = useSelector(state => state.user);
     const [showAlert, setShowAlert] = useState(false);
     const [ count, setCount ] = useState(5);
-    const [showLoader, setShowLoader] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
 
     const getRandomCode = () => {
         const threeLengthCode = () => randomString({ length: 3, type: "distinguishable" });
@@ -73,8 +73,8 @@ export const SearchDoctor = () => {
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
     setTimeout(() => {
-        setShowLoader(false)
-    }, 5000)
+        setIsLoading(false)
+    }, 1000)
 
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6 relative">
@@ -98,7 +98,6 @@ export const SearchDoctor = () => {
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                {/* <Flash> */}
                     <div className="flex justify-around w-100  item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                             {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY"].map(specialty => (
@@ -110,19 +109,16 @@ export const SearchDoctor = () => {
                             ))}
                         </div>
                     </div>
-                {/* </Flash> */}
             </div>
 
-            {/* <Flash> */}
-            <div className="flex items-center justify-center">
-            {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {isLoading?<div className="grid grid-cols-5"><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/></div>: <div className="grid grid-cols-5">
                     {filteredUsers.map(user => (
-                        user.isAvailable ? <DoctorCard key={user._id} onClick={() => handleOnClick(user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Consult Now"}/> : <></>
+                        <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
                     ))}
-            </div>}
+                </div>}
+            <div className="flex items-center justify-center">
             </div>
                 
-            {/* </Flash> */}
             <div>
                 <ChatBotButton />
             </div>

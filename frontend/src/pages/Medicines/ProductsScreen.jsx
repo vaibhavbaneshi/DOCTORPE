@@ -6,18 +6,17 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
 import { SuccessMessage } from '../../components/Alert/SuccessMessage';
-import { SkeletonLoader } from '../../components/Loader/SkeletonLoader';
-
+import LoadingProduct from '../../components/products/LoadingProduct';
 const ProductsScreen = () => {
     const [product, setProducts] = useState([])
     const [showAlert, setShowAlert] = useState(false)
     const dispatch = useDispatch()
-    const [showLoader, setShowLoader] = useState(true)
+    const [IsLoading,setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`https://doctorpe-backend.vercel.app/api/v1/product/getProduct`);
+                const response = await axios.get('https://doctorpe-backend.vercel.app/api/v1/product/getProduct');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -27,7 +26,7 @@ const ProductsScreen = () => {
         fetchProducts();
 
     }, [])
-    
+
     const handleProductSelection = (product) => {
         setShowAlert(true)
         dispatch(selectProduct(product))
@@ -35,11 +34,8 @@ const ProductsScreen = () => {
 
     setTimeout(() => {
         setShowAlert(false)
-    }, 5000)
-
-    setTimeout(() => {
-        setShowLoader(false)
-    }, 2000)
+        setIsLoading(false)
+    }, 1000)
 
     return (
         <div className=" bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full pt-3 mx-auto px-6 ">
@@ -47,13 +43,17 @@ const ProductsScreen = () => {
             <div className="text-2xl font-medium font-serif p-10 pl-20">
                 <Heading title="Products" preText={'Our'}/>
             </div>
+            { IsLoading?  <div className="min-h-screen px-3 flex  justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24 py-8"> <LoadingProduct/><LoadingProduct/><LoadingProduct/><LoadingProduct/></div> :
             <div className='min-h-screen px-3  flex items-center justify-center'>
-                    {showLoader ? <SkeletonLoader/> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
                         {product.map(item => (                          
                             <Product key={Math.random()} {...item} handleProductSelection={handleProductSelection} />
                         ))}
-                    </div>}
-            </div>
+                    </div>
+
+
+                </div> }
             <div>
                 <ChatBotButton />
             </div>

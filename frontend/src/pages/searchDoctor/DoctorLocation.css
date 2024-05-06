@@ -6,35 +6,38 @@
 }
 
 .location-search-box>img {
-    border: 1px solid #ddd;
-    border-right: none;
     height: 40px;
     padding-left: 5px;
+    border-top-left-radius: 20%;
+    border-bottom-left-radius: 20%;
+    border-right: none;
 }
 
 .search-location-input-box {
     height: 40px;
     width: 100%;
     padding: 6px 20px 5px 10px;
-    border: 1px solid #ddd;
+    border: .5px solid #ddd;
     border-left: none;
     outline: none;
+    border:none;
     cursor: pointer;
     font-size: 14px;
 }
 
 .search-location-input-results {
     position: absolute;
-    top: 40px;
+    top: 37px;
     left: 0;
     width: 100%;
-    z-index: 5;
+    z-index: 1;
     margin-top: 2px;
-    border: 1px solid #555;
+    background-color: #fff;
+    border: 0.3px solid #969696;
 }
 
 .search-location-result-item {
-    height: 70px;
+    height: 80px;
     display: flex;
     align-items: center;
     background-color: #fff;
@@ -66,9 +69,6 @@
     background-color: #f0f0f5;
 
 }
-
-
-
 
 .doctor-search-box {
     display: flex;
