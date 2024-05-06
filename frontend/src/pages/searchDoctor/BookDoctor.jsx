@@ -207,12 +207,12 @@ return (
                             locations.map(location => (
                                 <div className="search-location-result-item" key={location.place} onMouseDown={() => setSearchLocation(location.place)}>
                                     <span>
-                                        <img src={'../../../images/search.svg'} alt="" width="12" />
+                                        <img src={'../../../images/search.svg'} alt="" width="20" />
                                     </span>
                                     <span>
                                         <div>{location.place}</div>
                                         <div>{location.city}</div>
-                                        <button onClick={handleLocationSelect}>Select</button>
+                                        <button onClick={() => handleLocationSelect}>Select</button>
                                     </span>
                                 </div>
                             ))
