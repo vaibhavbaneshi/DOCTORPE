@@ -112,7 +112,7 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white w-1/4 h-80 mt-12 rounded-3xl">
+                    <div className="bg-white w-1/4 h-auto mt-12 rounded-3xl">
                         <div className='p-4 flex flex-col items-center text-2xl'>
                             <strong>Your Items</strong>
                         </div>
@@ -138,7 +138,24 @@ export const ShoppingCart = () => {
                                 </div>
                             </div>
 
-                            <div onClick={handleClick} className='flex flex-col items-center pt-14'>
+                            <div className='flex justify-between p-5 text-sm'>
+                                <span>Your Address :</span>
+                                <input className='rounded-lg' type="text" placeholder='Your Address'/>
+                            </div>
+                            <div className='flex justify-between p-5 text-sm'>
+                                <span>City :</span>
+                                <input className='rounded-lg' type="text" placeholder='City'/>
+                            </div>
+                            <div className='flex justify-between p-5 text-sm'>
+                                <span>State :</span>
+                                <input className='rounded-lg' type="text" placeholder='State'/>
+                            </div>
+                            <div className='flex justify-between p-5 text-sm'>
+                                <span>Pincode : </span>
+                                <input className='rounded-lg' type="text" placeholder='Pincode'/>
+                            </div>
+
+                            <div onClick={handleClick} className='flex flex-col items-center pt-14 pb-2'>
                                 {totalItems > 0 || totalAmount > 0 ? ( 
                                     <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (
