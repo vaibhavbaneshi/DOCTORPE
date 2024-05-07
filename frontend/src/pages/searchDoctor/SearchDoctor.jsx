@@ -103,7 +103,7 @@ export const SearchDoctor = () => {
                 {/* <Flash> */}
                     <div className="flex justify-around w-100  item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
-                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
+                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY"].map(specialty => (
                                 <button key={specialty} 
                                         className={`py-4 px-8 text-xs hover:underline  hover:text-cyan-400 hover:rounded-2xl  ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} 
                                         onClick={() => handleSpecialtyChange(specialty)}>
