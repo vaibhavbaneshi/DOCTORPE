@@ -43,7 +43,7 @@ const ProductsScreen = () => {
             <div className="text-2xl font-medium font-serif p-10 pl-20">
                 <Heading title="Products" preText={'Our'}/>
             </div>
-            { IsLoading?  <div className="min-h-screen px-3 flex  justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24 py-8"> <LoadingProduct/><LoadingProduct/><LoadingProduct/><LoadingProduct/></div> :
+            { IsLoading?  <div className="min-h-screen px-3 justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24 py-8"> <LoadingProduct/><LoadingProduct/><LoadingProduct/><LoadingProduct/></div> :
             <div className='min-h-screen px-3  flex items-center justify-center'>
                  
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
