@@ -35,7 +35,7 @@ const ProductsScreen = () => {
     setTimeout(() => {
         setShowAlert(false)
         setIsLoading(false)
-    }, 1000)
+    }, 3000)
 
     return (
         <div className=" bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full pt-3 mx-auto px-6 ">
