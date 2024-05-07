@@ -217,7 +217,7 @@ export default function HeartHealth() {
                     </div>
                     <div className="md:col-span-1">
                     <div className="md:col-span-5 mb-4">
-                        <label htmlFor="thalassemia">thalassemia</label>
+                        <label htmlFor="thalassemia">Thalassemia</label>
                         <select
                           onChange={(e) => setThal( e.target.value)}
                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
