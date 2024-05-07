@@ -175,7 +175,7 @@ export const BookDoctor = () => {
     }, 5000)
 
     return (
-        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6">
+        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  min-h-screen w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
 

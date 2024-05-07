@@ -36,7 +36,7 @@ export const ProductInCart = ({ id, title, description, price, image, quantity, 
 
     return (
         <>
-            <div className='p-4 bg-white mx-4 rounded-3xl mb-4'>
+            <div className='p-4 bg-white mx-4 rounded-3xl mb-4 shadow-lg'>
                 <label htmlFor=""></label>
                 <div className='w-72'>
                     <img className='w-full h-full' src={image} alt="product image" />

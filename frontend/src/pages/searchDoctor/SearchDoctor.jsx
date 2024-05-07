@@ -77,7 +77,7 @@ export const SearchDoctor = () => {
     }, 1000)
 
     return (
-        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full py-2 mx-auto px-6 relative">
+        <div className="bg-gradient-to-br from-slate-100 to-cyan-100  min-h-screen w-full py-2 mx-auto px-6 relative">
             {showAlert && (
                 <div className="ml-96 bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded mt-4 sticky top-0 z-10 inline-block">
                     <div className="flex items-center">

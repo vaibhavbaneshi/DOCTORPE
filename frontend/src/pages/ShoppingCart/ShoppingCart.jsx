@@ -79,14 +79,14 @@ export const ShoppingCart = () => {
     }
     
     return (
-        <div className="bg-slate-100 h-screen pt-12 mx-auto px-6">
+        <div className="bg-gradient-to-br from-slate-100 to-cyan-100 min-h-screen pt-12 mx-auto px-6">
             <div>
                 <div>
                     <Heading title={'Orders'} preText={'My'} />
                 </div>
 
-                <div className="flex justify-between bg-slate-100">
-                    <div className="bg-slate-100 w-3/4 mr-28">
+                <div className="flex justify-between p-10 mb-8 ">
+                    <div className=" mr-28">
                         <div>
                             <div className="text-3xl pl-4 font-semibold mb-4">Cart Items</div>
                             <div>
