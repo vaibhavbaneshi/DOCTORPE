@@ -15,6 +15,7 @@ export const ShoppingCart = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [animate, setAnimate] = useState(false);
     const dispatch = useDispatch()
+    const [addressError, setAddressError] = useState(false)
 
     useEffect(() => {
         setCartItems(selectedProducts);
@@ -51,6 +52,13 @@ export const ShoppingCart = () => {
 
     const handleClick = async () => {
 
+        if (!addressIsValid()) {
+            setAddressError(true);
+            return; 
+        } else {
+            setAddressError(false);
+        }
+
         dispatch(cartTotalItems(totalItems))
         dispatch(cartTotalAmount(totalAmount))
 
@@ -76,6 +84,15 @@ export const ShoppingCart = () => {
                 })
             } 
         }, 7000)
+    }
+
+    const addressIsValid = () => {
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        
+        return address !== '' && city !== '' && state !== '' && pincode !== '';
     }
     
     return (
@@ -140,23 +157,27 @@ export const ShoppingCart = () => {
 
                             <div className='flex justify-between p-5 text-xl'>
                                 <span>Your Address :</span>
-                                <input className='rounded-lg' type="text" placeholder='Your Address'/>
+                                <input id="address" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='Your Address'/>
                             </div>
                             <div className='flex justify-between p-5 text-xl'>
                                 <span>City :</span>
-                                <input className='rounded-lg' type="text" placeholder='City'/>
+                                <input id="city" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='City'/>
                             </div>
                             <div className='flex justify-between p-5 text-xl'>
                                 <span>State :</span>
-                                <input className='rounded-lg' type="text" placeholder='State'/>
+                                <input id="state" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='State'/>
                             </div>
                             <div className='flex justify-between p-5 text-xl'>
                                 <span>Pincode : </span>
-                                <input className='rounded-lg' type="text" placeholder='Pincode'/>
+                                <input id="pincode" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='Pincode'/>
                             </div>
 
+                            {addressError && (
+                                <div className="text-red-500 text-sm mt-2">Please fill in all address fields!!!</div>
+                            )}
+
                             <div onClick={handleClick} className='complete-order mt-6 flex flex-col items-center pt-9'>
-                                {totalItems > 0 || totalAmount > 0 ? ( // Check if either totalItems or totalAmount is greater than 0
+                                {totalItems > 0 || totalAmount > 0 ? ( 
                                     <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (
                                     <button disabled className="order" style={{ cursor: 'not-allowed' }}>
@@ -164,7 +185,6 @@ export const ShoppingCart = () => {
                                     </button>
                                 )}
                             </div>
-
                         </div>
                     </div>
                 </div>
