@@ -81,7 +81,9 @@ export const BookDoctor = () => {
         setIsLoading(false)
     }, 1000)
 
-    setInterval(async () => {
+    let interval;
+
+    interval = setInterval(async () => {
         const currentDate = new Date();
         var year = currentDate.getFullYear();
         var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -97,7 +99,9 @@ export const BookDoctor = () => {
                     });                    
                     console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
                 } catch (error) {
+                    clearInterval(interval)
                     console.error('Error deleting appointment:', error);
+                    break;
                 }
             }
         }

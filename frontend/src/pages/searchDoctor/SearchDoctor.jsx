@@ -13,7 +13,7 @@ export const SearchDoctor = () => {
     const [selectedSpecialty, setSelectedSpecialty] = useState("ALL");
     const { currentUser } = useSelector(state => state.user);
     const [showAlert, setShowAlert] = useState(false);
-    const [ count, setCount ] = useState(5);
+    const [count, setCount] = useState(5);
     const [isLoading, setIsLoading] = useState(true);
 
     const getRandomCode = () => {
@@ -29,27 +29,26 @@ export const SearchDoctor = () => {
             console.error('Error fetching users:', error);
         }
     };
+
     useEffect(() => {   
         fetchData();
     }, []);
 
 
-        let timeoutId;
-    
-        const countdown = () => {
-            setCount(prevCount => prevCount - 1);
-            if (count === 1) {
-                clearTimeout(timeoutId);
-                window.location.href = 'https://online-meet-rosy.vercel.app/';
-            }
-        };
+    let timeoutId;
+
+    const countdown = () => {
+        setCount(prevCount => prevCount - 1);
+        if (count === 1) {
+            clearTimeout(timeoutId);
+            window.location.href = 'https://online-meet-rosy.vercel.app/';
+        }
+    };
+
     useEffect(() => {
-        
-    
         if (showAlert) {
             timeoutId = setInterval(countdown, 1000);
         }
-    
         return () => clearInterval(timeoutId);
     }, [showAlert, count]);
 
@@ -64,8 +63,6 @@ export const SearchDoctor = () => {
 
         sendDoctorConsult(email, fullname, callIdString)
         sendPatientConsult(loggedInPatientEmail, loggedInPatientfullname, callIdString)
-
-        
     };
 
     const handleSpecialtyChange = (specialty) => {
@@ -100,7 +97,6 @@ export const SearchDoctor = () => {
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
-                {/* <Flash> */}
                     <div className="flex justify-around w-100  item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
                             {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY"].map(specialty => (
@@ -112,18 +108,13 @@ export const SearchDoctor = () => {
                             ))}
                         </div>
                     </div>
-                {/* </Flash> */}
             </div>
 
-            {/* <Flash> */}
             {isLoading ?<div className="grid grid-cols-5"><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/></div>
             :<div className="grid grid-cols-5">{filteredUsers.map(user => (
-                // console.log(user.speciality);
-            //    <><h1>{user.speciality}</h1>
-                        <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
-                          ))}
+            <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
+                ))}
                 </div>}
-            {/* </Flash> */}
             <div>
                 <ChatBotButton />
             </div>

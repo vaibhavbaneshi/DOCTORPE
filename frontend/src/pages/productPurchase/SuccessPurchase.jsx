@@ -2,14 +2,13 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import { successOrder } from '../../redux/user/userSlice';
 import { sendDelivery } from "../../components/Email/EmailSend";
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { SuccessMessage } from "../../components/Alert/SuccessMessage";
 
-export const SuccessPurchase = ({ itemTotal, itemAmount }) => {
+export const SuccessPurchase = () => {
     const { totalItems, totalAmount, currentUser } = useSelector(state => state.user);
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const params = useParams()
 
     const loggedInPatientEmail = currentUser.data.email;
     const loggedInPatientfullname = currentUser.data.firstName + ' ' + currentUser.data.lastName;
