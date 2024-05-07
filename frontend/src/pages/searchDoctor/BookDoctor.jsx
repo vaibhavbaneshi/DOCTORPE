@@ -53,10 +53,9 @@ export const BookDoctor = () => {
     const { currentUser } = useSelector(state => state.user);
     const [IsLoading,setIsLoading] =useState(true);
 
-    const [showLoader, setShowLoader] = useState(true)
     const [searchLocation, setSearchLocation] = useState('');
     const [locationResultHidden, setLocationResultHidden] = useState(true);
-    const [locations, setLocations] = useState(initLocations);
+
 
     useEffect(() => {
         axios.get("https://doctorpe-backend.vercel.app/api/v1/user/searchDoctor")
@@ -82,9 +81,7 @@ export const BookDoctor = () => {
         setIsLoading(false)
     }, 1000)
 
-    let intervalId;
-
-    intervalId = setInterval(async () => {
+    setInterval(async () => {
         const currentDate = new Date();
         var year = currentDate.getFullYear();
         var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -100,9 +97,7 @@ export const BookDoctor = () => {
                     });                    
                     console.log(`Appointment ${appointment._id} deleted because its date and time have passed.`);
                 } catch (error) {
-                    clearInterval(intervalId)
                     console.error('Error deleting appointment:', error);
-                    break;
                 }
             }
         }
@@ -111,19 +106,19 @@ export const BookDoctor = () => {
     const filteredUsers = selectedSpecialty === "ALL" ? users : users.filter(user => user.speciality === selectedSpecialty);
 
     const availableUsers = filteredUsers.filter(user => {
-
+           
         const isBooked = appointments.some(appointment => {
-
+               
             return (
                 appointment.doctorId === user._id &&
                 appointment.date === selectedDateTime.date &&
                 appointment.time === selectedDateTime.time
             );
         });
-
+        
         return !isBooked;
     });
-
+    
 
     const handleOnClick = async (doctorId, doctorEmail, doctorFullname, selectedDateTime) => {
         if(!selectedDateTime) {
@@ -161,7 +156,6 @@ export const BookDoctor = () => {
     };
 
     useEffect(() => {
-        setShowLoader(true)
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
@@ -178,14 +172,14 @@ export const BookDoctor = () => {
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  min-h-screen w-full py-2 mx-auto px-6">
             {showError && <ErrorMessage message="Please select Date and Time" />}
             {showAlert && <SuccessMessage message={`Your Appointment has been scheduled and details have been sent to your email : ${currentUser.data.email}`} />}
-
+            
             <div className="">
                 <div className="text-2xl font-medium font-serif p-10 pl-20">
                     <Heading title="Doctors" preText={'Our'}/>
                 </div>
                     <div className="flex justify-around w-100   item-center">
                         <div className="transition duration-700 ease-in-out transform hover:scale-105 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500  rounded-3xl p-3 bg-white hover:underline ">
-                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "LAB ASSISTANT"].map(specialty => (
+                            {["ALL", "CARDIOLOGY", "ORTHOPEDICS", "CONCOLOGY", "DERMATOLOGY", "SURGERY", "GYNOCOLOGY"].map(specialty => (
                                 <button key={specialty} 
                                         className={`py-4 px-8 text-xs hover:underline  hover:text-cyan-400 hover:rounded-2xl  ${selectedSpecialty === specialty ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:text-cyan-50 rounded-2xl' : ''}`} 
                                         onClick={() => handleSpecialtyChange(specialty)}>
@@ -206,7 +200,7 @@ export const BookDoctor = () => {
                         <input type="text" className="search-location-input-box rounded-r-lg" placeholder="Search location" onFocus={() => setLocationResultHidden(false)} onBlur={() => setLocationResultHidden(true)} value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} />
                         <div className="search-location-input-results" hidden={locationResultHidden}>
                             {
-                                locations.map(location => (
+                                initLocations.map(location => (
                                     <div className="search-location-result-item" key={location.place} onMouseDown={() => setSearchLocation(location.place)}>
                                         <span>
                                             <img src={'../../../images/search.svg'} alt="" width="20" />
@@ -224,13 +218,15 @@ export const BookDoctor = () => {
                         </div>
                     </div>
                 </div>
-
+            
             </div>
+
                {IsLoading?<div className="grid grid-cols-5"><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/><DoctorLoadingCard/></div>: <div className="grid grid-cols-5">
                     {availableUsers.map(user => (
                         <DoctorCard key={user._id} onClick={() => handleOnClick(user._id, user.email, user.fullname, selectedDateTime)} name={user.fullname} email={user.email} description={"Sample Description"} speciality={user.speciality} label={"Schedule Appointment"}/>
                     ))}
                 </div>}
+
             <div>
                 <ChatBotButton />
             </div>

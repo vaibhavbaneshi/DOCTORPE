@@ -14,9 +14,7 @@ export default function AiLabHeader(){
             setSelectedModel("Heart Health Prediction")
             navigate("/AI_Lab/Heart_Health");
         }
-        // else if(model === "Mental Health Prediction"){
-        //     navigate("/diabetes");
-        // }
+
     }
 
     return (

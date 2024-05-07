@@ -1,0 +1,34 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.str-video {
+  background-color: #2d3748;
+  /* background-image: url("https://wallpapercave.com/wp/wp3006049.jpg"); */
+  color: #d4d4d4;
+  height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.str-video__participant-view.str-video__participant-view--dominant-speaker{
+  border-radius: 1rem;
+  /* background-color: blue; */
+}
+
+.str-video__speaker-layout__spotlight{
+background-color: rgba(255, 255, 255, 0);
+padding: 0;
+margin: 0;
+border: 0;
+border-radius: 1rem;
+}
+
+/* <div data-testid="participant-view" class="str-video__participant-view str-video__participant-view--dominant-speaker"><video autoplay="" class="str-video__video str-video__video--mirror" data-user-id="guest-fa38279c-f9b3-445d-9cbd-33e9bc6ee25d-Harshit" data-session-id="0afbd721-2e34-4474-a244-77c050b9de27" playsinline=""></video><button class="str-video__call-controls__button"><span class="str-video__icon str-video__icon--ellipsis"></span></button><div class="str-video__participant-details"><span class="str-video__participant-details__name">Hasa<span class="str-video__speech-indicator str-video__speech-indicator--dominant"><span class="str-video__speech-indicator__bar"></span><span class="str-video__speech-indicator__bar"></span><span class="str-video__speech-indicator__bar"></span></span></span></div><div><span class="str-video__participant-details__connection-quality str-video__participant-details__connection-quality--excellent" title="excellent"></span></div></div></div> */

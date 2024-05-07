@@ -55,7 +55,7 @@
 .home-banner-left {
     width: 50%;
     text-align: left;
-    padding: 70px 0px 48px 80px;
+    padding: 90px 0px 40px 90px;
 }
 
 /* .home-banner-practo-care {
@@ -64,10 +64,10 @@
 } */
 
 .home-banner-left>p:nth-of-type(1) {
-    padding-top: 29px;
+    padding-top: 22px;
     margin-bottom: 0;
     padding-bottom: 0;
-    font-size: 16px;
+    font-size: 18px;
     color: #fff;
 }
 
@@ -76,7 +76,7 @@
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 20px;
-    font-size: 50px;
+    font-size: 40px;
     color: #fff;
 }
 
@@ -89,7 +89,7 @@
 
 .home-banner-right>img {
     position: absolute;
-    top: -4.8vh;
+    top: -4.5vh;
     mix-blend-mode: color-burn;
     height: 52vh
 }
@@ -136,9 +136,9 @@
 
 .home-appoinments {
     text-align: left;
+    width: 70vw;
     margin-top: 50px;
-    width: 80vw;
-    overflow-x: hidden;
+    position: relative;
 }
 
 .home-appoinments>p:nth-of-type(1) {
@@ -309,4 +309,8 @@
     font-weight: 400;
     justify-content: space-between;
     margin-right: 15px;
+}
+
+.chatbot{
+z-index: 80%;
 }

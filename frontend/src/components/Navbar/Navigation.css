@@ -16,19 +16,19 @@
     display: flex;
     align-items: center;
     /* justify-content: space-between; */
-    padding: 0px 30px;
+    padding: 0px 90px;
     color: #414146;
     box-sizing: border-box;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    margin-left: 14vw;
     /* z-index: 200; */
 }
 
 .nav-logo {
     width: 120px;
     height: 5rem;
-    aspect-ratio: 3/2;
     object-fit:fill;
     mix-blend-mode: color-burn;
 }
@@ -42,7 +42,8 @@
 .div-nav-middle {
     padding: 0 20px;
     display: flex;
-    margin-left: 13vw;
+
+    margin-left: 7vw;
 }
 
 .div-nav-middle-item {

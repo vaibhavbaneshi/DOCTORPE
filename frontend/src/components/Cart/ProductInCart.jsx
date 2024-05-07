@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios"
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
-
+import "../../pages/ShoppingCart/ShoppingCart.css"
 export const ProductInCart = ({ id, title, description, price, image, quantity, onQuantityChange }) => {
     const [productQuantity, setProductQuantity] = useState(quantity || 1);
     const dispatch = useDispatch()
@@ -10,7 +10,7 @@ export const ProductInCart = ({ id, title, description, price, image, quantity, 
     const increaseQuantity = async () => {
         const newQuantity = productQuantity + 1; 
 
-        const response = await axios.put(`https://doctorpe-backend.vercel.app/api/v1/product/updateProductQuantity`, {
+        const response = await axios.put('https://doctorpe-backend.vercel.app/api/v1/product/updateProductQuantity', {
             id: id,
             quantity: newQuantity
         })
@@ -23,7 +23,7 @@ export const ProductInCart = ({ id, title, description, price, image, quantity, 
     const decreaseQuantity = async () => {
         if (productQuantity > 1) { // Check productQuantity state
             const newQuantity = productQuantity - 1;
-            const response = await axios.put(`https://doctorpe-backend.vercel.app/api/v1/product/updateProductQuantity`, {
+            const response = await axios.put('https://doctorpe-backend.vercel.app/api/v1/product/updateProductQuantity', {
                 id: id,
                 quantity: newQuantity
             })
@@ -36,10 +36,10 @@ export const ProductInCart = ({ id, title, description, price, image, quantity, 
 
     return (
         <>
-            <div className='p-4 bg-white mx-4 rounded-3xl mb-4 shadow-lg'>
+            <div className='Main-ShoppingCart p-4 mt-10 flex items-center bg-white mx-4 rounded-3xl mb-4 shadow-lg'>
                 <label htmlFor=""></label>
-                <div className='w-72'>
-                    <img className='w-full h-full' src={image} alt="product image" />
+                <div >
+                    <div className='w-60'><img className='w-full h-full' src={image} alt="product image" /></div>
                 </div>
                 <div className="">
                     <h1><strong>Name :</strong> {title}</h1>

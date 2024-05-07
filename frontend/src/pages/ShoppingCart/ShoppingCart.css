@@ -1,11 +1,16 @@
 .yourItems{
     height:50vh;
+    /* width: ; */
+
+    
 }
 .yourItems-head{
     border-bottom: 0.1rem solid rgba(0, 0, 0, 0.173);
+    /* border-radius: 90%; */
 }
 .cart-items{
     font-size:3rem;
+    /* border-bottom: 0.1rem solid rgba(0, 0, 0, 0.173); */
     height: 4.5vh;
 }
 .complete-order{
@@ -13,6 +18,7 @@
 }
 .Main-ShoppingCart{
     width: 62vw;
+    height: 25vh;
 }
 
 .empty-text{margin-top: 20rem;}

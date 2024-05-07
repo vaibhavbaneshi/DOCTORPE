@@ -77,18 +77,11 @@ const TiltCard = ({text,link,image}) => {
       style={{
         transformStyle: "preserve-3d",
         transform,
-        // padding:"10px"
-        // width:"17vw",
-        // height:"50vh",
-        // onMouseOver:"this.style.width:'500px'"
         
       }}
       className="motion-div flex flex-col items-center justify rounded-2xl p-4 "
     >
       <div className="AiCard flex justify-center items-center  rounded-2xl  shadow-lg  ">
-        {/* <p className="text-center text-2xl font-bold"  >
-          {text}
-        </p> */}
         <img className="AiCard-img rounded-2xl mt-1" src={image} alt="image" />
       </div>
       <p className="AiCard text-center text-xl font-bold pt-6 hover-scale-105"  >

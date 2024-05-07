@@ -1,6 +1,6 @@
 .appoinment-card {
     width: 280px;
-    margin-right: 20px;
+    margin: 20px;
     cursor: pointer;
     display: inline-block;
     flex-shrink: 0;

@@ -70,8 +70,6 @@ export default function HeartHealth() {
 
                 <div className="lg:col-span-2">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-2 md:grid-cols-2">
-
-                    {/* New Input Fields */}
                     <div className="md:col-span-1">
                       <InputBox
                         label="Age"
@@ -232,7 +230,6 @@ export default function HeartHealth() {
                         </select>
                         </div>
                     </div>
-                    {/* Add other input fields similarly */}
                   </div>
                 </div>
               </div>

@@ -5,8 +5,8 @@ import { ProductInCart } from '../../components/Cart/ProductInCart';
 import { OrderButton } from '../../components/OrderButton/OrderButton';
 import { loadStripe } from '@stripe/stripe-js'
 import axios from "axios";
+import "./ShoppingCart.css"
 import { cartTotalAmount, cartTotalItems } from '../../redux/user/userSlice';
-import ChatBotButton from '../../components/ChatBot/ChatBotButton';
 
 export const ShoppingCart = () => {
     const { selectedProducts } = useSelector(state => state.user);
@@ -63,7 +63,7 @@ export const ShoppingCart = () => {
 
         const stripe = await loadStripe("pk_test_51P4GrcSGmMcizrM94ZF4gAIGxKyWSKpidAGQgksJ06zdo3Vt9ZR1jqRcnC7CBbzXDPolgJUUpeeWYktSn62JloV500ZzuN3Mcn")
 
-        const response = await axios.post(`https://doctorpe-backend.vercel.app/api/v1/product/purchaseProduct/createCheckoutSession`, {
+        const response = await axios.post("https://doctorpe-backend.vercel.app/api/v1/product/purchaseProduct/createCheckoutSession", {
             products: selectedProducts,
         })
 
@@ -87,12 +87,12 @@ export const ShoppingCart = () => {
 
                 <div className="flex justify-between p-10 mb-8 ">
                     <div className=" mr-28">
-                        <div>
-                            <div className="text-3xl pl-4 font-semibold mb-4">Cart Items</div>
-                            <div>
+                        <div >
+                            <div className="cart-items pl-4 mb-4">Cart Items</div>
+                            <div className='cartItems-Card '>
                                 {cartItems.length === 0 ? (
-                                    <div className='flex flex-col items-center'>
-                                            There are no items in the cart currently...
+                                    <div className='empty-text '>
+                                            There are no items in the cart currently
                                     </div>
                                 ) : (
                                     cartItems.map((item, index) => (
@@ -112,18 +112,18 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white w-1/4 h-3/4 mt-12 rounded-3xl">
-                        <div className='p-4 flex flex-col items-center text-2xl'>
+                    <div className="yourItems bg-white w-1/4 h-3/4 mt-20 rounded-3xl shadow-xl">
+                        <div className='yourItems-head p-4 mt-6 flex flex-col items-center text-2xl'>
                             <strong>Checkout Details</strong>
                         </div>
 
-                        <div className=''>
+                        <div className='p-10'>
                             <div className='flex justify-between p-5 text-xl'>
                                 <div>
                                     Total Items :
                                 </div>
 
-                                <div>
+                                <div className='pr-6'>
                                     {totalItems}
                                 </div>
                             </div>
@@ -155,8 +155,8 @@ export const ShoppingCart = () => {
                                 <input className='rounded-lg' type="text" placeholder='Pincode'/>
                             </div>
 
-                            <div onClick={handleClick} className='flex flex-col items-center pt-14 pb-5'>
-                                {totalItems > 0 || totalAmount > 0 ? ( 
+                            <div onClick={handleClick} className='complete-order mt-6 flex flex-col items-center pt-9'>
+                                {totalItems > 0 || totalAmount > 0 ? ( // Check if either totalItems or totalAmount is greater than 0
                                     <OrderButton onClick={handleClick} animate={animate}/>
                                 ) : (
                                     <button disabled className="order" style={{ cursor: 'not-allowed' }}>
@@ -168,9 +168,6 @@ export const ShoppingCart = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <ChatBotButton />
             </div>
         </div>
     );

@@ -1,8 +1,10 @@
+import { Button } from '@chakra-ui/react'
 import './HomePage.css'
 import { AppoinmentSlider } from '../../components/Home/AppoinmentSlider'
 import { ArticleCard } from '../../components/Home/ArticleCard'
 import { ConsultCard } from '../../components/Home/ConsultCard'
 import { FacilityCard } from '../../components/Home/FacilityCard'
+import { UserReviewCarousel } from '../../components/Home/UserReviewCarousel'
 import { useNavigate } from "react-router-dom"
 import ChatBotButton from '../../components/ChatBot/ChatBotButton'
 import { useEffect, useState } from 'react'
@@ -47,7 +49,7 @@ export const HomePage = () => {
     }
 
     useEffect(() => {
-        axios.put(`https://doctorpe-backend.vercel.app/api/v1/product/updateAllProductQuantity`)
+        axios.put('https://doctorpe-backend.vercel.app/api/v1/product/updateAllProductQuantity')
         const token = localStorage.getItem('token');
 
         if(token) {
@@ -66,7 +68,7 @@ export const HomePage = () => {
                 <p>You are in safe hands</p>
             </div>
             <div className="home-banner-right -mt-1">
-                <img className='' src={'../../../images/banner.png'} alt="banner" />
+                <img className='' src={'../../images/banner.png'} alt="banner" loading='lazy'/>
             </div>
         </section>
         <section className="home-facilities">            
@@ -96,12 +98,11 @@ export const HomePage = () => {
             <div className="home-top-articles-info">
                 <h2>Read top articles from health experts</h2>
                 <p>Health articles that keep you informed about good health practices and achieve your goals.</p>
-                <button onClick={() => window.location.href = "https://jamanetwork.com/journals/jama"} className="button button-primary">See all articles</button>
+                <button onClick={() => window.location.href = "https://jamanetwork.com/journals/jama"} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white font-bold py-2 px-4 rounded">See all articles</button>
             </div>
-            <ArticleCard image="https://www.practostatic.com/fit/5fd27b74d9477cb633445cf3f105078bbc479910" category="coronavirus" title="12 Coronavirus Myths and Facts That You Should Be Aware Of" sub="Dr. Diana Borgio" />
-            <ArticleCard image="https://www.practostatic.com/fit/bade52edc7fb158bf627216bf96c2b881a97f30c" category="Vitamins and supplements" title="Eating Right to Build Immunity Against Cold and Viral Infections" sub="Dr. Diana Borgio" />
-
-            <div className=''>
+            <ArticleCard image="https://images.pexels.com/photos/3951377/pexels-photo-3951377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" category="coronavirus" title="12 Coronavirus Myths and Facts That You Should Be Aware Of" sub="Dr. Diana Borgio" />
+            <ArticleCard image="https://images.pexels.com/photos/5677917/pexels-photo-5677917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" category="Vitamins and supplements" title="Eating Right to Build Immunity Against Cold and Viral Infections" sub="Dr. Diana Borgio" />
+            <div className='chatbot'>
                 <ChatBotButton />
             </div>
         </section>

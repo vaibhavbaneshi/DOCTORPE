@@ -6,7 +6,7 @@ import "./loader.css";
 import { useMutation } from "@tanstack/react-query";
 
 const sendMessageAPI = async (message) => {
-  const res = await axios.post(`https://doctorpe-backend.vercel.app/api/v1/chatbot/ask`, { message });
+  const res = await axios.post("https://doctorpe-backend.vercel.app/api/v1/chatbot/ask", { message });
   return res.data;
 };
 
