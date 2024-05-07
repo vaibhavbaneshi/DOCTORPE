@@ -158,7 +158,7 @@ export const BookDoctor = () => {
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false)
-        }, 1000)
+        }, 3000)
         setIsLoading(true)
 
     },[searchLocation])

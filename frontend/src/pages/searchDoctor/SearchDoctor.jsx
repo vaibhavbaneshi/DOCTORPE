@@ -76,7 +76,7 @@ export const SearchDoctor = () => {
 
     setTimeout(() => {
         setIsLoading(false)
-    }, 1000)
+    }, 3000)
 
     return (
         <div className="bg-gradient-to-br from-slate-100 to-cyan-100  min-h-screen w-full py-2 mx-auto px-6 relative">
