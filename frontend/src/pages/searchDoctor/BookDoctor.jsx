@@ -79,7 +79,7 @@ export const BookDoctor = () => {
 
     setTimeout(() => {
         setIsLoading(false)
-    }, 3000)
+    }, 4000)
 
     let interval;
 
@@ -162,7 +162,7 @@ export const BookDoctor = () => {
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false)
-        }, 3000)
+        }, 4000)
         setIsLoading(true)
 
     },[searchLocation])
