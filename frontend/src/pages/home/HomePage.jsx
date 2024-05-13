@@ -48,6 +48,14 @@ export const HomePage = () => {
         }
     }
 
+    const handleConsultCard = () => {
+        if (!tokenPresent) {
+            window.location.href = '/signin'
+        } else {
+            navigate('/searchDoctor');
+        }
+    }
+
     useEffect(() => {
         axios.put('https://doctorpe-backend.vercel.app/api/v1/product/updateAllProductQuantity')
         const token = localStorage.getItem('token');
@@ -81,12 +89,12 @@ export const HomePage = () => {
             <h2>Consult top doctors online for any health concern</h2>
             <p>Private online consultations with verified doctors in all spedialties</p>
             <div className="home-consult-card-container">
-                <ConsultCard title="Period doubts or Pregnancy" image={'images/period.svg'} link={"/searchDoctor"}/>
-                <ConsultCard title="Acne, pimple or skin issues" image={'images/acne.jpg'} link={"/searchDoctor"}/>
-                <ConsultCard title="Headache, joint pain" image={'images/pain.svg'} link={"/searchDoctor"}/>
-                <ConsultCard title="Cold, cough or fever" image={'images/fever.svg'} link={"/searchDoctor"} />
-                <ConsultCard title="Child not feeling well" image={'images/childnotwell.svg'} link={"/searchDoctor"}/>
-                <ConsultCard title="Depression or anxiety" image={'images/depression.svg'} link={"/searchDoctor"}/>
+                <ConsultCard title="Period doubts or Pregnancy" image={'images/period.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
+                <ConsultCard title="Acne, pimple or skin issues" image={'images/acne.jpg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
+                <ConsultCard title="Headache, joint pain" image={'images/pain.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
+                <ConsultCard title="Cold, cough or fever" image={'images/fever.svg'} onClick={handleConsultCard} link={"/searchDoctor"} />
+                <ConsultCard title="Child not feeling well" image={'images/childnotwell.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
+                <ConsultCard title="Depression or anxiety" image={'images/depression.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
             </div>
         </section>
         <section className="home-appoinments">
