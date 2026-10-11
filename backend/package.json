@@ -8,13 +8,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon index.js",
     "dev": "nodemon index.js",
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "seed": "node scripts/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "^0.3.1",
+    "@langchain/core": "^0.3.42",
+    "@langchain/groq": "^0.2.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cloudinary": "^2.0.3",
@@ -25,8 +27,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.4",
+    "nodemailer": "^10.1.0",
     "nodemon": "^3.1.0",
-    "openai": "^4.30.0",
     "package.json": "^0.0.0",
     "path": "^0.12.7",
     "razorpay": "^2.9.2",

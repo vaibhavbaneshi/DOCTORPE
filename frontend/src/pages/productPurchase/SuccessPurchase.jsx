@@ -10,20 +10,22 @@ export const SuccessPurchase = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const loggedInPatientEmail = currentUser.data.email;
-    const loggedInPatientfullname = currentUser.data.firstName + ' ' + currentUser.data.lastName;
+    const email = currentUser?.data?.email;
+    const fullName = `${currentUser?.data?.firstName || ""} ${currentUser?.data?.lastName || ""}`.trim();
 
     useEffect(() => {
         dispatch(successOrder())
-    
-        sendDelivery(loggedInPatientfullname, loggedInPatientEmail, totalItems, totalAmount);
+        if (email) {
+            sendDelivery(fullName, email, totalItems, totalAmount);
+        }
+        const timer = setTimeout(() => navigate('/medicines'), 5000)
+        return () => clearTimeout(timer)
     }, [])
 
-    setTimeout(() => {
-        navigate('/shoppingCart')
-    }, 5000)
-    
-    return <>
-        {<SuccessMessage message={`Order placed successfully and order details have been sent to your email : ${currentUser.data.email}`} />}
-    </>
+    return (
+        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4">
+            <SuccessMessage message={`Order placed successfully. Details were sent to ${email || "your email"}.`} />
+            <p className="mt-6 text-slate-600">Taking you back to the medicine store…</p>
+        </div>
+    )
 }

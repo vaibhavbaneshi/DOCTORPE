@@ -312,5 +312,45 @@
 }
 
 .chatbot{
-z-index: 80%;
+z-index: 80;
+}
+
+@media (max-width: 900px) {
+    .home-banner {
+        height: auto;
+        flex-direction: column;
+        width: 92vw;
+    }
+
+    .home-banner-left,
+    .home-banner-right {
+        width: 100%;
+        padding: 32px 24px;
+        transform: none;
+        height: auto;
+        position: static;
+    }
+
+    .home-banner-right>img {
+        position: static;
+        height: auto;
+        max-height: 240px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .home-facilities,
+    .home-consult,
+    .home-appoinments {
+        width: 92vw;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .home-consult-card-container,
+    .home-top-articles {
+        flex-wrap: wrap;
+        padding: 24px 16px;
+        justify-content: center;
+    }
 }

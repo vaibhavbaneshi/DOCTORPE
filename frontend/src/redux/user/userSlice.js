@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentUser: null,
-    selectedProducts: [], 
+    selectedProducts: [],
     productQuantity: 0,
     totalItems: 0,
     totalAmount: 0,
@@ -20,7 +20,6 @@ const userSlice = createSlice({
         },
         signInSuccess: (state, action) => {
             state.currentUser = action.payload;
-            state.selectedProducts = [];
             state.loading = false;
             state.error = null;
         },
@@ -30,38 +29,43 @@ const userSlice = createSlice({
         },
         signOut: (state) => {
             state.currentUser = null;
-            state.selectedProducts = [];
-            state.productQuantity = 0,
             state.loading = false;
             state.error = null;
         },
         selectProduct: (state, action) => {
-            const { id, quantity } = action.payload;
-        
-            const existingProductIndex = state.selectedProducts.findIndex(item => item.id === id);
-        
+            const product = action.payload;
+            if (!product?.id && product?.id !== 0) return;
+
+            const quantity = Number(product.quantity) > 0 ? Number(product.quantity) : 1;
+            const existingProductIndex = state.selectedProducts.findIndex(
+                (item) => item.id === product.id
+            );
+
             if (existingProductIndex !== -1) {
-                state.selectedProducts[existingProductIndex].quantity = quantity;
+                state.selectedProducts[existingProductIndex] = {
+                    ...state.selectedProducts[existingProductIndex],
+                    ...product,
+                    quantity,
+                };
             } else {
-                state.selectedProducts.push(action.payload);
+                state.selectedProducts.push({ ...product, quantity });
             }
         },
-        
-        
         successOrder: (state) => {
             state.selectedProducts = [];
-            state.productQuantity = 0,
-            state.totalItems = 0,
-            state.totalAmount = 0
+            state.productQuantity = 0;
+            state.totalItems = 0;
+            state.totalAmount = 0;
         },
-
         cartTotalItems: (state, action) => {
             state.totalItems = action.payload
         },
-
         cartTotalAmount: (state, action) => {
             state.totalAmount = action.payload
-        }
+        },
+        updateUserProfile: (state, action) => {
+            state.currentUser = action.payload;
+        },
     }
 });
 
@@ -73,7 +77,8 @@ export const {
     selectProduct,
     successOrder,
     cartTotalItems,
-    cartTotalAmount
+    cartTotalAmount,
+    updateUserProfile,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,14 +1,10 @@
-import './ArticleCard.css';
-
-export const ArticleCard = ({ title, image, sub, category }) => {
-    return <div className="article-card">
-        <div className="article-card-image-container">
-            <img src={image} alt={title} />
+export const ArticleCard = ({ title, image, sub, category }) => (
+    <article className="w-full cursor-pointer text-left">
+        <div className="aspect-[7/5] w-full overflow-hidden rounded-[1.25rem] ring-1 ring-ink/5">
+            <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" />
         </div>
-        <div className="article-card-info">
-            <div className="article-card-category">{category}</div>
-            <div className="article-card-title">{title}</div>
-            <div className="article-card-sub">{sub}</div>
-        </div>
-    </div>
-}
+        <p className="mt-4 text-xs font-bold uppercase tracking-wide text-canopy">{category}</p>
+        <h3 className="mt-2 text-base font-semibold leading-snug text-ink">{title}</h3>
+        <p className="mt-2 text-sm text-mute">{sub}</p>
+    </article>
+);

@@ -1,10 +1,9 @@
 import express from "express"
-import { createCheckoutSession, getProduct, updateAllProductQuantity, updateProductQuantity } from "../controllers/product.controller.js"
+import { createCheckoutSession, getProduct, updateProductQuantity } from "../controllers/product.controller.js"
+import { requireAuth } from "../middleware/auth.js"
 
 export const productRouter = express.Router()
 
 productRouter.get('/getProduct', getProduct)
-productRouter.put('/updateProductQuantity', updateProductQuantity)
-productRouter.put('/updateAllProductQuantity', updateAllProductQuantity)
-productRouter.post('/purchaseProduct/createCheckoutSession', createCheckoutSession)
-
+productRouter.put('/updateProductQuantity', requireAuth, updateProductQuantity)
+productRouter.post('/purchaseProduct/createCheckoutSession', requireAuth, createCheckoutSession)

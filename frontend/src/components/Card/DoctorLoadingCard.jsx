@@ -1,15 +1,12 @@
-import React from 'react';
  const DoctorLoadingCard = () => {
-
     return (
-        <div className="animate-pulse flex items-center mt-20 mb-20 justify-center ">
-            <div className="w-60 h-80 bg-white rounded-3xl  text-neutral-300 p-4 flex flex-col items-center justify-center gap-3 hover:shadow-2xl ">
-                <div className="w-32 h-32  "><img src="images/docvid.png" alt="doctor image" /></div>
-                <div className="text-black text-center">
-                    <p className="h-3 bg-gray-300 w-40 mb-4 rounded-xl"></p>
-                    <p className="h-3 bg-gray-300 w-40 mb-4 rounded-xl"></p>
-                    <p className="h-3 bg-gray-300 w-40 mb-4 rounded-xl"></p>
-                </div>
+        <div className="animate-pulse overflow-hidden rounded-[1.6rem] bg-surface ring-1 ring-ink/5">
+            <div className="h-48 bg-ink/10" />
+            <div className="p-5">
+                <div className="h-5 w-3/4 rounded-full bg-ink/10" />
+                <div className="mt-3 h-4 w-1/2 rounded-full bg-ink/10" />
+                <div className="mt-3 h-4 w-2/3 rounded-full bg-ink/10" />
+                <div className="mt-5 h-11 rounded-full bg-canopy/15" />
             </div>
         </div>
     );

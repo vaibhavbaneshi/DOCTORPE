@@ -1,64 +1,63 @@
-import { Button } from 'flowbite-react'
-import React from 'react'
 import { AiFillGoogleCircle } from 'react-icons/ai'
 import {GoogleAuthProvider, signInWithPopup, getAuth} from "firebase/auth"
 import {app} from "./firebase.js"
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { signInSuccess } from '../../redux/user/userSlice.js'
+import { signInFailure, signInStart, signInSuccess } from '../../redux/user/userSlice.js'
+import { api } from '../../lib/api.js'
+import { useLocation } from 'react-router-dom'
 
 function OAuth() {
     const auth = getAuth(app)
-
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
+    const location = useLocation()
+    const redirectTo = location.state?.from || "/"
 
     const handleGoogleClick = async () => {
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({prompt: 'select_account'})
 
+        dispatch(signInStart())
+
         try {
             const resultFromGoogle = await signInWithPopup(auth, provider)
-            const fullName = resultFromGoogle.user.displayName;
-            const nameParts = fullName.split(" ");
-
-            let firstName, lastName;
-
-            firstName = nameParts[0];
-            lastName = nameParts[nameParts.length - 1];
-            
-            const res = await fetch('https://doctorpe-backend.vercel.app/api/v1/auth/google', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: resultFromGoogle.user.displayName,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: resultFromGoogle.user.email,
-                    googlePhotoURL: resultFromGoogle.user.photoURL
-                })
-            })
-            
-            const data = await res.json()
-            localStorage.setItem("token", data.token);
-
-            if(res.ok) {
-                dispatch(signInSuccess(data))
-                window.location.href = '/'
+            const email = resultFromGoogle.user.email
+            if (!email) {
+                dispatch(signInFailure("Google did not return an email for this account."))
+                return
             }
 
+            const fullName = resultFromGoogle.user.displayName?.trim() || ""
+            const nameParts = fullName.split(/\s+/).filter(Boolean)
+            const firstName = nameParts[0] || email.split("@")[0] || "User"
+            const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : firstName
+
+            const { data } = await api.post('/auth/google', {
+                name: fullName || `${firstName} ${lastName}`,
+                firstName,
+                lastName,
+                email,
+                googlePhotoURL: resultFromGoogle.user.photoURL
+            })
+
+            if(data.status) {
+                localStorage.setItem("token", data.token);
+                dispatch(signInSuccess(data))
+                navigate(redirectTo)
+            } else {
+                dispatch(signInFailure(data.message || "Google sign-in failed"))
+            }
         } catch (error) {
-            console.log(error);
+            const apiMessage = error.response?.data?.message
+            dispatch(signInFailure(apiMessage || error.message || "Google sign-in failed"))
         }
     }
   return (
-    <>
-        <Button className='bg-white text-black hover:underline hover:bg-gradient-to-r from-cyan-500 to-blue-500  hover:text-white' type="button" onClick={handleGoogleClick}>
-            <AiFillGoogleCircle className='w-6 h-6 mr-2'/>
+        <button className="mt-4 inline-flex min-h-11 items-center rounded-full border border-ink/15 px-5 py-2 text-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy" type="button" onClick={handleGoogleClick}>
+            <AiFillGoogleCircle aria-hidden="true" className="mr-2 h-6 w-6"/>
             Continue with Google
-        </Button>
-    </>
+        </button>
   )
 }
 

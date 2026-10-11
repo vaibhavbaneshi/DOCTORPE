@@ -1,16 +1,27 @@
+import "dotenv/config"
 import { app } from "./app.js"
 import { connectDB } from "./db/db.js"
-import dotenv from "dotenv"
 
-dotenv.config()
+if (!process.env.VERCEL) {
+    const port = process.env.PORT || 3000
+    app.listen(port, () => {
+        console.log(`Server is listening at port: ${port}`)
+    })
+}
 
-connectDB()
-    .then(() => {
-        app.listen(process.env.PORT, () => {
-            console.log(`⚙️ Server is listening at port: ${process.env.PORT}`);
+if (process.env.MONGO) {
+    connectDB()
+        .then(() => {
+            app.locals.database = "connected"
+            console.log("Database connected")
         })
-    })
-    .catch((error) => {
-        console.log("There was an error while connecting to the database!!!", error);
-    })
+        .catch((error) => {
+            app.locals.database = "error"
+            console.error("Database connection failed:", error.message)
+        })
+} else {
+    app.locals.database = "not-configured"
+    console.warn("MONGO is not configured; data routes are unavailable")
+}
 
+export default app

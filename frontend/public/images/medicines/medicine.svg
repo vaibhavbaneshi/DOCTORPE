@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Medicine">
+  <rect width="120" height="120" rx="16" fill="#FBF9F4"/>
+  <rect x="38" y="22" width="44" height="76" rx="10" fill="#2F6A56"/>
+  <rect x="38" y="48" width="44" height="12" fill="#F4F1EA"/>
+  <circle cx="82" cy="38" r="14" fill="#275B49"/>
+  <rect x="76" y="34" width="12" height="8" rx="2" fill="#F4F1EA"/>
+</svg>

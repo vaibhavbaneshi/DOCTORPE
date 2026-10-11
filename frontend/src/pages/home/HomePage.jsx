@@ -1,118 +1,164 @@
-import { Button } from '@chakra-ui/react'
-import './HomePage.css'
-import { AppoinmentSlider } from '../../components/Home/AppoinmentSlider'
-import { ArticleCard } from '../../components/Home/ArticleCard'
-import { ConsultCard } from '../../components/Home/ConsultCard'
-import { FacilityCard } from '../../components/Home/FacilityCard'
-import { UserReviewCarousel } from '../../components/Home/UserReviewCarousel'
-import { useNavigate } from "react-router-dom"
-import ChatBotButton from '../../components/ChatBot/ChatBotButton'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { AppoinmentSlider } from "../../components/Home/AppoinmentSlider";
+import { ArticleCard } from "../../components/Home/ArticleCard";
+import { ConsultCard } from "../../components/Home/ConsultCard";
+import { useNavigate } from "react-router-dom";
+import ChatBotButton from "../../components/ChatBot/ChatBotButton";
+import { useSelector } from "react-redux";
 
 export const HomePage = () => {
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
 
-    const navigate = useNavigate()
-    const [tokenPresent, setTokenPresent] = useState(false);
-
-    const handleFacilityCardNavigate1 = () => {
-
-        if (!tokenPresent) {
-            window.location.href = '/signin'
-        } else {
-            navigate("/searchDoctor");
+    const go = (path, needsAuth = false) => {
+        if (needsAuth && !currentUser) {
+            navigate("/signin", { state: { from: path } });
+            return;
         }
-    }
-    const handleFacilityCardNavigate2 = () => {
+        navigate(path);
+    };
 
-        if (!tokenPresent) {
-            window.location.href = '/signin'
-        } else {
-            navigate("/bookDoctor");
-        }
-    }
-    const handleFacilityCardNavigate3 = () => {
-
-        if (!tokenPresent) {
-            window.location.href = '/signin'
-        } else {
-            navigate("/medicines");
-        }
-    }
-    const handleFacilityCardNavigate4 = () => {
-
-        if (!tokenPresent) {
-            window.location.href = '/signin'
-        } else {
-            navigate('/Ai_Lab');
-        }
-    }
-
-    const handleConsultCard = () => {
-        if (!tokenPresent) {
-            window.location.href = '/signin'
-        } else {
-            navigate('/searchDoctor');
-        }
-    }
-
-    useEffect(() => {
-        axios.put('https://doctorpe-backend.vercel.app/api/v1/product/updateAllProductQuantity')
-        const token = localStorage.getItem('token');
-
-        if(token) {
-            setTokenPresent(true);
-        } 
-    }, []);
-
-    return <div className="homepage-container pt-20">
-            
-        <section className="home-banner">
-            <div className="home-banner-left">
-                <div className="home-banner-practo-care w-32 text-white font-bold text-6xl">
-                    <h1>Doctorपे</h1>
+    return (
+        <div className="mx-auto max-w-6xl px-4 pb-16">
+            <section className="grid min-h-[100dvh] items-center gap-10 pb-16 pt-10 md:grid-cols-[1.1fr_0.9fr] md:pt-6">
+                <div>
+                    <h1 className="text-balance text-4xl font-semibold tracking-tight text-ink md:text-6xl md:leading-[1.1]">
+                        Care that meets you where you are
+                    </h1>
+                    <p className="mt-5 max-w-[65ch] text-lg leading-relaxed text-mute">
+                        Video consults, clinic bookings, and medicines in one quiet place.
+                    </p>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <button
+                            type="button"
+                            onClick={() => go("/bookDoctor", true)}
+                            className="group inline-flex min-h-11 items-center gap-3 rounded-full bg-canopy px-5 py-2 text-white transition-transform duration-200 ease-spring hover:bg-canopy-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy active:scale-[0.98]"
+                        >
+                            Find a doctor
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
+                                <ArrowRightIcon aria-hidden="true" />
+                            </span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => go("/medicines")}
+                            className="inline-flex min-h-11 items-center rounded-full border border-ink/20 px-5 py-2 text-ink transition-colors duration-200 ease-spring hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+                        >
+                            Browse medicines
+                        </button>
+                    </div>
                 </div>
-                <p>Choose the experts in end to end health care.</p>
-                <p>You are in safe hands</p>
-            </div>
-            <div className="home-banner-right -mt-1">
-                <img className='' src={'../../images/banner.png'} alt="banner" loading='lazy'/>
-            </div>
-        </section>
-        <section className="home-facilities">            
-            <FacilityCard image={'https://img.freepik.com/free-vector/videocalling-with-therapist_23-2148512091.jpg?t=st=1710310880~exp=1710314480~hmac=3235fb4fbc085f03ad735d5fd8e00930b2967ce3ec5ed49036a687dbb117a299&w=996'} background="#fff" title="Instant Video Consultation" sub="Connect within 60 secs" onClick={handleFacilityCardNavigate1}/>
-            <FacilityCard image={'https://img.freepik.com/free-vector/doctors-concept-illustration_114360-1515.jpg?t=st=1710310332~exp=1710313932~hmac=574f7ed3a46a5c650583dd7dcce078ca8e3b7d8a9d1922d4c9eb55f903e3570b&w=996'} background="#fff" title="Find Doctors Near You" sub="Confirmed appoinments" onClick={handleFacilityCardNavigate2} />
-            <FacilityCard image={'https://img.freepik.com/free-vector/courier-delivering-medications-patient-using-online-tracking-pills-tablets-fast-contactless-home-delivery-using-web-app-first-aid-healthcare-concept-cartoon-flat-illustration_74855-20517.jpg?w=900&t=st=1710309939~exp=1710310539~hmac=f6204cabb5ce3b57877a098cb79c93971e9009b0a7454b7cb1fd32c25320fb7c'} background="#fff" title="Medicines" sub="Essentials at your doorstep" onClick={handleFacilityCardNavigate3} />
-            <FacilityCard image={'https://img.freepik.com/free-vector/chemist-concept-illustration_114360-13532.jpg?t=st=1710310724~exp=1710314324~hmac=68502080931ce540ad05a5254714de1a1d2bb49f2d145fb79016aebb72a18af5&w=740'} background="#fff" title="AI Lab" sub="Check you health status" onClick={handleFacilityCardNavigate4}/>
-        </section>
-        <section className="home-consult">
-            <h2>Consult top doctors online for any health concern</h2>
-            <p>Private online consultations with verified doctors in all spedialties</p>
-            <div className="home-consult-card-container">
-                <ConsultCard title="Period doubts or Pregnancy" image={'images/period.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
-                <ConsultCard title="Acne, pimple or skin issues" image={'images/acne.jpg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
-                <ConsultCard title="Headache, joint pain" image={'images/pain.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
-                <ConsultCard title="Cold, cough or fever" image={'images/fever.svg'} onClick={handleConsultCard} link={"/searchDoctor"} />
-                <ConsultCard title="Child not feeling well" image={'images/childnotwell.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
-                <ConsultCard title="Depression or anxiety" image={'images/depression.svg'} onClick={handleConsultCard} link={"/searchDoctor"}/>
-            </div>
-        </section>
-        <section className="home-appoinments">
-            <h2>Book an appointment for an in-clinic consultation</h2>
-            <h3>Find experienced doctors across all specialties</h3>
-            <AppoinmentSlider />
-        </section>
-        <section className="home-top-articles">
-            <div className="home-top-articles-info">
-                <h2>Read top articles from health experts</h2>
-                <p>Health articles that keep you informed about good health practices and achieve your goals.</p>
-                <button onClick={() => window.location.href = "https://jamanetwork.com/journals/jama"} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white font-bold py-2 px-4 rounded">See all articles</button>
-            </div>
-            <ArticleCard image="https://images.pexels.com/photos/3951377/pexels-photo-3951377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" category="coronavirus" title="12 Coronavirus Myths and Facts That You Should Be Aware Of" sub="Dr. Diana Borgio" />
-            <ArticleCard image="https://images.pexels.com/photos/5677917/pexels-photo-5677917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" category="Vitamins and supplements" title="Eating Right to Build Immunity Against Cold and Viral Infections" sub="Dr. Diana Borgio" />
-            <div className='chatbot'>
-                <ChatBotButton />
-            </div>
-        </section>
-    </div>
-}
+                <div className="rounded-[2rem] p-1.5 ring-1 ring-ink/5">
+                    <img
+                        src="/images/design/hero-reference.png"
+                        alt="Clinician at a sunlit desk ready for a consult"
+                        width={900}
+                        height={1100}
+                        fetchPriority="high"
+                        className="h-auto max-h-[70dvh] w-full rounded-[1.6rem] object-cover"
+                    />
+                </div>
+            </section>
+
+            <section className="py-12 md:py-24">
+                <h2 className="text-balance text-3xl font-semibold tracking-tight text-ink">Everything a visit needs</h2>
+                <div className="mt-10 grid gap-4 md:grid-cols-3">
+                    <button
+                        type="button"
+                        onClick={() => go("/searchDoctor", true)}
+                        className="group rounded-[2rem] p-1.5 text-left ring-1 ring-ink/5 md:col-span-2 md:row-span-2"
+                    >
+                        <div className="flex h-full min-h-[280px] flex-col justify-between rounded-[1.6rem] bg-surface p-8">
+                            <img
+                                src="/images/design/services-bento.png"
+                                alt="Video consult between a patient and a clinician"
+                                width={900}
+                                height={560}
+                                loading="lazy"
+                                className="mb-6 h-48 w-full rounded-[1.25rem] object-cover md:h-64"
+                            />
+                            <div>
+                                <p className="text-xl font-medium">Video consult</p>
+                                <p className="mt-2 max-w-[65ch] text-mute">Talk to a specialist without leaving home.</p>
+                            </div>
+                        </div>
+                    </button>
+                    <button type="button" onClick={() => go("/bookDoctor", true)} className="rounded-[2rem] p-1.5 text-left ring-1 ring-ink/5">
+                        <div className="rounded-[1.6rem] bg-surface p-6">
+                            <p className="font-medium">Find doctors</p>
+                            <p className="mt-2 text-sm text-mute">Confirmed clinic slots.</p>
+                        </div>
+                    </button>
+                    <button type="button" onClick={() => go("/medicines")} className="rounded-[2rem] p-1.5 text-left ring-1 ring-ink/5">
+                        <div className="rounded-[1.6rem] bg-canopy p-6 text-white">
+                            <p className="font-medium">Pharmacy</p>
+                            <p className="mt-2 text-sm text-white/80">Essentials at the door.</p>
+                        </div>
+                    </button>
+                    <button type="button" onClick={() => go("/AI_Lab")} className="rounded-[2rem] p-1.5 text-left ring-1 ring-ink/5 md:col-span-3">
+                        <div className="rounded-[1.6rem] bg-surface p-6 md:flex md:items-center md:justify-between">
+                            <div>
+                                <p className="font-medium">AI screening</p>
+                                <p className="mt-2 max-w-[65ch] text-mute">Check diabetes, heart, and stress signals. Not a diagnosis.</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <section className="py-12 md:py-24">
+                <h2 className="text-balance text-3xl font-semibold tracking-tight">Consult for a specific concern</h2>
+                <p className="mt-3 max-w-[65ch] leading-relaxed text-mute">Private video visits with verified doctors across specialties.</p>
+                <div className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
+                    <ConsultCard title="Period doubts or pregnancy" image="/images/period.svg" onClick={() => go("/searchDoctor", true)} />
+                    <ConsultCard title="Acne or skin issues" image="/images/pimple.svg" onClick={() => go("/searchDoctor", true)} />
+                    <ConsultCard title="Headache or joint pain" image="/images/pain.svg" onClick={() => go("/searchDoctor", true)} />
+                    <ConsultCard title="Cold, cough, or fever" image="/images/fever.svg" onClick={() => go("/searchDoctor", true)} />
+                    <ConsultCard title="Child not feeling well" image="/images/childnotwell.svg" onClick={() => go("/searchDoctor", true)} />
+                    <ConsultCard title="Depression or anxiety" image="/images/depression.svg" onClick={() => go("/searchDoctor", true)} />
+                </div>
+            </section>
+
+            <section className="py-12 md:py-24">
+                <h2 className="text-balance text-3xl font-semibold tracking-tight">Book an in-clinic visit</h2>
+                <p className="mt-3 max-w-[65ch] text-mute">Specialists across cardiology, dermatology, surgery, and more.</p>
+                <div className="mt-8">
+                    <AppoinmentSlider />
+                </div>
+            </section>
+
+            <section className="grid gap-10 py-12 md:grid-cols-2 md:py-24">
+                <div>
+                    <h2 className="text-balance text-3xl font-semibold tracking-tight">Notes from clinicians</h2>
+                    <p className="mt-3 max-w-[65ch] leading-relaxed text-mute">
+                        Short reads on myths, immunity, and everyday care.
+                    </p>
+                    <a
+                        href="https://jamanetwork.com/journals/jama"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-6 inline-flex min-h-11 items-center text-canopy underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+                    >
+                        Open JAMA Network
+                    </a>
+                </div>
+                <div className="grid gap-6">
+                    <ArticleCard
+                        image="/images/design/hero-reference.png"
+                        category="Public health"
+                        title="12 coronavirus myths and facts worth knowing"
+                        sub="Dr. Ananya Rao"
+                    />
+                    <ArticleCard
+                        image="/images/design/services-bento.png"
+                        category="Nutrition"
+                        title="Eating to support immunity during cold season"
+                        sub="Dr. Kabir Mehta"
+                    />
+                </div>
+            </section>
+
+            <ChatBotButton />
+        </div>
+    );
+};

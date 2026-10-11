@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import './OrderButton.css'; // Import CSS file
-import { useSelector } from 'react-redux';
+import './OrderButton.css';
 
 
 export const OrderButton = ({ handleClick, animate }) => {
-  const { selectedProducts } = useSelector(state => state.user);
 
   // const handlePayments = async () => {
 

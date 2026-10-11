@@ -1,0 +1,8 @@
+.slider-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.slider-container .slick-list {
+  overflow: hidden;
+}

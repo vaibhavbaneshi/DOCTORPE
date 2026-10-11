@@ -44,23 +44,23 @@ export const AppoinmentSlider = () => {
         <div className="slider-container ">
             <Slider {...settings}>
             <div>
-                <AppointmentCard image="https://images.pexels.com/photos/4270084/pexels-photo-4270084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" title="Dentist" sub="Teething troubles? Schedule a dental checkup" />
+                <AppointmentCard image="/images/design/services-bento.png" title="Dentist" sub="Teething troubles? Schedule a dental checkup" />
             </div>
 
             <div>
-                <AppointmentCard image="https://images.pexels.com/photos/7089015/pexels-photo-7089015.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" title="Gynecologist/Obstetrician" sub="Explore for women's health, pregnancy and infertility treatments" />
+                <AppointmentCard image="/images/period.svg" title="Gynecologist/Obstetrician" sub="Explore for women's health, pregnancy and infertility treatments" />
             </div>
             
             <div>
-                <AppointmentCard image="https://images.pexels.com/photos/5794059/pexels-photo-5794059.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" title="Physiotherapist" sub="Pulled a muscle? Get it treated by a trained physiotherapist" />
+                <AppointmentCard image="/images/pain.svg" title="Physiotherapist" sub="Pulled a muscle? Get it treated by a trained physiotherapist" />
             </div>
 
             <div>
-                <AppointmentCard image="https://images.pexels.com/photos/4586994/pexels-photo-4586994.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" title="General surgeon" sub="Need to get operated? Find the right surgeon" />
+                <AppointmentCard image="/images/fever.svg" title="General surgeon" sub="Need to get operated? Find the right surgeon" />
             </div>
 
             <div>
-                <AppointmentCard image="https://www.practostatic.com/consumer-home/desktop/images/1558283618/sp-orthopedist@2x.jpg" title="Orthopedist" sub="For Bone and Joints issues, spinal injuries and more" />
+                <AppointmentCard image="/images/home_pediatric.svg" title="Orthopedist" sub="For Bone and Joints issues, spinal injuries and more" />
             </div>                
             </Slider>      
         </div>

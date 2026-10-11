@@ -1,88 +1,76 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { BsArrowLeft } from 'react-icons/bs';
 import Rating from 'react-rating';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
-import Flash from 'react-awesome-reveal';
+import { api } from '../../lib/api';
 
 export const ProductDetail = () => {
-    // const [disabled, setDisabled] = useState(false);
-    const [product, setProducts] = useState([])
+    const [products, setProducts] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const { title } = useParams();
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://doctorpe-backend.vercel.app/api/v1/product/getProduct');
+                const response = await api.get('/product/getProduct');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchProducts();
     }, [])
 
-    // const [product, setProducts] = useState([])
-    const [productCount, setProductCount] = useState(0)
-    const dispatch = useDispatch()
-
-    const handleProductSelection = (product) => {
-        console.log("Adding product to cart:", product);
-        setProductCount(product.length)
-        dispatch(selectProduct(product))
-    };
+    const matched = products.filter((item) => item.title === title)
 
     return (
-        // <Flash left>
-            <section className="w-100 h-full  mx-auto px-6 bg-gradient-to-br from-slate-100 to-cyan-100   overflow-y-hidden">
-                <Link to="/medicines" className="pt-10 text-black-500 text-lg hover:underline flex items-center space-x-3"><BsArrowLeft /> <span>Back</span></Link><br />
-            <div className="flex flex-col w-65 h-screen justify-center items-center">
-                {product.filter(item => item.title === title).map(product => (
-                    // <>
-                        <div key={product.id} className="p-20  w-70 h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
-                            
-                            {/* image  */}
-                            <div className='flex flex-col justify-start'>
-                                {/* <flash left> */}
-                                    <img className="w-16/2 h-70 mx-auto object-cover rounded-2xl" src={product.image} alt="coverimg" />
-                                {/* </flash> */}
-                            </div>
-                            {/* details  */}
-                            <div className="flex flex-col justify-center w-100 text-center items-center h-full">
-                                {/* <flash left> */}
-                                    <div className=" pb-4 flex flex-col items-center">
-                                        <h1 className="poppins text-gray-800 text-3xl">{product.title}</h1>
-                                        {/* rating and reviews  */}
-                                        <div className="flex justify-center items-center-space-x-3 mt-4">
-                                            <Rating
-                                                emptySymbol={<AiOutlineStar className="text-gray-600 text-xl " />}
-                                                fullSymbol={<AiFillStar className="text-yellow-400 text-xl" />}
-                                                initialRating={`${product.rating}`}
-                                                readonly
-                                            />
-                                            <span className="text-gray-600">({product.reviews} reviews)</span>
-                                        </div>
-                                        {/* description  */}
-                                        <p className=" text-gray-400  w-3/4 my-4">{product.description}</p>
-                                    </div>
-                    <button
-                //   disabled={disabled}
-                  className={`hover:cursor-pointer  rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-cyan-400 text-white py-3 px-20  mb-4 }`}
-                  onClick={()=>handleProductSelection(product)}
-                >
-                    Add to Cart
-                </button>
-                            </div>
-                            
+        <section className="mx-auto min-h-[100dvh] w-full max-w-6xl px-4 py-12 sm:px-6">
+            <Link to="/medicines" className="inline-flex min-h-11 items-center gap-3 rounded-full px-3 text-canopy hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy">
+                <BsArrowLeft /> <span>Back</span>
+            </Link>
+            <div className="flex min-h-[70vh] flex-col items-center justify-center">
+                {isLoading ? (
+                    <p className="text-slate-600">Loading product…</p>
+                ) : matched.length === 0 ? (
+                    <p className="text-slate-600">This product could not be found.</p>
+                ) : matched.map((item) => (
+                    <div key={item.id} className="grid w-full max-w-5xl grid-cols-1 gap-10 py-10 md:grid-cols-2">
+                        <div className="aspect-square rounded-[2rem] bg-surface p-6 ring-1 ring-ink/5">
+                            <img className="h-full w-full rounded-[1.6rem] object-contain" src={item.image} alt={item.title} width="640" height="640" onError={(e) => { e.currentTarget.src = "/images/medicines/medicine.svg"; }} />
                         </div>
-                    // </>
+                        <div className="flex flex-col justify-center">
+                            <h1 className="text-balance text-3xl font-semibold tracking-tight text-ink sm:text-4xl">{item.title}</h1>
+                            <div className="mt-4 flex items-center">
+                                <Rating
+                                    emptySymbol={<AiOutlineStar aria-hidden="true" className="text-xl text-mute" />}
+                                    fullSymbol={<AiFillStar aria-hidden="true" className="text-xl text-amber-500" />}
+                                    initialRating={`${item.rating}`}
+                                    readonly
+                                />
+                                <span className="ml-2 tabular-nums text-mute">({item.reviews} reviews)</span>
+                            </div>
+                            <p className="my-6 max-w-[65ch] leading-relaxed text-mute">{item.description}</p>
+                            <p className="mb-6 text-3xl font-semibold tabular-nums text-ink">
+                                {new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(item.price)}
+                            </p>
+                            <button
+                                type="button"
+                                className="min-h-11 w-full rounded-full bg-canopy px-7 py-3 font-medium text-white transition-colors duration-200 ease-spring hover:bg-canopy-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy active:scale-[0.98] sm:w-fit"
+                                onClick={() => dispatch(selectProduct({ ...item, quantity: 1 }))}
+                            >
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 ))}
             </div>
         </section>
-        // </Flash>
     )
 }

@@ -1,125 +1,73 @@
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
+
+const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+const emailConfigured = Boolean(serviceID && templateID && publicKey);
+
+const sendMail = async (params) => {
+    if (!emailConfigured) {
+        return { ok: false, skipped: true };
+    }
+    try {
+        const res = await emailjs.send(serviceID, templateID, params, { publicKey });
+        return { ok: true, res };
+    } catch (err) {
+        // shortcut: EmailJS Gmail OAuth expires — reconnect in EmailJS dashboard or disable env vars
+        console.warn("Email notification skipped:", err?.text || err?.message || err);
+        return { ok: false, skipped: false, error: err };
+    }
+};
 
 export async function sendDoctorConsult(email, username, callIdString) {
-    const message = `Greetings! Dr. ${username}. A patient wants to consult to you virtually. The link to the meeting is: https://online-meet-rosy.vercel.app/ and the Call Id is: `;
-
-    const para = {
-      to_name: username,
-      from_name: "DoctorPe Team",
-      email: email,
-      message: message,
-      link: callIdString
-    };
-    
-    const serviceID = "service_egvis7l"
-    const tempID="template_7h2lkff"
-  
-    await emailjs
-      .send(serviceID, tempID, para,{
-        publicKey: '7B2itpD6d0z4vkdgv'
-      })
-      .then((res) => {
-        console.log('response: ', res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const message = `Greetings! Dr. ${username}. A patient wants to consult you virtually. Meeting link: https://online-meet-rosy.vercel.app/ Call ID: `;
+    return sendMail({
+        to_name: username,
+        from_name: "DoctorPe Team",
+        email,
+        message,
+        link: callIdString,
+    });
 }
 
 export async function sendDoctorBook(email, fullname, patientName, date, time) {
-    const message = `Greetings! Dr. ${fullname}. You have an appointment with : ${patientName} on Date : ${date} Time : ${time}`;
-
-    const para = {
-      to_name: fullname,
-      from_name: "DoctorPe Team",
-      email: email,
-      message: message,
-    };
-    
-    const serviceID = "service_egvis7l"
-    const tempID="template_7h2lkff"
-  
-    await emailjs
-      .send(serviceID, tempID, para,{
-        publicKey: '7B2itpD6d0z4vkdgv'
-      })
-      .then((res) => {
-        console.log('response: ', res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const message = `Greetings! Dr. ${fullname}. You have an appointment with ${patientName} on ${date} at ${time}.`;
+    return sendMail({
+        to_name: fullname,
+        from_name: "DoctorPe Team",
+        email,
+        message,
+    });
 }
 
-export function sendPatientConsult(email, username, callIdString) {
-    const message = `Greetings! ${username} your online meeting Call Id is: `;
-
-    const messageOptions = {
-      to_name: username,
-      from_name: "DoctorPe Team",
-      email: email,
-      message: message,
-      link: callIdString
-    };
-  
-    const serviceID = "service_egvis7l"
-    const tempID="template_7h2lkff"
-  
-    emailjs
-      .send(serviceID, tempID, messageOptions,{
-        publicKey: '7B2itpD6d0z4vkdgv'
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+export async function sendPatientConsult(email, username, callIdString) {
+    const message = `Greetings! ${username}, your online meeting Call ID is: `;
+    return sendMail({
+        to_name: username,
+        from_name: "DoctorPe Team",
+        email,
+        message,
+        link: callIdString,
+    });
 }
 
-export function sendPatientBook(email, fullname, doctorName, date, time) {
-    const message = `Greetings! ${fullname} your appointment with Dr. ${doctorName} is schedule on Date : ${date} Time : ${time}`;
-
-    const messageOptions = {
-      to_name: fullname,
-      from_name: "DoctorPe Team",
-      email: email,
-      message: message,
-    };
-  
-    const serviceID = "service_egvis7l"
-    const tempID="template_7h2lkff"
-  
-    emailjs
-      .send(serviceID, tempID, messageOptions,{
-        publicKey: '7B2itpD6d0z4vkdgv'
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+export async function sendPatientBook(email, fullname, doctorName, date, time) {
+    const message = `Greetings! ${fullname}, your appointment with Dr. ${doctorName} is scheduled on ${date} at ${time}.`;
+    return sendMail({
+        to_name: fullname,
+        from_name: "DoctorPe Team",
+        email,
+        message,
+    });
 }
 
 export const sendDelivery = (fullname, email, totalItems, totalAmount) => {
-  const message = `Greetings! ${fullname} your order of total items : ${totalItems} and total amount of : ₹ ${totalAmount} has been placed.`;
-
-    const messageOptions = {
-      to_name: fullname,
-      from_name: "DoctorPe Team",
-      email: email,
-      message: message,
-    };
-  
-    const serviceID = "service_egvis7l"
-    const tempID="template_7h2lkff"
-  
-    emailjs
-      .send(serviceID, tempID, messageOptions,{
-        publicKey: '7B2itpD6d0z4vkdgv'
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-}
+    const message = `Greetings! ${fullname}, your order of ${totalItems} item(s) for ₹${totalAmount} has been placed.`;
+    return sendMail({
+        to_name: fullname,
+        from_name: "DoctorPe Team",
+        email,
+        message,
+    });
+};

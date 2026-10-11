@@ -1,7 +1,8 @@
 
-export const InputBox = ({ label,type,name,id, placeholder, onChange,className,value}) => {
-    return <div className="md:col-span-5 mb-4">
-    <label htmlFor={name}>{label}</label>
-    <input type={type} name={name} id={id} placeholder={placeholder} onChange={onChange} className={`h-10 border mt-1 rounded px-4 w-full bg-gray-50 ${className}`} value={value}  />
+export const InputBox = ({ label,type = "text",name,id, placeholder, onChange,className,value, autoComplete, spellCheck}) => {
+    const inputId = id || name
+    return <div className="mb-4 min-w-0">
+    <label htmlFor={inputId}>{label}</label>
+    <input type={type} name={name} id={inputId} placeholder={placeholder} onChange={onChange} autoComplete={autoComplete} spellCheck={spellCheck} className={`mt-1 h-11 w-full rounded-xl border border-ink/10 bg-canvas px-4 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy ${className}`} value={value}  />
   </div>
 }

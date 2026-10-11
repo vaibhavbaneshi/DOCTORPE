@@ -1,119 +1,179 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
-import "./Chatbot.css";
-import "./loader.css";
+import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { api } from "../../lib/api";
 
-const sendMessageAPI = async (message) => {
-  const res = await axios.post("https://doctorpe-backend.vercel.app/api/v1/chatbot/ask", { message });
-  return res.data;
+const QUICK_PROMPTS = [
+    "What helps with a mild headache?",
+    "Suggest options from the pharmacy",
+    "How do I book a doctor?",
+];
+
+const sendMessageAPI = async ({ message, history }) => {
+    const res = await api.post("/chatbot/ask", { message, history });
+    return res.data;
 };
 
-const Chatbot = ({ onClose }) => {
-  const [message, setMessage] = useState("");
-  const [isAITyping, setIsAITyping] = useState(false);
-  const [alert, setAlert] = useState(false);
-  const [conversation, setConversation] = useState(() => {
-    // Load conversation history from local storage if available
-    const storedConversation = localStorage.getItem("conversation");
-    return storedConversation ? JSON.parse(storedConversation) : [{
-      role: "assistant",
-      content: "Hello! How can I assist you today?",
-    }];
-  });
-
-  const mutation = useMutation({
-    mutationFn: sendMessageAPI,
-    onSuccess: (data) => {
-      setIsAITyping(false);
-      if (data.message === "") {
-        setConversation((prevConversation) => [
-          ...prevConversation,
-          { role: "assistant", content: "Sorry but I can't answer that question." },
-        ]);
-      } else {
-        setConversation((prevConversation) => [
-          ...prevConversation,
-          { role: "assistant", content: data.message },
-        ]);
-      }
-    },
-    onError:()=>{
-      setIsAITyping(false);
-      setConversation((prevConversation) => [
-        ...prevConversation,
-        { role: "assistant", content: "Sorry but I can't answer that question." },
-      ]);
-    }
-  });
-
-  const handleSendMessage = () => {
-    const currentMessage = message.trim();
-    if (!currentMessage) {
-      setAlert(true);
-      return;
-    }
-    setAlert(false);
-    setConversation((prevConversation) => [
-      ...prevConversation,
-      { role: "user", content: currentMessage },
+const Chatbot = () => {
+    const [message, setMessage] = useState("");
+    const [isAITyping, setIsAITyping] = useState(false);
+    const [conversation, setConversation] = useState([
+        {
+            role: "assistant",
+            content:
+                "Hi — I'm DoctorPe's health assistant. Ask about everyday symptoms, medicines in our catalog, or booking a clinician. I can't prescribe, but I can guide you.",
+            actions: [
+                { label: "Browse medicines", href: "/medicines" },
+                { label: "Find a doctor", href: "/bookDoctor" },
+            ],
+        },
     ]);
+    const scrollRef = useRef(null);
 
-    setIsAITyping(true);
+    const mutation = useMutation({
+        mutationFn: sendMessageAPI,
+        onSuccess: (data) => {
+            setIsAITyping(false);
+            setConversation((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    content:
+                        data.message?.trim() ||
+                        "I couldn't answer that. Try rephrasing or browse Medicines for product details.",
+                    actions: data.actions || [],
+                },
+            ]);
+        },
+        onError: (error) => {
+            setIsAITyping(false);
+            const serverMessage = error.response?.data?.message;
+            setConversation((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    content: serverMessage || "Sorry, I couldn't answer that right now.",
+                    actions: [{ label: "Browse medicines", href: "/medicines" }],
+                },
+            ]);
+        },
+    });
 
-    mutation.mutate(currentMessage);
+    const send = (text) => {
+        const currentMessage = text.trim();
+        if (!currentMessage || mutation.isPending) return;
 
-    setMessage("");
-  };
+        const history = conversation.map(({ role, content }) => ({ role, content }));
 
-  useEffect(() => {
-    // Save conversation history to local storage whenever it changes
-    localStorage.setItem("conversation", JSON.stringify(conversation));
-  }, [conversation]);
+        setConversation((prev) => [...prev, { role: "user", content: currentMessage }]);
+        setIsAITyping(true);
+        mutation.mutate({ message: currentMessage, history });
+        setMessage("");
+    };
 
-  return (
-    <>
-      <div className="chat-container shadow-2xl">
-        <div className="conversation bg-black bg-opacity-50 shadow-2xl">
-          {conversation.map((entry, index) => (
-            <div key={index} className={`message ${entry.role}`}>
-              <strong>{entry.role === "user" ? <div className="text-black">You</div> : <div className="img-container"><img className="chat-icon" src="images/dpe3w.png" alt="DoctorPe icon" /><p className="chatbot-p">Doctorपे</p></div>}</strong>
-              <div >{entry.content}</div>
+    useEffect(() => {
+        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    }, [conversation, isAITyping]);
+
+    return (
+        <div className="mb-3 flex w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-[1.6rem] bg-surface shadow-tint ring-1 ring-ink/10 sm:w-96">
+            <header className="border-b border-ink/10 bg-canvas px-4 py-3">
+                <p className="text-sm font-semibold text-ink">DoctorPe assistant</p>
+                <p className="mt-1 text-xs leading-relaxed text-mute">
+                    Educational only — not a diagnosis. For emergencies, call local emergency services.
+                </p>
+            </header>
+
+            <div
+                ref={scrollRef}
+                className="flex max-h-[50dvh] min-h-[280px] flex-col gap-3 overflow-y-auto bg-canvas/50 px-3 py-4"
+            >
+                {conversation.map((entry, index) => (
+                    <div
+                        key={`${entry.role}-${index}`}
+                        className={`flex flex-col gap-2 ${entry.role === "user" ? "items-end" : "items-start"}`}
+                    >
+                        {entry.role === "assistant" && (
+                            <div className="flex items-center gap-2 text-xs font-medium text-canopy">
+                                <img className="h-6 w-6 rounded-full bg-canopy/10 p-0.5" src="/images/result.svg" alt="" />
+                                DoctorPe
+                            </div>
+                        )}
+                        <div
+                            className={`max-w-[90%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                                entry.role === "user"
+                                    ? "bg-canopy text-white"
+                                    : "bg-surface text-ink ring-1 ring-ink/10"
+                            }`}
+                        >
+                            {entry.content}
+                        </div>
+                        {entry.actions?.length > 0 && entry.role === "assistant" && (
+                            <div className="flex flex-wrap gap-2">
+                                {entry.actions.map((action) => (
+                                    <Link
+                                        key={action.href + action.label}
+                                        to={action.href}
+                                        className="rounded-full border border-ink/15 bg-surface px-3 py-1 text-xs font-medium text-canopy hover:bg-ink/5"
+                                    >
+                                        {action.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
+                {isAITyping && (
+                    <p className="text-sm text-mute" aria-live="polite">
+                        DoctorPe is typing…
+                    </p>
+                )}
             </div>
-          ))}
-          {isAITyping && (
-            <div className="message assistant">
-              <div className="flex">
-                <div className="loader">
-                  <li className="ball"></li>
-                  <li className="ball"></li>
-                  <li className="ball"></li>
+
+            <div className="border-t border-ink/10 bg-surface p-3">
+                <div className="mb-2 flex gap-2 overflow-x-auto pb-1">
+                    {QUICK_PROMPTS.map((prompt) => (
+                        <button
+                            key={prompt}
+                            type="button"
+                            onClick={() => send(prompt)}
+                            className="shrink-0 rounded-full border border-ink/10 px-3 py-1 text-xs text-ink hover:bg-canvas"
+                        >
+                            {prompt}
+                        </button>
+                    ))}
                 </div>
-              </div>
+                <form
+                    className="flex gap-2"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        send(message);
+                    }}
+                >
+                    <label htmlFor="chatbot-input" className="sr-only">
+                        Message
+                    </label>
+                    <input
+                        id="chatbot-input"
+                        type="text"
+                        placeholder="Ask about symptoms or medicines…"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="min-h-11 flex-1 rounded-full border border-ink/10 bg-canvas px-4 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+                    />
+                    <button
+                        type="submit"
+                        disabled={mutation.isPending || !message.trim()}
+                        className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-canopy text-white hover:bg-canopy-hover disabled:opacity-50"
+                        aria-label="Send message"
+                    >
+                        <IoSend aria-hidden="true" />
+                    </button>
+                </form>
             </div>
-          )}
         </div>
-        <div className="input-area">
-          <input
-            type="text"
-            placeholder="Ask your questions"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-            className={`input-message rounded-xl ${message.trim() === "" && alert ? "border-red-500" : ""}`}
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={mutation.isPending}
-            className="send-btn bg-blue-450"
-          >
-            {mutation.isPending ? <IoSend className="icon-spin" /> : <IoSend />}
-          </button>
-        </div>
-      </div>
-    </>
-  );
+    );
 };
 
 export default Chatbot;

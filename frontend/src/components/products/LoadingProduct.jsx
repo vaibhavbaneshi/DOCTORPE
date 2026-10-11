@@ -1,28 +1,12 @@
-import React, { useState } from 'react';
-
 const LoadingProduct = () => {
-
-
     return (
-        
-        <div className="animate-pulse flex flex-col justify-center w-90 h-3/4 items-center space-y-2 bg-white border border-gray-200  p-4 box-border rounded-3xl ">
-            <img className="w-60 h-60" src="https://thumb.ac-illust.com/11/119ffc2ddef90858503e7988ddd55bf1_t.jpeg" alt="image" />
-            <h1 className="bg-gray-300 w-60 h-2"></h1>
-            <h2 className="bg-gray-300 w-60 h-2"></h2>
-            <div className="flex bg-gray-300 w-60 h-2 items-center space-x-2">
-
-            </div>
-            <div className="flex flex-col ">
-
-                <button
-                  className={`mt-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500  py-5 px-28 mb-4 }`}
-                  
-                >
-                </button>
-                
-            </div>
+        <div className="animate-pulse rounded-[1.6rem] bg-surface p-4 ring-1 ring-ink/5">
+            <div className="aspect-[4/3] rounded-[1.25rem] bg-ink/10" />
+            <div className="mt-5 h-5 w-3/4 rounded-full bg-ink/10" />
+            <div className="mt-3 h-7 w-1/2 rounded-full bg-ink/10" />
+            <div className="mt-3 h-4 w-2/3 rounded-full bg-ink/10" />
+            <div className="mt-6 h-11 w-full rounded-full bg-canopy/15" />
         </div>
-      
     );
 };
 

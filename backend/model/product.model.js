@@ -1,4 +1,3 @@
-import { Double } from "mongodb"
 import mongoose from "mongoose"
 
 const productSchema = mongoose.Schema({

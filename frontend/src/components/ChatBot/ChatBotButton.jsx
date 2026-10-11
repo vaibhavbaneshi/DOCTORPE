@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Chatbot from './ChatBot';
-import './Chatbot.css'
-
 const ChatBotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,21 +8,17 @@ const ChatBotButton = () => {
   };
 
   return (
-    <div className="chatbot-container fixed bottom-10 right-16">
+    <div className="chatbot-container fixed z-40">
       {isOpen ? (
-        <div className="chat-window flex flex-col items-end ">
-          <Chatbot onClose={toggleChatWindow} />
-          <button className="chat-button " onClick={toggleChatWindow}>
-            {/* <div className='w-24 h-24 ml-64 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'> */}
-                <img className='transition duration-700 ease-in-out transform hover:scale-125 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full' src="../images/aichatBoat.jpg" alt="" />
-            {/* </div> */}
+        <div className="flex flex-col items-end">
+          <Chatbot />
+          <button type="button" aria-label="Close health assistant" className="chat-button rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy" onClick={toggleChatWindow}>
+                <img className="rounded-full bg-canopy p-3 transition-transform duration-200 ease-spring hover:scale-105" src="/images/result.svg" alt="" width="64" height="64" />
           </button>
         </div>
       ) : (
-        <button className="chat-button" onClick={toggleChatWindow}>
-           {/* <div className='w-24 h-24 bg-slate-100 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full'> */}
-                <img className='transition duration-700 ease-in-out transform hover:scale-125 hover:cursor-pointer hover:shadow-2xl hover:shadow-cyan-500 rounded-full' src="../images/aichatBoat.jpg" alt="" />
-           {/* </div> */}
+        <button type="button" aria-label="Open health assistant" className="chat-button rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy" onClick={toggleChatWindow}>
+                <img className="rounded-full bg-canopy p-3 transition-transform duration-200 ease-spring hover:scale-105" src="/images/result.svg" alt="" width="64" height="64" />
         </button>
       )}
     </div>

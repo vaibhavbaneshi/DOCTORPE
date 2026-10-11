@@ -1,62 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import Heading from '../../components/products/Heading';
+import { useEffect, useState } from 'react';
 import Product from '../../components/products/Product';
 import ChatBotButton from '../../components/ChatBot/ChatBotButton';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { selectProduct } from '../../redux/user/userSlice';
 import { SuccessMessage } from '../../components/Alert/SuccessMessage';
 import LoadingProduct from '../../components/products/LoadingProduct';
+import { api } from '../../lib/api';
+
 const ProductsScreen = () => {
     const [product, setProducts] = useState([])
     const [showAlert, setShowAlert] = useState(false)
     const dispatch = useDispatch()
-    const [IsLoading,setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState("")
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://doctorpe-backend.vercel.app/api/v1/product/getProduct');
+                const response = await api.get('/product/getProduct');
                 setProducts(response.data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
+            } catch {
+                setError("Could not load products.");
+            } finally {
+                setIsLoading(false);
             }
         };
-
         fetchProducts();
-
     }, [])
-    
-    const handleProductSelection = (product) => {
+
+    useEffect(() => {
+        if (!showAlert) return undefined;
+        const timer = setTimeout(() => setShowAlert(false), 2500);
+        return () => clearTimeout(timer);
+    }, [showAlert]);
+
+    const handleProductSelection = (selected) => {
         setShowAlert(true)
-        dispatch(selectProduct(product))
+        dispatch(selectProduct({ ...selected, quantity: 1 }))
     };
 
-    setTimeout(() => {
-        setShowAlert(false)
-        setIsLoading(false)
-    }, 3000)
-
     return (
-        <div className=" bg-gradient-to-br from-slate-100 to-cyan-100  h-full w-full pt-3 mx-auto px-6 ">
+        <div className="mx-auto min-h-[100dvh] max-w-6xl px-4 py-16">
             {showAlert && <SuccessMessage message={`Item added to the cart`} />}
-            <div className="text-2xl font-medium font-serif p-10 pl-20">
-                <Heading title="Products" preText={'Our'}/>
-            </div>
-            { IsLoading?  <div className="min-h-screen px-3 justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-24 py-8"> <LoadingProduct/><LoadingProduct/><LoadingProduct/><LoadingProduct/></div> :
-            <div className='min-h-screen px-3  flex items-center justify-center'>
-                 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 py-8">
-                        {product.map(item => (                          
-                            <Product key={Math.random()} {...item} handleProductSelection={handleProductSelection} />
-                        ))}
-                    </div>
-
-                
-                </div> }
-            <div>
-                <ChatBotButton />
-            </div>
+            <header>
+                <h1 className="text-balance text-4xl font-semibold tracking-tight text-ink md:text-6xl">
+                    Everyday care, delivered
+                </h1>
+                <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-mute">
+                    Browse medicines and health essentials, then add what you need to one secure cart.
+                </p>
+            </header>
+            {error && <p className="mt-8 text-red-700" aria-live="polite">{error} Refresh the page to try again.</p>}
+            { isLoading ? (
+                <div className="grid grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-4" aria-label="Loading medicines">
+                    <LoadingProduct/><LoadingProduct/><LoadingProduct/><LoadingProduct/>
+                </div>
+            ) : product.length === 0 ? (
+                <div className="mt-12 rounded-[1.6rem] bg-surface p-10 text-center ring-1 ring-ink/5">
+                    <h2 className="text-xl font-semibold text-ink">The shelves are being updated</h2>
+                    <p className="mt-2 text-mute">Check again shortly for available medicines.</p>
+                </div>
+            ) : (
+                <section aria-label="Medicines" className="grid grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
+                    {product.map(item => (
+                        <Product key={item.id} {...item} handleProductSelection={handleProductSelection} />
+                    ))}
+                </section>
+            )}
+            <ChatBotButton />
         </div>
     )
 }

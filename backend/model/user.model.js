@@ -32,7 +32,19 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         required: false
-    }
+    },
+
+    sex: {
+        type: String,
+        enum: ["male", "female", "other", ""],
+        default: "",
+    },
+
+    birthYear: {
+        type: Number,
+        min: 1900,
+        max: 2100,
+    },
     
 }, { timestamps: true })
 

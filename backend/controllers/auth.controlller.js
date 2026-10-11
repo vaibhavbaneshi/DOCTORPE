@@ -1,16 +1,18 @@
-import { zodSchema } from "../app.js";
+import { signinSchema, signupSchema } from "../utils/validation.js";
 import { User } from "../model/user.model.js";
-import jwt from "jsonwebtoken"
 import { AsyncHandler } from "../utils/AsyncHandler.js";
+import { signUserToken } from "../utils/token.js";
 import bcryptjs from "bcryptjs"
+
+const userWithoutPassword = (id) => User.findById(id).select("-password")
 
 export const signup = AsyncHandler( async (req, res) => {
     const {firstName, lastName, username, email, password} = req.body
 
-    const validateInput = zodSchema.safeParse({firstName, lastName, username, email, password})
+    const validateInput = signupSchema.safeParse({firstName, lastName, username, email, password})
 
-    if(!validateInput) {
-        return res.json({
+    if(!validateInput.success) {
+        return res.status(400).json({
             message: "Invalid Input",
             status: false
         })
@@ -21,7 +23,7 @@ export const signup = AsyncHandler( async (req, res) => {
     })
 
     if(existedUser) {
-        return res.status(401).json({
+        return res.status(409).json({
             message: "User with this email or username already exist",
             status: false
         })
@@ -37,27 +39,19 @@ export const signup = AsyncHandler( async (req, res) => {
         password: hashedPassword
     })
 
-    const createdUser = await User.findById(user._id)
+    const loggedInUser = await userWithoutPassword(user._id)
 
-    if(!createdUser) {
+    if(!loggedInUser) {
         return res.status(500).json({
-            msg: "There was an error while creating the user",
+            message: "There was an error while creating the user",
             status: false
         })
     }
 
-    const userId = user._id
-
-    const token = jwt.sign({
-        userId,
-    }, process.env.JWT_SECRET)
-
-    const loggedInUser = await User.findById(user._id).select(" -password ")
-
     return res.json({
-        msg: "User Signed in successfully",
+        message: "Account created successfully",
         data: loggedInUser,
-        token: token,
+        token: signUserToken(user._id),
         status: true
     })
 })
@@ -65,18 +59,16 @@ export const signup = AsyncHandler( async (req, res) => {
 export const signin = AsyncHandler( async (req, res) => {
     const {email, password} = req.body
 
-    const validateInput = zodSchema.safeParse({ email, password })
+    const validateInput = signinSchema.safeParse({ email, password })
 
-    if(!validateInput) {
+    if(!validateInput.success) {
         return res.status(400).json({
             message: "Invalid Input",
             status: false
         })
     }
 
-    const existedUser = await User.findOne({
-        $or: [{ email }]
-    })
+    const existedUser = await User.findOne({ email })
 
     if(!existedUser) {
         return res.status(400).json({
@@ -85,80 +77,67 @@ export const signin = AsyncHandler( async (req, res) => {
         })
     }
 
-    const validUserPassword = existedUser.password
-
-    if(!(bcryptjs.compareSync(password, validUserPassword))) {
+    if(!(bcryptjs.compareSync(password, existedUser.password))) {
         return res.status(400).json({
             message: "Incorrect Password",
             status: false
         })
     }
 
-    const userId = existedUser._id
-
-    const token = jwt.sign({
-        userId,
-    }, process.env.JWT_SECRET)
-
-    const loggedInUser = await User.findById(existedUser._id).select(" -password ")
+    const loggedInUser = await userWithoutPassword(existedUser._id)
 
     return res.json({
-        msg: "User Signed up successfully",
+        message: "Signed in successfully",
         data: loggedInUser,
-        token: token,
+        token: signUserToken(existedUser._id),
         status: true
     })
 })
 
-export const googleAuth = AsyncHandler( async (req, res, next) => {
+export const googleAuth = AsyncHandler( async (req, res) => {
     const {name, firstName, lastName, email, googlePhotoURL} = req.body
+
+    if (!email) {
+        return res.status(400).json({
+            message: "Email is required",
+            status: false
+        })
+    }
 
     const user = await User.findOne({ email })
     
     if(user) {
-
-        const userId = user._id
-
-        const token = jwt.sign({
-            userId,
-        }, process.env.JWT_SECRET)
-    
-        const loggedInUser = await User.findById(userId).select(" -password ")
+        const loggedInUser = await userWithoutPassword(user._id)
 
         return res.json({
-            msg: "User Signed up successfully",
+            message: "Signed in successfully",
             data: loggedInUser,
-            token: token,
+            token: signUserToken(user._id),
             status: true
         })
     }
 
-    else {
-        const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
-        const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+    const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+    const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
 
-        const newUser = await User.create({
-            username: name?.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
-            firstName,
-            lastName,
-            email,
-            password: hashedPassword,
-            profilePicture: googlePhotoURL
-        })
+    const emailLocal = email.split("@")[0]?.toLowerCase().replace(/\W/g, "") || "user"
+    const username = `${emailLocal}${Math.random().toString(36).slice(2, 8)}`
 
-        const userId = newUser._id
+    const newUser = await User.create({
+        username,
+        firstName: firstName?.trim() || emailLocal,
+        lastName: lastName?.trim() || emailLocal,
+        email,
+        password: hashedPassword,
+        profilePicture: googlePhotoURL
+    })
 
-        const token = jwt.sign({
-            userId,
-        }, process.env.JWT_SECRET)
+    const loggedInUser = await userWithoutPassword(newUser._id)
 
-        const loggedInUser = await User.findById(userId).select(" -password ")
-
-        return res.json({
-            msg: "User Signed up successfully",
-            data: loggedInUser,
-            token: token,
-            status: true
-        })
-    }
+    return res.json({
+        message: "Account created successfully",
+        data: loggedInUser,
+        token: signUserToken(newUser._id),
+        status: true
+    })
 })

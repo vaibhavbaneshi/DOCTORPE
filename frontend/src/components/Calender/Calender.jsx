@@ -1,174 +1,189 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useMemo, useState } from "react";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
-export const Calendar = ({ onDateTimeSelect, onAppointments }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [label, setLabel] = useState(false); // Changed to false
+const times = [
+  "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM",
+  "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
+];
+
+const todayIso = () => new Date().toISOString().slice(0, 10);
+
+const parseSlot = (dateStr, timeStr) => {
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const meridiem = match[3].toUpperCase();
+  if (meridiem === "PM" && hours !== 12) hours += 12;
+  if (meridiem === "AM" && hours === 12) hours = 0;
+  const slot = new Date(`${dateStr}T00:00:00`);
+  slot.setHours(hours, minutes, 0, 0);
+  return slot;
+};
+
+const isPastSlot = (dateStr, timeStr) => {
+  const slot = parseSlot(dateStr, timeStr);
+  return !slot || slot <= new Date();
+};
+
+export const Calendar = ({ onDateTimeSelect }) => {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [timeError, setTimeError] = useState(null);
-  const [dateError, setDateError] = useState(null);
-  const [currentDateTime, setCurrentDateTime] = useState(new Date()); // Initialized with current date time
+  const [error, setError] = useState("");
+  const minDate = todayIso();
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setDateError(null); // Changed to null
+  const formattedDate = selectedDate
+    ? new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" }).format(
+        new Date(`${selectedDate}T00:00:00`)
+      )
+    : "";
+
+  const summary = formattedDate && selectedTime
+    ? `${formattedDate} at ${selectedTime}`
+    : "Pick a date and time for your visit";
+
+  const openModal = () => {
+    setError("");
+    setModalVisible(true);
   };
 
-  const handleTimeChange = (time) => {
-    setTimeError(null); // Changed to null
-    setSelectedTime(time);
-  };
-
-  const handleSave = async () => {
-    if (!selectedDate) {
-      setDateError('Please select a date');
+  const handleSave = () => {
+    if (!selectedDate || !selectedTime) {
+      setError("Choose both a date and a time.");
+      return;
+    }
+    if (selectedDate < minDate) {
+      setError("Past dates are not available.");
+      return;
+    }
+    if (isPastSlot(selectedDate, selectedTime)) {
+      setError("Choose a time in the future.");
       return;
     }
 
-    if (!selectedTime) {
-      setTimeError('Please select a time');
-      return;
-    }
-
-    try {
-      const response = await axios.get("https://doctorpe-backend.vercel.app/api/v1/user/fetchAppointment");
-      onDateTimeSelect(selectedDate, selectedTime);
-      onAppointments(response.data);
-      setLabel(true);
-      setModalVisible(false);
-    } catch (error) {
-      console.error('Error fetching appointments:', error);
-    }
-  };
-
-  const handleDiscard = () => {
-    setLabel(false);
+    onDateTimeSelect(selectedDate, selectedTime);
+    setError("");
     setModalVisible(false);
   };
 
-  const renderTimeOptions = () => {
-    const times = [
-      '09:30 AM', '10:00 AM', '10:30 AM',
-      '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM',
-      '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM',
-      '03:00 PM', '03:30 PM', '04:00 PM', '4:30 PM',
-    ];
-
-    return times.map((time, index) => (
-      <li key={index}>
-        <input
-          type="radio"
-          id={`time-${index}`}
-          className="hidden peer"
-          name="timetable"
-          onChange={() => handleTimeChange(time)}
-          checked={selectedTime === time}
-        />
-        <label
-          htmlFor={`time-${index}`}
-          className="inline-flex items-center justify-center w-full px-4 py-1 text-sm font-medium text-center hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border rounded-lg cursor-pointer text-gray-500 border-gray-200 dark:border-gray-700 dark:peer-checked:border-blue-500 peer-checked:border-blue-700 dark:hover:border-gray-600 dark:peer-checked:text-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600 dark:peer-checked:bg-blue-900"
-        >
-          {time}
-        </label>
-      </li>
-    ));
-  };
+  const availableTimes = useMemo(
+    () =>
+      times.map((time) => ({
+        time,
+        disabled: selectedDate ? isPastSlot(selectedDate, time) : false,
+      })),
+    [selectedDate]
+  );
 
   return (
-    <div>
+    <div className="w-full max-w-lg">
       <button
         type="button"
-        onClick={() => setModalVisible(true)} // Toggle modal visibility on button click
-        className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:underline border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700"
+        onClick={openModal}
+        className="w-full rounded-[1.6rem] bg-surface p-6 text-left ring-1 ring-ink/5 transition-colors duration-200 ease-spring hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
       >
-        <svg
-          className="w-4 h-4 me-1"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fillRule="evenodd"
-            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Select Date and Time
+        <p className="text-sm font-medium text-canopy">Visit schedule</p>
+        <p className="mt-2 text-lg font-semibold text-ink">{summary}</p>
+        <p className="mt-3 text-sm text-mute">Tap anywhere here to choose date and time</p>
       </button>
-      {label && selectedDate && <label className='ml-10 hover:underline hover:shadow-xl hover:shadow-sky-300 transition-shadow'>Selected Date is: {selectedDate}</label>}
-      {label && selectedTime && <label className='ml-10 hover:underline hover:shadow-xl hover:shadow-sky-300 transition-shadow'>Selected Time is: {selectedTime}</label>}
-      {/* Main modal */}
-      {modalVisible && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className='absolute inset-0 flex items-center justify-center'>
 
-            <div className="absolute inset-0 bg-gray-800 bg-opacity-75"></div>
-            <div className="relative bg-white rounded-lg shadow-md dark:bg-gray-800">
-              <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Select Date and Time
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => setModalVisible(false)} // Close modal on button click
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-3 h-3"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 14 14"
+      {modalVisible && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="schedule-title"
+          onClick={() => setModalVisible(false)}
+        >
+          <div
+            className="max-h-[90dvh] w-full max-w-xl overflow-y-auto overscroll-contain rounded-[1.6rem] bg-surface p-6 shadow-tint"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <h2 id="schedule-title" className="text-xl font-semibold text-ink">
+                Schedule your visit
+              </h2>
+              <button
+                type="button"
+                onClick={() => setModalVisible(false)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+                aria-label="Close scheduling dialog"
+              >
+                <Cross2Icon aria-hidden="true" />
+              </button>
+            </div>
+
+            <label htmlFor="appointment-date" className="mt-6 block text-sm font-medium text-ink">
+              Date
+            </label>
+            <input
+              id="appointment-date"
+              name="appointment-date"
+              type="date"
+              min={minDate}
+              value={selectedDate}
+              onChange={(event) => {
+                const nextDate = event.target.value;
+                setSelectedDate(nextDate);
+                if (selectedTime && isPastSlot(nextDate, selectedTime)) {
+                  setSelectedTime("");
+                }
+                setError("");
+              }}
+              className="mt-2 h-11 w-full rounded-xl border border-ink/10 bg-canvas px-3 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+            />
+
+            <fieldset className="mt-6">
+              <legend className="text-sm font-medium text-ink">Time</legend>
+              <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {availableTimes.map(({ time, disabled }) => (
+                  <label
+                    key={time}
+                    className={disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    <input
+                      type="radio"
+                      name="appointment-time"
+                      value={time}
+                      disabled={disabled}
+                      checked={selectedTime === time}
+                      onChange={() => {
+                        setSelectedTime(time);
+                        setError("");
+                      }}
+                      className="peer sr-only"
                     />
-                  </svg>
-                  <span className="sr-only">Close modal</span>
-                </button>
+                    <span className="flex min-h-11 items-center justify-center rounded-xl border border-ink/10 px-3 text-sm tabular-nums text-mute hover:bg-ink/5 peer-checked:border-canopy peer-checked:bg-canopy peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-canopy peer-disabled:hover:bg-transparent">
+                      {time}
+                    </span>
+                  </label>
+                ))}
               </div>
-              <div className="p-4 pt-0">
-                <label className="text-sm font-medium text-gray-900 dark:text-white mb-2 block pt-3">
-                  Select a Date
-                </label>
-                <input
-                  type="date"
-                  onChange={(e) => handleDateChange(e.target.value)}
-                  className="hover:cursor-pointer hover:bg-gray-200 w-full px-3 py-2 mb-3 border rounded-md text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-                <label className="text-sm font-medium text-gray-900 dark:text-white mb-2 block">
-                  Select a Time
-                </label>
-                <ul id="timetable" className="grid w-full grid-cols-3 gap-2 mb-5">
-                  {renderTimeOptions()}
-                </ul>
-                {dateError && <div className="text-red-500 pb-4">{dateError}</div>}
-                {timeError && <div className="text-red-500 pb-4">{timeError}</div>}
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:underline focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  >
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleDiscard} // Close modal on button click
-                    className="hover:underline py-2.5 px-5 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                  >
-                    Discard
-                  </button>
-                </div>
-              </div>
+            </fieldset>
+
+            {error && (
+              <p className="mt-4 text-sm text-red-700" aria-live="polite">
+                {error}
+              </p>
+            )}
+
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setModalVisible(false)}
+                className="min-h-11 rounded-full border border-ink/15 px-5 py-2 text-sm text-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSave}
+                className="min-h-11 rounded-full bg-canopy px-5 py-2 text-sm font-medium text-white hover:bg-canopy-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy"
+              >
+                Save visit time
+              </button>
             </div>
           </div>
         </div>

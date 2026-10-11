@@ -1,8 +1,8 @@
 export function SuccessMessage({ message }) {
     return (
-      <div className="sticky top-0 flex flex-col items-center z-10">
-        <div className="ml-auto mr-auto bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-4 sticky top-0 z-10 inline-block">
-            <div className="flex items-center">
+      <div className="sticky top-24 z-30 flex flex-col items-center px-4" role="status" aria-live="polite">
+        <div className="mx-auto mt-4 w-full max-w-lg rounded-[1.25rem] bg-canopy px-4 py-3 text-white shadow-tint">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center">
             <svg
                 width="24"
                 height="24"
@@ -13,7 +13,7 @@ export function SuccessMessage({ message }) {
             >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <p className="font-bold pr-3">Success alert!</p>
+            <p className="font-semibold pr-3">Done.</p>
             <p>{message}</p>
             </div>
         </div>

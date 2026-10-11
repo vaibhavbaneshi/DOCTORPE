@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import Heading from "../../components/products/Heading";
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductInCart } from '../../components/Cart/ProductInCart';
-import { OrderButton } from '../../components/OrderButton/OrderButton';
 import { loadStripe } from '@stripe/stripe-js'
-import axios from "axios";
-import "./ShoppingCart.css"
 import { cartTotalAmount, cartTotalItems } from '../../redux/user/userSlice';
+import { api } from '../../lib/api';
+import { useNavigate } from 'react-router-dom';
+
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
 export const ShoppingCart = () => {
+    const navigate = useNavigate();
     const { selectedProducts } = useSelector(state => state.user);
     const [cartItems, setCartItems] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [animate, setAnimate] = useState(false);
+    const [checkoutError, setCheckoutError] = useState("");
     const dispatch = useDispatch()
+    const [address, setAddress] = useState({ address: "", city: "", state: "", pincode: "" })
     const [addressError, setAddressError] = useState(false)
 
     useEffect(() => {
@@ -26,10 +29,10 @@ export const ShoppingCart = () => {
             let total = 0;
             let itemsCount = 0;
             cartItems.forEach(item => {
-                const quantity = item.quantity !== undefined ? item.quantity : 1; 
+                const quantity = item.quantity !== undefined ? item.quantity : 1;
                 if (!isNaN(quantity)) {
-                    total += item.price * quantity; 
-                    itemsCount += quantity; 
+                    total += item.price * quantity;
+                    itemsCount += quantity;
                 }
             });
             setTotalAmount(total);
@@ -39,155 +42,144 @@ export const ShoppingCart = () => {
             setTotalItems(0);
         }
     }, [cartItems]);
-    
-    const handleQuantityChange = (productId, quantity) => {
-        const updatedItems = cartItems.map(item => {
-            if (item.id === productId) {
-                return { ...item, quantity: quantity };
-            }
-            return item;
-        });
-        setCartItems(updatedItems);
-    };
+
+    const addressIsValid = () =>
+        Object.values(address).every((value) => value.trim() !== "");
 
     const handleClick = async () => {
-
+        setCheckoutError("");
         if (!addressIsValid()) {
             setAddressError(true);
-            return; 
-        } else {
-            setAddressError(false);
+            return;
         }
+        setAddressError(false);
 
         dispatch(cartTotalItems(totalItems))
         dispatch(cartTotalAmount(totalAmount))
+        setAnimate(true);
 
-        if (!animate) {
-            setAnimate(true);
-            setTimeout(() => {
+        try {
+            const response = await api.post("/product/purchaseProduct/createCheckoutSession", {
+                products: selectedProducts,
+                deliveryAddress: address,
+            })
+
+            if (response.data.mock) {
+                navigate("/purchaseProductSuccess");
+                return;
+            }
+
+            const publishableKey =
+                stripeKey || response.data.publishableKey;
+
+            if (!publishableKey) {
+                setCheckoutError(
+                    "Stripe publishable key missing. Add STRIPE_PUBLISHABLE_KEY to backend/.env or VITE_STRIPE_PUBLISHABLE_KEY to frontend/.env."
+                );
                 setAnimate(false);
-            }, 10000);
+                return;
+            }
+
+            const stripe = await loadStripe(publishableKey);
+            if (response.data.status && stripe && response.data.id) {
+                const result = await stripe.redirectToCheckout({ sessionId: response.data.id });
+                if (result.error) {
+                    setCheckoutError(result.error.message);
+                    setAnimate(false);
+                }
+            } else {
+                setCheckoutError("Could not start checkout. Please try again.");
+                setAnimate(false);
+            }
+        } catch (err) {
+            setCheckoutError(
+                err.response?.data?.message || "Could not start checkout. Please try again."
+            );
+            setAnimate(false);
         }
-
-        const stripe = await loadStripe("pk_test_51P4GrcSGmMcizrM94ZF4gAIGxKyWSKpidAGQgksJ06zdo3Vt9ZR1jqRcnC7CBbzXDPolgJUUpeeWYktSn62JloV500ZzuN3Mcn")
-
-        const response = await axios.post("https://doctorpe-backend.vercel.app/api/v1/product/purchaseProduct/createCheckoutSession", {
-            products: selectedProducts,
-        })
-
-        const session = response.data.id
-
-        setTimeout(() => {
-            if(response.data.status) {
-                stripe.redirectToCheckout({
-                    sessionId: session
-                })
-            } 
-        }, 7000)
     }
 
-    const addressIsValid = () => {
-        const address = document.getElementById('address').value.trim();
-        const city = document.getElementById('city').value.trim();
-        const state = document.getElementById('state').value.trim();
-        const pincode = document.getElementById('pincode').value.trim();
-        
-        return address !== '' && city !== '' && state !== '' && pincode !== '';
-    }
-    
     return (
-        <div className="bg-gradient-to-br from-slate-100 to-cyan-100 min-h-screen pt-12 mx-auto px-6">
-            <div>
-                <div>
-                    <Heading title={'Orders'} preText={'My'} />
-                </div>
-
-                <div className="flex justify-between p-10 mb-8 ">
-                    <div className=" mr-28">
-                        <div >
-                            <div className="cart-items pl-4 mb-4">Cart Items</div>
-                            <div className='cartItems-Card '>
-                                {cartItems.length === 0 ? (
-                                    <div className='empty-text '>
-                                            There are no items in the cart currently
-                                    </div>
-                                ) : (
-                                    cartItems.map((item, index) => (
-                                        <ProductInCart 
-                                            key={index}
-                                            id={item.id}
-                                            title={item.title} 
-                                            description={item.description} 
-                                            price={item.price} 
-                                            image={item.image}
-                                            quantity={item.quantity}
-                                            onQuantityChange={handleQuantityChange}
-                                        />
-                                    ))
-                                )}
+        <div className="min-h-[100dvh] px-4 py-16 sm:px-6">
+            <div className="mx-auto max-w-6xl">
+                <header>
+                    <h1 className="text-balance text-4xl font-semibold tracking-tight text-ink md:text-6xl">Your cart</h1>
+                    <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-mute">
+                        Review your medicines and add a delivery address before secure checkout.
+                    </p>
+                </header>
+            <div className="flex flex-col gap-10 py-10 lg:flex-row lg:items-start lg:justify-between">
+                <div className="flex-1">
+                    <h2 className="mb-4 text-xl font-semibold text-ink">Cart items</h2>
+                    <div>
+                        {cartItems.length === 0 ? (
+                            <div className="rounded-[1.6rem] bg-surface p-10 text-center ring-1 ring-ink/5">
+                                <h3 className="text-lg font-semibold text-ink">Your cart is empty</h3>
+                                <p className="mt-2 text-mute">Add medicines from the store to begin an order.</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="yourItems bg-white w-1/4 h-3/4 mt-20 rounded-3xl shadow-xl">
-                        <div className='yourItems-head p-4 mt-6 flex flex-col items-center text-2xl'>
-                            <strong>Checkout Details</strong>
-                        </div>
-
-                        <div className='p-10'>
-                            <div className='flex justify-between p-5 text-xl'>
-                                <div>
-                                    Total Items :
-                                </div>
-
-                                <div className='pr-6'>
-                                    {totalItems}
-                                </div>
-                            </div>
-
-                            <div className='flex justify-between p-5 text-xl'>
-                                <div>
-                                    Total Amount :
-                                </div>
-
-                                <div>
-                                ₹ {totalAmount.toFixed(2)}
-                                </div>
-                            </div>
-
-                            <div className='flex justify-between p-5 text-xl'>
-                                <span>Your Address :</span>
-                                <input id="address" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='Your Address'/>
-                            </div>
-                            <div className='flex justify-between p-5 text-xl'>
-                                <span>City :</span>
-                                <input id="city" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='City'/>
-                            </div>
-                            <div className='flex justify-between p-5 text-xl'>
-                                <span>State :</span>
-                                <input id="state" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='State'/>
-                            </div>
-                            <div className='flex justify-between p-5 text-xl'>
-                                <span>Pincode : </span>
-                                <input id="pincode" className={`rounded-lg ${addressError ? 'border-red-500' : ''}`} type="text" placeholder='Pincode'/>
-                            </div>
-
-                            {addressError && (
-                                <div className="text-red-500 text-sm mt-2">Please fill in all address fields!!!</div>
-                            )}
-
-                            <div onClick={handleClick} className='complete-order mt-6 flex flex-col items-center pt-9'>
-                                {totalItems > 0 || totalAmount > 0 ? ( 
-                                    <OrderButton onClick={handleClick} animate={animate}/>
-                                ) : (
-                                    <button disabled className="order" style={{ cursor: 'not-allowed' }}>
-                                        <span className="default hover:underline">Complete Order</span>
-                                    </button>
-                                )}
-                            </div>
-                        </div>
+                        ) : (
+                            cartItems.map((item) => (
+                                <ProductInCart
+                                    key={item.id}
+                                    id={item.id}
+                                    title={item.title}
+                                    description={item.description}
+                                    price={item.price}
+                                    image={item.image}
+                                    quantity={item.quantity}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
+
+                <aside className="w-full rounded-[1.6rem] bg-surface p-6 ring-1 ring-ink/5 lg:sticky lg:top-28 lg:w-96">
+                    <h2 className="text-xl font-semibold text-ink">Order summary</h2>
+
+                    <div className="mt-6 space-y-4">
+                        <div className='flex justify-between'>
+                            <span>Total Items</span>
+                            <span className="tabular-nums">{totalItems}</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span>Total Amount</span>
+                            <span className="font-semibold tabular-nums">{new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(totalAmount)}</span>
+                        </div>
+                        <label className="block text-sm">
+                            Address
+                            <input name="street-address" autoComplete="street-address" value={address.address} onChange={(e) => setAddress({ ...address, address: e.target.value })} className={`mt-1 h-11 w-full rounded-xl border bg-canvas px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy ${addressError ? 'border-red-700' : 'border-ink/10'}`} type="text" placeholder="221B Park Avenue…"/>
+                        </label>
+                        <label className="block text-sm">
+                            City
+                            <input name="address-level2" autoComplete="address-level2" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} className={`mt-1 h-11 w-full rounded-xl border bg-canvas px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy ${addressError ? 'border-red-700' : 'border-ink/10'}`} type="text" placeholder="Bengaluru…"/>
+                        </label>
+                        <label className="block text-sm">
+                            State
+                            <input name="address-level1" autoComplete="address-level1" value={address.state} onChange={(e) => setAddress({ ...address, state: e.target.value })} className={`mt-1 h-11 w-full rounded-xl border bg-canvas px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy ${addressError ? 'border-red-700' : 'border-ink/10'}`} type="text" placeholder="Karnataka…"/>
+                        </label>
+                        <label className="block text-sm">
+                            Pincode
+                            <input name="postal-code" autoComplete="postal-code" inputMode="numeric" value={address.pincode} onChange={(e) => setAddress({ ...address, pincode: e.target.value })} className={`mt-1 h-11 w-full rounded-xl border bg-canvas px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy ${addressError ? 'border-red-700' : 'border-ink/10'}`} type="text" placeholder="560001…"/>
+                        </label>
+
+                        {addressError && (
+                            <p className="text-sm text-red-700" aria-live="polite">Fill in every delivery address field.</p>
+                        )}
+                        {checkoutError && (
+                            <p className="text-sm text-red-700" aria-live="polite">{checkoutError}</p>
+                        )}
+
+                        <button
+                            type="button"
+                            disabled={totalItems === 0 || animate}
+                            onClick={handleClick}
+                            className="min-h-11 w-full rounded-full bg-canopy px-5 py-3 font-medium text-white transition-colors duration-200 ease-spring hover:bg-canopy-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canopy active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {animate ? "Opening checkout…" : "Checkout"}
+                        </button>
+                    </div>
+                </aside>
+            </div>
             </div>
         </div>
     );
